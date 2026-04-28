@@ -14,7 +14,15 @@
       "Mentored 3 junior developers through code reviews and pair-programming sessions.",
       "Established CI/CD pipelines with GitHub Actions and automated visual regression tests."
     ],
-    "technologies": ["Next.js", "TypeScript", "tRPC", "Prisma", "PostgreSQL", "Tailwind CSS", "Vercel"]
+    "technologies": [
+      "Next.js",
+      "TypeScript",
+      "tRPC",
+      "Prisma",
+      "PostgreSQL",
+      "Tailwind CSS",
+      "Vercel"
+    ]
   },
   {
     "id": "fullstack-dev-globant",
@@ -31,7 +39,14 @@
       "Improved Lighthouse performance score from 54 to 91 across the client's storefront.",
       "Contributed to the company's internal React component library."
     ],
-    "technologies": ["React", "Node.js", "Express", "MongoDB", "Redis", "AWS S3"]
+    "technologies": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Redis",
+      "AWS S3"
+    ]
   },
   {
     "id": "backend-dev-startup",

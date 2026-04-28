@@ -6,7 +6,11 @@
       { "name": "Next.js", "level": "expert", "icon": "nextjs" },
       { "name": "TypeScript", "level": "expert", "icon": "typescript" },
       { "name": "Tailwind CSS", "level": "advanced", "icon": "tailwind" },
-      { "name": "Framer Motion", "level": "intermediate", "icon": "framermotion" }
+      {
+        "name": "Framer Motion",
+        "level": "intermediate",
+        "icon": "framermotion"
+      }
     ]
   },
   {
@@ -32,7 +36,11 @@
     "category": "DevOps & Tooling",
     "skills": [
       { "name": "Docker", "level": "intermediate", "icon": "docker" },
-      { "name": "GitHub Actions", "level": "advanced", "icon": "githubactions" },
+      {
+        "name": "GitHub Actions",
+        "level": "advanced",
+        "icon": "githubactions"
+      },
       { "name": "Vercel", "level": "expert", "icon": "vercel" },
       { "name": "Turborepo", "level": "intermediate", "icon": "turborepo" }
     ]

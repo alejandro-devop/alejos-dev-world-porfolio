@@ -104,18 +104,37 @@ export async function getSeo(locale: Locale): Promise<SeoData> {
 export type AllContent = ContentMap;
 
 export async function getAllContent(locale: Locale): Promise<AllContent> {
-  const [hero, about, skills, experience, projects, services, testimonials, blog, seo] =
-    await Promise.all([
-      getHero(locale),
-      getAbout(locale),
-      getSkills(locale),
-      getExperience(locale),
-      getProjects(locale),
-      getServices(locale),
-      getTestimonials(locale),
-      getBlog(locale),
-      getSeo(locale),
-    ]);
+  const [
+    hero,
+    about,
+    skills,
+    experience,
+    projects,
+    services,
+    testimonials,
+    blog,
+    seo,
+  ] = await Promise.all([
+    getHero(locale),
+    getAbout(locale),
+    getSkills(locale),
+    getExperience(locale),
+    getProjects(locale),
+    getServices(locale),
+    getTestimonials(locale),
+    getBlog(locale),
+    getSeo(locale),
+  ]);
 
-  return { hero, about, skills, experience, projects, services, testimonials, blog, seo };
+  return {
+    hero,
+    about,
+    skills,
+    experience,
+    projects,
+    services,
+    testimonials,
+    blog,
+    seo,
+  };
 }
