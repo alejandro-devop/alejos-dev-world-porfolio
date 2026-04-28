@@ -159,6 +159,15 @@ export type TestimonialsData = Testimonial[];
 
 export type BlogPostStatus = "published" | "draft";
 
+/** A single block of rich content within a blog post. */
+export type BlogContentBlock =
+  | { type: "h2"; text: string }
+  | { type: "h3"; text: string }
+  | { type: "p"; text: string }
+  | { type: "code"; lang: string; text: string }
+  | { type: "ul"; items: string[] }
+  | { type: "blockquote"; text: string };
+
 export interface BlogPost {
   id: string;
   slug: string;
@@ -171,6 +180,8 @@ export interface BlogPost {
   publishedAt: string; // ISO 8601
   readingTimeMinutes: number;
   externalUrl?: string; // for cross-posted articles
+  /** Optional full body content — present on detail pages. */
+  content?: BlogContentBlock[];
 }
 
 export type BlogData = BlogPost[];

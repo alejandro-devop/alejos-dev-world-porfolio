@@ -8,7 +8,22 @@
     "tags": ["Next.js", "React", "Arquitectura"],
     "status": "published",
     "publishedAt": "2024-03-12",
-    "readingTimeMinutes": 8
+    "readingTimeMinutes": 8,
+    "content": [
+      { "type": "h2", "text": "Por qué el App Router cambia todo" },
+      { "type": "p", "text": "Con el Pages Router, cada página era un árbol completo de React del lado del cliente. El App Router invierte esto: todo es un Server Component por defecto, y solo pasás al cliente donde necesitás interactividad." },
+      { "type": "p", "text": "Esto importa por tres razones concretas: bundles de JS más pequeños (el código del servidor nunca se envía), acceso inmediato a datos asíncronos sin cascadas de useEffect, y co-ubicación de la lógica de layout con los componentes que la necesitan." },
+      { "type": "h2", "text": "Server Components en la práctica" },
+      { "type": "p", "text": "El modelo mental clave: un Server Component es simplemente una función async. Podés await una query de base de datos o un fetch de CMS directamente dentro del componente — sin getServerSideProps, sin API route wrapper." },
+      { "type": "code", "lang": "tsx", "text": "// app/dashboard/page.tsx\nexport default async function DashboardPage() {\n  const metrics = await db.query('SELECT * FROM metrics');\n  return <MetricsGrid data={metrics} />;\n}" },
+      { "type": "p", "text": "El fetching de datos está co-ubicado, el árbol de componentes es más liviano, y el bundle del cliente se mantiene pequeño porque MetricsGrid y sus dependencias nunca llegan al navegador." },
+      { "type": "h2", "text": "Layouts anidados y la jerarquía de loading" },
+      { "type": "p", "text": "Los layouts anidados son una de las funcionalidades más poderosas del App Router. Cada segmento de la URL puede tener su propio layout.tsx, y React los renderiza como un árbol anidado — así que navegar entre páginas hermanas no vuelve a montar la UI del layout compartido." },
+      { "type": "ul", "items": ["Usá layout.tsx para la UI de shell persistente (sidebars, tabs)", "Usá loading.tsx para skeletons de suspense por segmento", "Usá error.tsx para error boundaries por segmento", "Usá template.tsx cuando necesitás un montaje fresco en cada navegación"] },
+      { "type": "h2", "text": "Rutas paralelas para UIs complejas" },
+      { "type": "p", "text": "Las rutas paralelas te permiten renderizar múltiples slots de página de forma simultánea e independiente. Son perfectas para dashboards donde una barra lateral, un panel principal y un feed de notificaciones tienen sus propios estados de carga y error." },
+      { "type": "blockquote", "text": "Tratá las rutas paralelas como árboles async independientes. Cada uno puede cargar, fallar y suspenderse sin afectar a los demás — que es exactamente lo que necesita un dashboard." }
+    ]
   },
   {
     "id": "post-typescript-generics",
@@ -18,7 +33,23 @@
     "tags": ["TypeScript", "DX"],
     "status": "published",
     "publishedAt": "2024-01-28",
-    "readingTimeMinutes": 6
+    "readingTimeMinutes": 6,
+    "content": [
+      { "type": "h2", "text": "El problema que resuelven los genéricos" },
+      { "type": "p", "text": "Sin genéricos terminás con tres malas opciones: usar any (inseguro), copiar y pegar el tipo para cada variante (ruidoso), o escribir sobrecargas (verboso). Los genéricos te dan una cuarta opción: escribirlo una vez y dejar que quien llame especifique el tipo." },
+      { "type": "h2", "text": "Funciones genéricas" },
+      { "type": "p", "text": "El genérico más simple es una función que devuelve el mismo tipo que recibe. El <T> es un parámetro de tipo — pensalo como una variable, pero para tipos." },
+      { "type": "code", "lang": "ts", "text": "function first<T>(arr: T[]): T | undefined {\n  return arr[0];\n}\n\nconst n = first([1, 2, 3]);   // inferido: number | undefined\nconst s = first(['a', 'b']); // inferido: string | undefined" },
+      { "type": "h2", "text": "Restricciones con extends" },
+      { "type": "p", "text": "Podés restringir qué tipos están permitidos como T. Esto te permite acceder a propiedades en T que TypeScript puede garantizar que existen." },
+      { "type": "code", "lang": "ts", "text": "function getLabel<T extends { label: string }>(item: T): string {\n  return item.label; // seguro — T debe tener label\n}" },
+      { "type": "h2", "text": "Tipos condicionales" },
+      { "type": "p", "text": "Los tipos condicionales te permiten expresar lógica if-else a nivel de tipos. Son la base de la mayoría de los tipos utilitarios avanzados en la librería estándar de TypeScript." },
+      { "type": "code", "lang": "ts", "text": "type EsString<T> = T extends string ? true : false;\n\ntype A = EsString<string>; // true\ntype B = EsString<number>; // false" },
+      { "type": "h2", "text": "Tipos utilitarios que vale la pena conocer" },
+      { "type": "ul", "items": ["Partial<T> — hace todas las propiedades opcionales", "Required<T> — hace todas las propiedades requeridas", "Pick<T, K> — crea un tipo solo con las claves indicadas", "Omit<T, K> — crea un tipo sin las claves indicadas", "ReturnType<F> — extrae el tipo de retorno de una función", "Awaited<T> — desenvuelve un tipo Promise"] },
+      { "type": "blockquote", "text": "Un codebase bien tipado no es uno donde toda variable tiene una anotación explícita. Es uno donde los tipos son precisos, acotados, y hacen trabajo real — detectando bugs antes de correr el código." }
+    ]
   },
   {
     "id": "post-trpc-prisma",
@@ -29,7 +60,21 @@
     "tags": ["tRPC", "Prisma", "TypeScript"],
     "status": "published",
     "publishedAt": "2023-11-04",
-    "readingTimeMinutes": 10
+    "readingTimeMinutes": 10,
+    "content": [
+      { "type": "h2", "text": "El hueco de type safety entre backend y frontend" },
+      { "type": "p", "text": "Incluso en un monorepo TypeScript, la frontera de la API suele estar sin tipos. Escribís un endpoint REST que devuelve un objeto User, y en el cliente casteás la respuesta JSON a un tipo User esperando que se mantengan sincronizados. Nunca lo hacen." },
+      { "type": "p", "text": "tRPC cierra esta brecha generando las definiciones de tipos del cliente directamente desde el router del servidor. Sin paso de generación de código, sin archivo de schema separado — es solo inferencia de TypeScript." },
+      { "type": "h2", "text": "Prisma como fuente de verdad de la base de datos" },
+      { "type": "p", "text": "El archivo schema.prisma de Prisma se convierte en la definición autoritativa de tus datos. Correr prisma generate emite métodos de cliente completamente tipados — así que las queries a la base de datos devuelven objetos correctamente tipados, no any." },
+      { "type": "code", "lang": "ts", "text": "// server/routers/user.ts\nimport { z } from 'zod';\nimport { router, publicProcedure } from '../trpc';\nimport { prisma } from '../db';\n\nexport const userRouter = router({\n  byId: publicProcedure\n    .input(z.object({ id: z.string().cuid() }))\n    .query(({ input }) => prisma.user.findUnique({ where: { id: input.id } })),\n});" },
+      { "type": "h2", "text": "Zod para validación de inputs" },
+      { "type": "p", "text": "Los schemas de Zod cumplen doble función: validan el input en runtime (para que los clientes no puedan enviar basura) e infieren tipos TypeScript para los objetos de input. Escribís el schema una vez y obtenés ambos beneficios." },
+      { "type": "h2", "text": "La cascada cuando cambiás un schema" },
+      { "type": "ul", "items": ["Actualizás schema.prisma", "Corrés prisma migrate dev", "prisma generate actualiza los tipos del cliente Prisma", "Los procedimientos de tRPC que usan esos tipos se ponen rojos en TypeScript", "Arreglás los procedimientos — y los callers del cliente también se ponen rojos", "Arreglás el cliente — y terminaste, con confianza"] },
+      { "type": "p", "text": "Esa cascada es el punto central. El error de tipos es tu suite de tests. Cuando estás en verde, tocaste todas las capas que se ven afectadas por el cambio." },
+      { "type": "blockquote", "text": "tRPC no es magia. Es solo inferencia de TypeScript aplicada consistentemente desde el schema de base de datos hasta la última línea de código del cliente. El resultado parece magia porque encontrar bugs a nivel de tipos es mucho más barato que encontrarlos en producción." }
+    ]
   },
   {
     "id": "post-perf-core-web-vitals",
@@ -37,8 +82,25 @@
     "title": "Guía Práctica de Core Web Vitals",
     "summary": "Las técnicas que llevaron un storefront de e-commerce real de 54 a 91 en Lighthouse: fuentes, imágenes, render blocking y LCP.",
     "tags": ["Performance", "Next.js", "UX"],
-    "status": "draft",
+    "status": "published",
     "publishedAt": "2024-04-20",
-    "readingTimeMinutes": 12
+    "readingTimeMinutes": 12,
+    "content": [
+      { "type": "h2", "text": "Qué miden realmente los scores" },
+      { "type": "p", "text": "Core Web Vitals son tres métricas: LCP (Largest Contentful Paint — qué tan rápido la página parece cargada), CLS (Cumulative Layout Shift — qué tan estable es el layout), e INP (Interaction to Next Paint — qué tan responsive es la página a las interacciones)." },
+      { "type": "p", "text": "Un score de Lighthouse es una mezcla ponderada de estas métricas y algunas secundarias. Pero en la práctica, arreglar LCP y CLS representa el 80% de la mejora en la mayoría de los sitios." },
+      { "type": "h2", "text": "LCP: el problema de las imágenes" },
+      { "type": "p", "text": "El elemento LCP casi siempre es la imagen del hero o el bloque de texto más grande por encima del fold. Para imágenes, el arreglo es casi siempre el mismo: usar un formato moderno (WebP o AVIF), precargar la imagen LCP, y dimensionarla correctamente para que el navegador no descargue una imagen de 3000px para un slot de 400px." },
+      { "type": "code", "lang": "tsx", "text": "// Precargar la imagen LCP en Next.js\n<Image\n  src=\"/hero.jpg\"\n  priority       // agrega <link rel=\"preload\">\n  sizes=\"100vw\"\n  fill\n  alt=\"Imagen hero\"\n/>" },
+      { "type": "h2", "text": "LCP: el problema de las fuentes" },
+      { "type": "p", "text": "Las fuentes web bloquean el renderizado del texto LCP. La solución es preconnect al proveedor de fuentes, usar font-display: swap, y — si es posible — hostear la fuente localmente para controlar los headers de caché." },
+      { "type": "ul", "items": ["Agregá <link rel=\"preconnect\"> para el origen de la fuente", "Usá font-display: optional si el layout shift del swap es visible", "Hosteo propio vía next/font/google que inlinea el @font-face en build time", "Hacé subset de la fuente a solo los caracteres que usás"] },
+      { "type": "h2", "text": "CLS: reservar espacio para contenido async" },
+      { "type": "p", "text": "Los layout shifts ocurren cuando el contenido carga de forma asíncrona y empuja otros elementos. El arreglo es siempre reservar espacio antes de que llegue el contenido — establecer width y height explícitos en imágenes, usar min-height en slots de anuncios, y evitar insertar contenido sobre el fold después de la carga." },
+      { "type": "h2", "text": "El problema de JS que bloquea el render" },
+      { "type": "p", "text": "Los scripts de terceros (analytics, widgets de chat, A/B testing) son el mayor culpable del render-blocking. Cargalos con strategy=\"lazyOnload\" en el componente Script de Next.js, o deferirlos hasta después de la primera interacción del usuario." },
+      { "type": "blockquote", "text": "La performance no es una auditoría de una sola vez. Es una restricción que diseñás desde el principio. Agregarla después es un orden de magnitud más caro que incorporarla desde el inicio." }
+    ]
   }
 ]
+

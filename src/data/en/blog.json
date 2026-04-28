@@ -8,7 +8,23 @@
     "tags": ["Next.js", "React", "Architecture"],
     "status": "published",
     "publishedAt": "2024-03-12",
-    "readingTimeMinutes": 8
+    "readingTimeMinutes": 8,
+    "content": [
+      { "type": "h2", "text": "Why the App Router changes everything" },
+      { "type": "p", "text": "With the Pages Router, every page was a full client-side React tree. The App Router flips this: everything is a Server Component by default, and you opt-in to the client only where you need interactivity." },
+      { "type": "p", "text": "This matters for three concrete reasons: smaller JS bundles (server code never ships), instant access to async data without useEffect waterfalls, and co-location of layout logic with the components that need it." },
+      { "type": "h2", "text": "Server Components in practice" },
+      { "type": "p", "text": "The key mental model: a Server Component is just an async function. You can await a database query or a CMS fetch directly inside the component — no getServerSideProps, no API route wrapper." },
+      { "type": "code", "lang": "tsx", "text": "// app/dashboard/page.tsx\nexport default async function DashboardPage() {\n  const metrics = await db.query('SELECT * FROM metrics');\n  return <MetricsGrid data={metrics} />;\n}" },
+      { "type": "p", "text": "The data fetching is co-located, the component tree is leaner, and the client bundle stays small because MetricsGrid and its dependencies never ship to the browser." },
+      { "type": "h2", "text": "Nested layouts and the loading hierarchy" },
+      { "type": "p", "text": "Nested layouts are one of the App Router's killer features. Each segment of the URL can have its own layout.tsx, and React renders them as a nested tree — so navigating between sibling pages doesn't re-mount shared layout UI." },
+      { "type": "ul", "items": ["Use layout.tsx for persistent shell UI (sidebars, tabs)", "Use loading.tsx for per-segment suspense skeletons", "Use error.tsx for per-segment error boundaries", "Use template.tsx when you need a fresh mount on every navigation"] },
+      { "type": "h2", "text": "Parallel routes for complex UIs" },
+      { "type": "p", "text": "Parallel routes let you render multiple independent page slots simultaneously. They're perfect for dashboard layouts where a sidebar, main panel, and notification feed each have their own loading and error states." },
+      { "type": "code", "lang": "text", "text": "app/dashboard/\n  layout.tsx          ← wraps both slots\n  @feed/page.tsx      ← parallel slot\n  @main/page.tsx      ← parallel slot" },
+      { "type": "blockquote", "text": "Treat parallel routes as independent async trees. Each can load, error, and suspend without affecting the other — which is exactly what a dashboard needs." }
+    ]
   },
   {
     "id": "post-typescript-generics",
@@ -18,7 +34,23 @@
     "tags": ["TypeScript", "DX"],
     "status": "published",
     "publishedAt": "2024-01-28",
-    "readingTimeMinutes": 6
+    "readingTimeMinutes": 6,
+    "content": [
+      { "type": "h2", "text": "The problem generics solve" },
+      { "type": "p", "text": "Without generics you end up with three bad options: use any (unsafe), copy-paste the type for every variant (noisy), or write overloads (verbose). Generics give you a fourth option: write it once and let the caller specify the type." },
+      { "type": "h2", "text": "Generic functions" },
+      { "type": "p", "text": "The simplest generic is a function that returns whatever type it receives. The <T> is a type parameter — think of it as a variable, but for types." },
+      { "type": "code", "lang": "ts", "text": "function first<T>(arr: T[]): T | undefined {\n  return arr[0];\n}\n\nconst n = first([1, 2, 3]);   // inferred: number | undefined\nconst s = first(['a', 'b']); // inferred: string | undefined" },
+      { "type": "h2", "text": "Constraints with extends" },
+      { "type": "p", "text": "You can constrain what T is allowed to be. This lets you access properties on T that TypeScript can guarantee exist." },
+      { "type": "code", "lang": "ts", "text": "function getLabel<T extends { label: string }>(item: T): string {\n  return item.label; // safe — T must have label\n}" },
+      { "type": "h2", "text": "Conditional types" },
+      { "type": "p", "text": "Conditional types let you express if-else logic at the type level. They're the basis for most advanced utility types in TypeScript's standard library." },
+      { "type": "code", "lang": "ts", "text": "type IsString<T> = T extends string ? true : false;\n\ntype A = IsString<string>; // true\ntype B = IsString<number>; // false" },
+      { "type": "h2", "text": "Utility types worth knowing" },
+      { "type": "ul", "items": ["Partial<T> — makes all properties optional", "Required<T> — makes all properties required", "Pick<T, K> — creates a type with only the listed keys", "Omit<T, K> — creates a type without the listed keys", "ReturnType<F> — extracts the return type of a function", "Awaited<T> — unwraps a Promise type"] },
+      { "type": "blockquote", "text": "A well-typed codebase isn't one where every variable has an explicit annotation. It's one where the types are accurate, narrow, and do real work — catching bugs before you run the code." }
+    ]
   },
   {
     "id": "post-trpc-prisma",
@@ -29,7 +61,21 @@
     "tags": ["tRPC", "Prisma", "TypeScript"],
     "status": "published",
     "publishedAt": "2023-11-04",
-    "readingTimeMinutes": 10
+    "readingTimeMinutes": 10,
+    "content": [
+      { "type": "h2", "text": "The type-safety gap between backend and frontend" },
+      { "type": "p", "text": "Even in a TypeScript monorepo, the API boundary is typically untyped. You write a REST endpoint that returns a User object, then on the client you cast the JSON response to a User type and hope they stay in sync. They never do." },
+      { "type": "p", "text": "tRPC closes this gap by generating the client's type definitions directly from the server's router. No code generation step, no separate schema file — it's just TypeScript inference." },
+      { "type": "h2", "text": "Prisma as the database source of truth" },
+      { "type": "p", "text": "Prisma's schema.prisma file becomes the authoritative definition of your data. Running prisma generate emits fully typed client methods — so querying the database returns properly-typed objects, not any." },
+      { "type": "code", "lang": "ts", "text": "// server/routers/user.ts\nimport { z } from 'zod';\nimport { router, publicProcedure } from '../trpc';\nimport { prisma } from '../db';\n\nexport const userRouter = router({\n  byId: publicProcedure\n    .input(z.object({ id: z.string().cuid() }))\n    .query(({ input }) => prisma.user.findUnique({ where: { id: input.id } })),\n});" },
+      { "type": "h2", "text": "Zod for input validation" },
+      { "type": "p", "text": "Zod schemas serve double duty: they validate the runtime input (so clients can't send garbage) and they infer TypeScript types for input objects. You write the schema once and get both benefits." },
+      { "type": "h2", "text": "The cascade when you change a schema" },
+      { "type": "ul", "items": ["Update schema.prisma", "Run prisma migrate dev", "prisma generate updates the Prisma client types", "tRPC procedures using those types turn red in TypeScript", "You fix the procedures — and the client callers turn red too", "Fix the client — and you're done, with confidence"] },
+      { "type": "p", "text": "That cascade is the whole point. The type error is your test suite. By the time you're green, you've touched every layer that cares about the change." },
+      { "type": "blockquote", "text": "tRPC isn't magic. It's just TypeScript inference applied consistently from the database schema to the last line of client code. The result feels like magic because finding bugs at the type level is so much cheaper than finding them in production." }
+    ]
   },
   {
     "id": "post-perf-core-web-vitals",
@@ -37,8 +83,25 @@
     "title": "A Practical Guide to Core Web Vitals",
     "summary": "The techniques that moved a real e-commerce storefront from a 54 to a 91 Lighthouse score — fonts, images, render blocking, and LCP.",
     "tags": ["Performance", "Next.js", "UX"],
-    "status": "draft",
+    "status": "published",
     "publishedAt": "2024-04-20",
-    "readingTimeMinutes": 12
+    "readingTimeMinutes": 12,
+    "content": [
+      { "type": "h2", "text": "What the scores actually measure" },
+      { "type": "p", "text": "Core Web Vitals are three metrics: LCP (Largest Contentful Paint — how fast the page looks loaded), CLS (Cumulative Layout Shift — how stable the layout is), and INP (Interaction to Next Paint — how responsive the page is to input)." },
+      { "type": "p", "text": "A Lighthouse score is a weighted blend of these and a few secondary metrics. But in practice, fixing LCP and CLS accounts for 80% of the score improvement on most sites." },
+      { "type": "h2", "text": "LCP: the image problem" },
+      { "type": "p", "text": "The LCP element is almost always the hero image or the largest text block above the fold. For images, the fix is almost always the same: use a modern format (WebP or AVIF), preload the LCP image, and size it correctly so the browser doesn't download a 3000px image for a 400px slot." },
+      { "type": "code", "lang": "tsx", "text": "// Preload the LCP image in Next.js\n<Image\n  src=\"/hero.jpg\"\n  priority       // adds <link rel=\"preload\">\n  sizes=\"100vw\"\n  fill\n  alt=\"Hero image\"\n/>" },
+      { "type": "h2", "text": "LCP: the font problem" },
+      { "type": "p", "text": "Web fonts block the LCP text from rendering. The solution is to preconnect to the font provider, use font-display: swap, and — if possible — self-host the font so you control the cache headers." },
+      { "type": "ul", "items": ["Add <link rel=\"preconnect\"> for the font origin", "Use font-display: optional if layout shift from swap is visible", "Self-host via next/font/google which inlines the @font-face at build time", "Subset the font to only the characters you use"] },
+      { "type": "h2", "text": "CLS: reserve space for async content" },
+      { "type": "p", "text": "Layout shifts happen when content loads asynchronously and pushes other elements around. The fix is to always reserve space before the content arrives — set explicit width and height on images, use min-height on ad slots, and avoid inserting content above the fold after load." },
+      { "type": "h2", "text": "The render-blocking JS problem" },
+      { "type": "p", "text": "Third-party scripts (analytics, chat widgets, A/B testing) are the biggest culprit for render-blocking. Load them with strategy=\"lazyOnload\" in Next.js Script, or defer them until after the first user interaction." },
+      { "type": "blockquote", "text": "Performance is not a one-time audit. It's a constraint you design around from the start. Adding it later is an order of magnitude more expensive than building it in." }
+    ]
   }
 ]
+
