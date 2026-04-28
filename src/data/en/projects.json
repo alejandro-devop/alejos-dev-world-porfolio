@@ -1,0 +1,58 @@
+[
+  {
+    "id": "portfolio-v2",
+    "title": "Developer Portfolio v2",
+    "description": "This bilingual portfolio — built with Next.js App Router, Tailwind CSS, and Framer Motion.",
+    "longDescription": "A fully type-safe, JSON-driven bilingual portfolio with locale detection, smooth page transitions, and a perfect Lighthouse score.",
+    "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "i18n"],
+    "status": "in-progress",
+    "featured": true,
+    "imageUrl": "/projects/portfolio-v2.png",
+    "repoUrl": "https://github.com/alejogdev/portfolio-v2",
+    "startDate": "2024-04"
+  },
+  {
+    "id": "saas-dashboard",
+    "title": "Multi-Tenant SaaS Dashboard",
+    "description": "A real-time analytics dashboard for a B2B SaaS platform with role-based access control.",
+    "tags": ["Next.js", "tRPC", "Prisma", "PostgreSQL", "Recharts"],
+    "status": "completed",
+    "featured": true,
+    "imageUrl": "/projects/saas-dashboard.png",
+    "liveUrl": "https://dashboard.acme.example.com",
+    "startDate": "2023-03",
+    "endDate": "2023-11"
+  },
+  {
+    "id": "ecommerce-storefront",
+    "title": "E-Commerce Storefront",
+    "description": "High-performance storefront integrated with Shopify Storefront API and Stripe.",
+    "tags": ["Next.js", "Shopify", "Stripe", "Tailwind CSS"],
+    "status": "completed",
+    "featured": true,
+    "imageUrl": "/projects/ecommerce.png",
+    "liveUrl": "https://shop.example.com",
+    "startDate": "2022-05",
+    "endDate": "2022-10"
+  },
+  {
+    "id": "realtime-tracker",
+    "title": "Real-Time Order Tracker",
+    "description": "WebSocket-powered order tracking module embedded in a retail client's platform.",
+    "tags": ["React", "Node.js", "WebSockets", "Redis"],
+    "status": "completed",
+    "featured": false,
+    "startDate": "2022-01",
+    "endDate": "2022-04"
+  },
+  {
+    "id": "oss-form-builder",
+    "title": "Open-Source Form Builder",
+    "description": "A drag-and-drop headless form builder library for React with schema export.",
+    "tags": ["React", "TypeScript", "OSS", "NPM"],
+    "status": "in-progress",
+    "featured": false,
+    "repoUrl": "https://github.com/alejogdev/react-form-builder",
+    "startDate": "2024-01"
+  }
+]

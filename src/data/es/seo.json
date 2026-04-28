@@ -1,0 +1,21 @@
+{
+  "title": "Alejandro Gómez | Desarrollador Full-Stack",
+  "description": "Desarrollador full-stack especializado en React, Next.js y Node.js. Creando experiencias web rápidas, accesibles y bilingües.",
+  "keywords": [
+    "desarrollador full-stack",
+    "desarrollador React",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "portafolio",
+    "desarrollo web"
+  ],
+  "ogImage": {
+    "url": "/og.png",
+    "width": 1200,
+    "height": 630,
+    "alt": "Alejandro Gómez — Desarrollador Full-Stack"
+  },
+  "twitterHandle": "@alejogdev",
+  "canonicalUrl": "https://alejos-dev-world.vercel.app/es"
+}

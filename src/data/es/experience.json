@@ -1,0 +1,51 @@
+[
+  {
+    "id": "senior-dev-acme",
+    "company": "Acme Corp",
+    "companyUrl": "https://acme.example.com",
+    "role": "Desarrollador Full-Stack Senior",
+    "startDate": "2023-01",
+    "endDate": "present",
+    "location": "Buenos Aires, Argentina",
+    "remote": true,
+    "highlights": [
+      "Lideré la migración de una app monolítica en Rails a un monorepo Next.js + tRPC, reduciendo el TTFB en un 60%.",
+      "Arquitecté un dashboard SaaS multi-tenant con más de 30.000 usuarios activos mensuales.",
+      "Mentoré a 3 desarrolladores junior mediante revisiones de código y sesiones de pair-programming.",
+      "Establecí pipelines de CI/CD con GitHub Actions y tests automatizados de regresión visual."
+    ],
+    "technologies": ["Next.js", "TypeScript", "tRPC", "Prisma", "PostgreSQL", "Tailwind CSS", "Vercel"]
+  },
+  {
+    "id": "fullstack-dev-globant",
+    "company": "Globant",
+    "companyUrl": "https://globant.com",
+    "role": "Desarrollador Full-Stack",
+    "startDate": "2021-03",
+    "endDate": "2022-12",
+    "location": "Buenos Aires, Argentina",
+    "remote": false,
+    "highlights": [
+      "Entregué funcionalidades de e-commerce para un cliente Fortune 500 en un equipo de 12 personas.",
+      "Construí un módulo de seguimiento de pedidos en tiempo real usando WebSockets y Redis pub/sub.",
+      "Mejoré el puntaje de Lighthouse de 54 a 91 en el storefront del cliente.",
+      "Contribuí a la biblioteca de componentes React interna de la empresa."
+    ],
+    "technologies": ["React", "Node.js", "Express", "MongoDB", "Redis", "AWS S3"]
+  },
+  {
+    "id": "backend-dev-startup",
+    "company": "Devstars (startup)",
+    "role": "Desarrollador Backend",
+    "startDate": "2019-08",
+    "endDate": "2021-02",
+    "location": "Remoto",
+    "remote": true,
+    "highlights": [
+      "Diseñé e implementé APIs REST consumidas por clientes iOS y Android.",
+      "Reduje el tiempo de respuesta promedio de la API en un 40% mediante optimización de consultas y caché.",
+      "Configuré el entorno de desarrollo basado en Docker adoptado por todo el equipo."
+    ],
+    "technologies": ["Node.js", "Express", "PostgreSQL", "Docker", "Jest"]
+  }
+]

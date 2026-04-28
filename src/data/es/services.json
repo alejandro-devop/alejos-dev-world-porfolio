@@ -1,0 +1,50 @@
+[
+  {
+    "id": "web-development",
+    "title": "Desarrollo Web",
+    "description": "Aplicaciones web de extremo a extremo, desde el diseño de APIs hasta interfaces pixel-perfect.",
+    "icon": "code",
+    "highlights": [
+      "Aplicaciones full-stack con Next.js",
+      "Diseño de APIs REST y GraphQL",
+      "Diseño y optimización de esquemas de base de datos",
+      "Autenticación y autorización"
+    ]
+  },
+  {
+    "id": "frontend-engineering",
+    "title": "Ingeniería Frontend",
+    "description": "Interfaces de usuario rápidas, accesibles y con animaciones hermosas.",
+    "icon": "layout",
+    "highlights": [
+      "Bibliotecas de componentes y sistemas de diseño",
+      "Optimización de rendimiento (Core Web Vitals)",
+      "Accesibilidad (WCAG 2.1 AA)",
+      "Micro-interacciones con Framer Motion"
+    ]
+  },
+  {
+    "id": "technical-consulting",
+    "title": "Consultoría Técnica",
+    "description": "Revisiones de arquitectura, auditorías de código y planificación de migraciones.",
+    "icon": "lightbulb",
+    "highlights": [
+      "Auditorías de codebase y planes de refactorización",
+      "Migraciones de stack tecnológico",
+      "Configuración de pipelines CI/CD",
+      "Mejoras de tooling y DX"
+    ]
+  },
+  {
+    "id": "mentoring",
+    "title": "Mentoría",
+    "description": "Mentoría 1:1 para desarrolladores junior y semi-senior.",
+    "icon": "users",
+    "highlights": [
+      "Sesiones semanales 1:1",
+      "Revisión de código y retroalimentación",
+      "Planificación de crecimiento profesional",
+      "Preparación para entrevistas técnicas"
+    ]
+  }
+]

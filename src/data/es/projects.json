@@ -1,0 +1,58 @@
+[
+  {
+    "id": "portfolio-v2",
+    "title": "Portafolio de Desarrollador v2",
+    "description": "Este portafolio bilingüe — construido con Next.js App Router, Tailwind CSS y Framer Motion.",
+    "longDescription": "Un portafolio bilingüe completamente tipado y basado en JSON, con detección de idioma, transiciones de página suaves y un puntaje Lighthouse perfecto.",
+    "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "i18n"],
+    "status": "in-progress",
+    "featured": true,
+    "imageUrl": "/projects/portfolio-v2.png",
+    "repoUrl": "https://github.com/alejogdev/portfolio-v2",
+    "startDate": "2024-04"
+  },
+  {
+    "id": "saas-dashboard",
+    "title": "Dashboard SaaS Multi-Tenant",
+    "description": "Un dashboard de analíticas en tiempo real para una plataforma SaaS B2B con control de acceso basado en roles.",
+    "tags": ["Next.js", "tRPC", "Prisma", "PostgreSQL", "Recharts"],
+    "status": "completed",
+    "featured": true,
+    "imageUrl": "/projects/saas-dashboard.png",
+    "liveUrl": "https://dashboard.acme.example.com",
+    "startDate": "2023-03",
+    "endDate": "2023-11"
+  },
+  {
+    "id": "ecommerce-storefront",
+    "title": "Tienda E-Commerce",
+    "description": "Storefront de alto rendimiento integrado con la API de Shopify y Stripe.",
+    "tags": ["Next.js", "Shopify", "Stripe", "Tailwind CSS"],
+    "status": "completed",
+    "featured": true,
+    "imageUrl": "/projects/ecommerce.png",
+    "liveUrl": "https://shop.example.com",
+    "startDate": "2022-05",
+    "endDate": "2022-10"
+  },
+  {
+    "id": "realtime-tracker",
+    "title": "Seguimiento de Pedidos en Tiempo Real",
+    "description": "Módulo de seguimiento de pedidos basado en WebSockets integrado en la plataforma de un cliente retail.",
+    "tags": ["React", "Node.js", "WebSockets", "Redis"],
+    "status": "completed",
+    "featured": false,
+    "startDate": "2022-01",
+    "endDate": "2022-04"
+  },
+  {
+    "id": "oss-form-builder",
+    "title": "Constructor de Formularios Open-Source",
+    "description": "Una biblioteca headless de construcción de formularios drag-and-drop para React con exportación de esquema.",
+    "tags": ["React", "TypeScript", "OSS", "NPM"],
+    "status": "in-progress",
+    "featured": false,
+    "repoUrl": "https://github.com/alejogdev/react-form-builder",
+    "startDate": "2024-01"
+  }
+]

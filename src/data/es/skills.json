@@ -1,0 +1,40 @@
+[
+  {
+    "category": "Frontend",
+    "skills": [
+      { "name": "React", "level": "expert", "icon": "react" },
+      { "name": "Next.js", "level": "expert", "icon": "nextjs" },
+      { "name": "TypeScript", "level": "expert", "icon": "typescript" },
+      { "name": "Tailwind CSS", "level": "advanced", "icon": "tailwind" },
+      { "name": "Framer Motion", "level": "intermediate", "icon": "framermotion" }
+    ]
+  },
+  {
+    "category": "Backend",
+    "skills": [
+      { "name": "Node.js", "level": "expert", "icon": "nodejs" },
+      { "name": "Express", "level": "advanced", "icon": "express" },
+      { "name": "GraphQL", "level": "advanced", "icon": "graphql" },
+      { "name": "APIs REST", "level": "expert" },
+      { "name": "tRPC", "level": "intermediate", "icon": "trpc" }
+    ]
+  },
+  {
+    "category": "Base de Datos",
+    "skills": [
+      { "name": "PostgreSQL", "level": "advanced", "icon": "postgresql" },
+      { "name": "Prisma", "level": "advanced", "icon": "prisma" },
+      { "name": "MongoDB", "level": "intermediate", "icon": "mongodb" },
+      { "name": "Redis", "level": "intermediate", "icon": "redis" }
+    ]
+  },
+  {
+    "category": "DevOps y Herramientas",
+    "skills": [
+      { "name": "Docker", "level": "intermediate", "icon": "docker" },
+      { "name": "GitHub Actions", "level": "advanced", "icon": "githubactions" },
+      { "name": "Vercel", "level": "expert", "icon": "vercel" },
+      { "name": "Turborepo", "level": "intermediate", "icon": "turborepo" }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "web-development",
+    "title": "Web Development",
+    "description": "End-to-end web applications — from API design to pixel-perfect UI.",
+    "icon": "code",
+    "highlights": [
+      "Full-stack Next.js applications",
+      "REST & GraphQL API design",
+      "Database schema design & optimization",
+      "Authentication & authorization"
+    ]
+  },
+  {
+    "id": "frontend-engineering",
+    "title": "Frontend Engineering",
+    "description": "Fast, accessible, and beautifully animated user interfaces.",
+    "icon": "layout",
+    "highlights": [
+      "Component libraries & design systems",
+      "Performance optimization (Core Web Vitals)",
+      "Accessibility (WCAG 2.1 AA)",
+      "Micro-interactions with Framer Motion"
+    ]
+  },
+  {
+    "id": "technical-consulting",
+    "title": "Technical Consulting",
+    "description": "Architecture reviews, code audits, and migration planning.",
+    "icon": "lightbulb",
+    "highlights": [
+      "Codebase audits & refactoring plans",
+      "Tech-stack migrations",
+      "CI/CD pipeline setup",
+      "Developer tooling & DX improvements"
+    ]
+  },
+  {
+    "id": "mentoring",
+    "title": "Mentoring",
+    "description": "1:1 mentoring for junior and mid-level developers.",
+    "icon": "users",
+    "highlights": [
+      "Weekly 1:1 sessions",
+      "Code review & feedback",
+      "Career growth planning",
+      "Interview preparation"
+    ]
+  }
+]

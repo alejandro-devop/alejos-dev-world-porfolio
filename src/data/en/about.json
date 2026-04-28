@@ -1,0 +1,16 @@
+{
+  "headline": "About me",
+  "paragraphs": [
+    "I'm a full-stack developer with 5+ years of experience building production web applications. I care deeply about developer experience, performance, and accessibility.",
+    "I started as a backend engineer working with Node.js and PostgreSQL, then fell in love with the React ecosystem. Today I work across the full stack — from REST and GraphQL APIs to polished, animated UIs.",
+    "Outside of code I enjoy hiking in Patagonia, specialty coffee, and mentoring junior developers in the local community."
+  ],
+  "location": "Buenos Aires, Argentina",
+  "email": "hello@alejos-dev-world.com",
+  "resumeUrl": "/resume-alejandro-gomez.pdf",
+  "socialLinks": [
+    { "label": "GitHub", "url": "https://github.com/alejogdev" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/alejogdev" },
+    { "label": "Twitter / X", "url": "https://twitter.com/alejogdev" }
+  ]
+}

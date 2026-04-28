@@ -1,11 +1,22 @@
 /**
- * Portfolio data will live here as the project grows.
+ * Data barrel — re-exports typed loaders and types for convenience.
  *
- * Suggested modules:
- *   projects.ts  – project list with title, description, tags, links
- *   skills.ts    – technology skills grouped by category
- *   experience.ts – work history entries
+ * Usage in a Server Component:
  *
- * Each module should export plain TypeScript objects/arrays so they
- * can be imported in Server Components without a data-fetching layer.
+ *   import { getHero, getProjects } from "@/data";
+ *   const hero = await getHero(locale);
  */
+export {
+  getHero,
+  getAbout,
+  getSkills,
+  getExperience,
+  getProjects,
+  getServices,
+  getTestimonials,
+  getBlog,
+  getSeo,
+  getAllContent,
+} from "@/lib/content";
+
+export type { AllContent } from "@/lib/content";

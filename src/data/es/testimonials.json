@@ -1,0 +1,31 @@
+[
+  {
+    "id": "testimonial-1",
+    "authorName": "Sofía Martínez",
+    "authorRole": "CTO",
+    "authorCompany": "Acme Corp",
+    "authorAvatarUrl": "/testimonials/sofia.jpg",
+    "quote": "Alejandro entregó un dashboard multi-tenant complejo en tiempo y dentro del presupuesto. Su atención al rendimiento y la calidad del código es excepcional — nuestro puntaje de Lighthouse subió de 60 a 98.",
+    "date": "2024-02-10",
+    "featured": true
+  },
+  {
+    "id": "testimonial-2",
+    "authorName": "Carlos Herrera",
+    "authorRole": "Product Manager",
+    "authorCompany": "Globant",
+    "quote": "Trabajar con Alejandro fue un placer. Comunica con claridad, hace las preguntas correctas y siempre encuentra soluciones elegantes. Lo contrataría de nuevo sin dudarlo.",
+    "date": "2023-01-15",
+    "featured": true
+  },
+  {
+    "id": "testimonial-3",
+    "authorName": "Laura Chen",
+    "authorRole": "Fundadora",
+    "authorCompany": "Devstars",
+    "authorAvatarUrl": "/testimonials/laura.jpg",
+    "quote": "Alejo construyó todo nuestro backend desde cero en 3 meses. Las APIs son rápidas, están bien documentadas y llevan dos años en producción sin ningún incidente.",
+    "date": "2021-05-20",
+    "featured": false
+  }
+]

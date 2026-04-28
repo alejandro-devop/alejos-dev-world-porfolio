@@ -1,0 +1,12 @@
+{
+  "greeting": "Hola, soy",
+  "name": "Alejandro Gómez",
+  "tagline": "Desarrollador Full-Stack que construye experiencias web rápidas y accesibles.",
+  "subtagline": "Especializado en React, Next.js y TypeScript. Basado en Buenos Aires, trabajo globalmente.",
+  "cta": {
+    "primary": { "label": "Ver mi trabajo", "url": "#projects" },
+    "secondary": { "label": "Contactame", "url": "#contact" }
+  },
+  "availableForWork": true,
+  "availableForWorkLabel": "Disponible para proyectos"
+}

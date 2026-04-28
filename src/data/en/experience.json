@@ -1,0 +1,51 @@
+[
+  {
+    "id": "senior-dev-acme",
+    "company": "Acme Corp",
+    "companyUrl": "https://acme.example.com",
+    "role": "Senior Full-Stack Developer",
+    "startDate": "2023-01",
+    "endDate": "present",
+    "location": "Buenos Aires, Argentina",
+    "remote": true,
+    "highlights": [
+      "Led migration of a monolithic Rails app to a Next.js + tRPC monorepo, cutting TTFB by 60%.",
+      "Architected a multi-tenant SaaS dashboard serving 30k+ monthly active users.",
+      "Mentored 3 junior developers through code reviews and pair-programming sessions.",
+      "Established CI/CD pipelines with GitHub Actions and automated visual regression tests."
+    ],
+    "technologies": ["Next.js", "TypeScript", "tRPC", "Prisma", "PostgreSQL", "Tailwind CSS", "Vercel"]
+  },
+  {
+    "id": "fullstack-dev-globant",
+    "company": "Globant",
+    "companyUrl": "https://globant.com",
+    "role": "Full-Stack Developer",
+    "startDate": "2021-03",
+    "endDate": "2022-12",
+    "location": "Buenos Aires, Argentina",
+    "remote": false,
+    "highlights": [
+      "Delivered e-commerce features for a Fortune 500 retail client in a team of 12.",
+      "Built a real-time order-tracking module using WebSockets and Redis pub/sub.",
+      "Improved Lighthouse performance score from 54 to 91 across the client's storefront.",
+      "Contributed to the company's internal React component library."
+    ],
+    "technologies": ["React", "Node.js", "Express", "MongoDB", "Redis", "AWS S3"]
+  },
+  {
+    "id": "backend-dev-startup",
+    "company": "Devstars (startup)",
+    "role": "Backend Developer",
+    "startDate": "2019-08",
+    "endDate": "2021-02",
+    "location": "Remote",
+    "remote": true,
+    "highlights": [
+      "Designed and implemented REST APIs consumed by iOS and Android clients.",
+      "Reduced average API response time by 40% through query optimization and caching.",
+      "Set up the initial Docker-based development environment adopted by the full team."
+    ],
+    "technologies": ["Node.js", "Express", "PostgreSQL", "Docker", "Jest"]
+  }
+]

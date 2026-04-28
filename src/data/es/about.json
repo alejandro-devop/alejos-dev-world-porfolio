@@ -1,0 +1,16 @@
+{
+  "headline": "Sobre mí",
+  "paragraphs": [
+    "Soy desarrollador full-stack con más de 5 años de experiencia construyendo aplicaciones web en producción. Me importan profundamente la experiencia de desarrollo, el rendimiento y la accesibilidad.",
+    "Empecé como ingeniero backend trabajando con Node.js y PostgreSQL, y luego me enamoré del ecosistema de React. Hoy trabajo en todo el stack, desde APIs REST y GraphQL hasta interfaces animadas y pulidas.",
+    "Fuera del código disfruto hacer senderismo en la Patagonia, el café de especialidad y mentorear a desarrolladores junior en la comunidad local."
+  ],
+  "location": "Buenos Aires, Argentina",
+  "email": "hola@alejos-dev-world.com",
+  "resumeUrl": "/cv-alejandro-gomez.pdf",
+  "socialLinks": [
+    { "label": "GitHub", "url": "https://github.com/alejogdev" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/alejogdev" },
+    { "label": "Twitter / X", "url": "https://twitter.com/alejogdev" }
+  ]
+}

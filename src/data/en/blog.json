@@ -1,0 +1,44 @@
+[
+  {
+    "id": "post-nextjs-app-router",
+    "slug": "nextjs-app-router-patterns",
+    "title": "Practical Patterns for the Next.js App Router",
+    "summary": "A deep-dive into Server Components, nested layouts, and parallel routes — with real-world examples from production apps.",
+    "coverImageUrl": "/blog/nextjs-app-router.png",
+    "tags": ["Next.js", "React", "Architecture"],
+    "status": "published",
+    "publishedAt": "2024-03-12",
+    "readingTimeMinutes": 8
+  },
+  {
+    "id": "post-typescript-generics",
+    "slug": "typescript-generics-for-real-devs",
+    "title": "TypeScript Generics for Real Devs",
+    "summary": "Stop copy-pasting types. A practical guide to generics, conditional types, and utility types that will make your codebase 10x more maintainable.",
+    "tags": ["TypeScript", "DX"],
+    "status": "published",
+    "publishedAt": "2024-01-28",
+    "readingTimeMinutes": 6
+  },
+  {
+    "id": "post-trpc-prisma",
+    "slug": "end-to-end-type-safety-trpc-prisma",
+    "title": "End-to-End Type Safety with tRPC and Prisma",
+    "summary": "How to wire tRPC, Prisma, and Zod together so a DB schema change surfaces as a TypeScript error before it ever hits production.",
+    "coverImageUrl": "/blog/trpc-prisma.png",
+    "tags": ["tRPC", "Prisma", "TypeScript"],
+    "status": "published",
+    "publishedAt": "2023-11-04",
+    "readingTimeMinutes": 10
+  },
+  {
+    "id": "post-perf-core-web-vitals",
+    "slug": "core-web-vitals-practical-guide",
+    "title": "A Practical Guide to Core Web Vitals",
+    "summary": "The techniques that moved a real e-commerce storefront from a 54 to a 91 Lighthouse score — fonts, images, render blocking, and LCP.",
+    "tags": ["Performance", "Next.js", "UX"],
+    "status": "draft",
+    "publishedAt": "2024-04-20",
+    "readingTimeMinutes": 12
+  }
+]
