@@ -1,36 +1,71 @@
 import { NextRequest, NextResponse } from "next/server";
-import { defaultLocale, locales } from "@/config/i18n";
+import {
+  LOCALE_COOKIE,
+  buildLocalePath,
+  detectLocaleFromHeader,
+  getLocaleFromPathname,
+  isValidLocale,
+} from "@/lib/i18n";
+import { defaultLocale } from "@/config/i18n";
 
 /**
  * Locale middleware — runs on the Edge runtime.
  *
- * Behaviour:
- *  1. If the path already starts with a supported locale, pass through.
- *  2. Otherwise prefix the path with the default locale and redirect.
+ * Detection priority (highest → lowest):
+ *  1. Locale already present in the URL  → pass through, refresh cookie.
+ *  2. NEXT_LOCALE cookie                → redirect to persisted preference.
+ *  3. Accept-Language request header    → redirect to best match.
+ *  4. Default locale fallback           → redirect to defaultLocale.
  *
- * When you add `next-intl` or `@formatjs/intl-localematcher` later, replace
- * the detection logic here without touching any other file.
+ * The resolved locale is always written back into the NEXT_LOCALE cookie so
+ * subsequent visits skip header-sniffing entirely.
  */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+  const localeInPath = getLocaleFromPathname(pathname);
+
+  if (localeInPath) {
+    // URL already has a valid locale — just refresh the cookie and continue.
+    const response = NextResponse.next();
+    response.cookies.set(LOCALE_COOKIE, localeInPath, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: "lax",
+    });
+    return response;
+  }
+
+  // --- No locale in URL: resolve one ---
+
+  // 1. Cookie (user's explicit previous choice).
+  const cookieValue = request.cookies.get(LOCALE_COOKIE)?.value;
+  const fromCookie = isValidLocale(cookieValue) ? cookieValue : null;
+
+  // 2. Accept-Language header.
+  const fromHeader = detectLocaleFromHeader(
+    request.headers.get("accept-language"),
   );
 
-  if (pathnameHasLocale) return NextResponse.next();
+  const resolvedLocale = fromCookie ?? fromHeader ?? defaultLocale;
 
-  // Redirect to the default locale.
   const url = request.nextUrl.clone();
-  url.pathname = `/${defaultLocale}${pathname}`;
-  return NextResponse.redirect(url);
+  url.pathname = buildLocalePath(pathname, resolvedLocale);
+
+  const response = NextResponse.redirect(url);
+  response.cookies.set(LOCALE_COOKIE, resolvedLocale, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "lax",
+  });
+  return response;
 }
 
 export const config = {
   /**
-   * Skip:
-   *  - Next.js internals (_next/static, _next/image)
-   *  - Static files with extensions (favicon.ico, robots.txt, og.png …)
+   * Run on every route EXCEPT:
+   *  - Next.js internals  (_next/static, _next/image)
+   *  - Static assets with file extensions (favicon.ico, og.png, …)
    *  - API routes (/api/*)
    */
   matcher: ["/((?!_next|api|favicon\\.ico|.*\\..*).*)"],
