@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales } from "@/config/i18n";
 import { siteConfig } from "@/config/site";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import type { LocaleLayoutProps } from "@/types";
 import "../globals.css";
 
@@ -46,12 +49,11 @@ export default async function LocaleLayout({
   children,
   params,
 }: LocaleLayoutProps) {
-  const { locale } = await params;
+  const { locale: rawLocale } = await params;
 
-  // Guard against unknown locales — triggers the nearest not-found boundary.
-  if (!locales.includes(locale)) {
-    notFound();
-  }
+  // Narrow the string to a known Locale; unknown values trigger 404.
+  if (!(locales as readonly string[]).includes(rawLocale)) notFound();
+  const locale = rawLocale as (typeof locales)[number];
 
   return (
     <html
@@ -60,7 +62,22 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground flex flex-col">
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          {/* Top padding offsets the fixed navbar */}
+          <Navbar locale={locale} />
+          <main
+            className="flex-1 flex flex-col"
+            style={{ paddingTop: "var(--nav-height)" }}
+          >
+            {children}
+          </main>
+          <Footer locale={locale} />
+        </ThemeProvider>
       </body>
     </html>
   );

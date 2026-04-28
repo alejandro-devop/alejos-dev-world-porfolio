@@ -1,13 +1,15 @@
 import type { PageProps } from "@/types";
+import type { Locale } from "@/config/i18n";
+import { locales } from "@/config/i18n";
+import { notFound } from "next/navigation";
 
 /**
  * Home page — locale-aware entry point.
- *
- * `locale` is available for when copy/content needs to be
- * selected per language. UI implementation comes later.
  */
 export default async function HomePage({ params }: PageProps) {
-  const { locale } = await params;
+  const { locale: rawLocale } = await params;
+  if (!(locales as readonly string[]).includes(rawLocale)) notFound();
+  const locale = rawLocale as Locale;
 
   return (
     <main className="flex flex-1 flex-col items-center justify-center">
