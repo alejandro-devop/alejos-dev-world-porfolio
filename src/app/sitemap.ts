@@ -64,7 +64,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(post.publishedAt),
         changeFrequency: "yearly",
         priority: 0.6,
-        alternates: Object.keys(languages).length > 1 ? { languages } : undefined,
+        alternates:
+          Object.keys(languages).length > 1 ? { languages } : undefined,
       });
     }
   }

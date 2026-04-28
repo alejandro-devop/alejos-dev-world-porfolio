@@ -12,7 +12,9 @@ export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { locale: rawLocale } = await params;
   const locale = (locales as readonly string[]).includes(rawLocale)
     ? (rawLocale as Locale)
@@ -40,7 +42,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `${siteConfig.url}/${locale}/blog`,
       title: `${title} | ${seo.title}`,
       description,
-      images: [{ url: seo.ogImage.url, width: seo.ogImage.width, height: seo.ogImage.height, alt: seo.ogImage.alt }],
+      images: [
+        {
+          url: seo.ogImage.url,
+          width: seo.ogImage.width,
+          height: seo.ogImage.height,
+          alt: seo.ogImage.alt,
+        },
+      ],
     },
   };
 }
@@ -70,11 +79,16 @@ function PostCard({ post, locale }: { post: BlogPost; locale: Locale }) {
 
       <div className="flex-1 space-y-2">
         <h2 className="font-semibold text-base md:text-lg text-foreground leading-snug group-hover:text-foreground/80 transition-colors">
-          <Link href={href} className="focus-visible:outline-none focus-visible:underline">
+          <Link
+            href={href}
+            className="focus-visible:outline-none focus-visible:underline"
+          >
             {post.title}
           </Link>
         </h2>
-        <p className="text-sm text-muted-foreground leading-relaxed">{post.summary}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {post.summary}
+        </p>
       </div>
 
       <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground">
@@ -117,7 +131,10 @@ export default async function BlogListPage({ params }: PageProps) {
   const allPosts = await getBlog(locale);
   const published = allPosts
     .filter((p) => p.status === "published")
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    );
 
   return (
     <div className="container-page section-spacing">
@@ -138,7 +155,9 @@ export default async function BlogListPage({ params }: PageProps) {
 
       {published.length === 0 ? (
         <p className="text-muted-foreground">
-          {locale === "es" ? "No hay artículos publicados aún." : "No published posts yet."}
+          {locale === "es"
+            ? "No hay artículos publicados aún."
+            : "No published posts yet."}
         </p>
       ) : (
         <ul

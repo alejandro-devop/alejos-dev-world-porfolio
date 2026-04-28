@@ -16,7 +16,8 @@ const COPY = {
   en: {
     label: "Contact",
     heading: "Let's work together",
-    description: "Have a project in mind or just want to say hi? Send me a message.",
+    description:
+      "Have a project in mind or just want to say hi? Send me a message.",
     nameLabel: "Name",
     namePlaceholder: "Your name",
     emailLabel: "Email",
@@ -26,13 +27,15 @@ const COPY = {
     submit: "Send message",
     sending: "Sending…",
     successHeading: "Message sent!",
-    successBody: "Thanks for reaching out. I'll get back to you within 24–48 hours.",
+    successBody:
+      "Thanks for reaching out. I'll get back to you within 24–48 hours.",
     orEmail: "Or email me directly",
   },
   es: {
     label: "Contacto",
     heading: "Trabajemos juntos",
-    description: "¿Tenés un proyecto en mente o simplemente querés saludar? Enviame un mensaje.",
+    description:
+      "¿Tenés un proyecto en mente o simplemente querés saludar? Enviame un mensaje.",
     nameLabel: "Nombre",
     namePlaceholder: "Tu nombre",
     emailLabel: "Email",
@@ -102,8 +105,12 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
               </svg>
             </div>
             <div>
-              <p className="font-semibold text-foreground text-lg">{t.successHeading}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{t.successBody}</p>
+              <p className="font-semibold text-foreground text-lg">
+                {t.successHeading}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t.successBody}
+              </p>
             </div>
           </div>
         ) : (
@@ -112,10 +119,18 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
             noValidate
             className="card-surface p-6 md:p-8 flex flex-col gap-5"
           >
-            <motion.div variants={stagger} initial="hidden" animate="visible" className="space-y-5">
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              animate="visible"
+              className="space-y-5"
+            >
               {/* Name */}
               <motion.div variants={fadeUp} className="flex flex-col gap-2">
-                <label htmlFor="contact-name" className="text-sm font-medium text-foreground">
+                <label
+                  htmlFor="contact-name"
+                  className="text-sm font-medium text-foreground"
+                >
                   {t.nameLabel}
                 </label>
                 <input
@@ -135,7 +150,10 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
 
               {/* Email */}
               <motion.div variants={fadeUp} className="flex flex-col gap-2">
-                <label htmlFor="contact-email" className="text-sm font-medium text-foreground">
+                <label
+                  htmlFor="contact-email"
+                  className="text-sm font-medium text-foreground"
+                >
                   {t.emailLabel}
                 </label>
                 <input
@@ -155,7 +173,10 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
 
               {/* Message */}
               <motion.div variants={fadeUp} className="flex flex-col gap-2">
-                <label htmlFor="contact-message" className="text-sm font-medium text-foreground">
+                <label
+                  htmlFor="contact-message"
+                  className="text-sm font-medium text-foreground"
+                >
                   {t.messageLabel}
                 </label>
                 <textarea

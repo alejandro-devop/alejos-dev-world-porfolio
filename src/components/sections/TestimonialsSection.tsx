@@ -10,7 +10,13 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 function Avatar({ name, src }: { name: string; src?: string }) {
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={name} className="size-10 rounded-full object-cover bg-muted" />;
+    return (
+      <img
+        src={src}
+        alt={name}
+        className="size-10 rounded-full object-cover bg-muted"
+      />
+    );
   }
   const initials = name
     .split(" ")
@@ -67,7 +73,10 @@ interface TestimonialsSectionProps {
   locale: Locale;
 }
 
-export function TestimonialsSection({ data, locale }: TestimonialsSectionProps) {
+export function TestimonialsSection({
+  data,
+  locale,
+}: TestimonialsSectionProps) {
   const featured = data.filter((t) => t.featured);
   const shown = featured.length > 0 ? featured : data;
 

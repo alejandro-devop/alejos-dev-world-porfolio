@@ -68,7 +68,17 @@ function ExperienceCard({
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
                 >
                   {entry.company}
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
                     <path d="M7 7h10v10M7 17 17 7" />
                   </svg>
                 </a>
@@ -84,15 +94,37 @@ function ExperienceCard({
           {/* Badges */}
           <div className="flex flex-wrap gap-2 pt-0.5">
             <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
               </svg>
               {entry.location}
             </span>
             {entry.remote && (
               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8m-4-4v4"/>
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <rect width="20" height="14" x="2" y="3" rx="2" />
+                  <path d="M8 21h8m-4-4v4" />
                 </svg>
                 {locale === "es" ? "Remoto" : "Remote"}
               </span>
@@ -103,8 +135,14 @@ function ExperienceCard({
         {/* Highlights */}
         <ul className="space-y-2" role="list">
           {entry.highlights.map((h, i) => (
-            <li key={i} className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed">
-              <span aria-hidden className="mt-[5px] size-1.5 rounded-full bg-muted-foreground/40 shrink-0" />
+            <li
+              key={i}
+              className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed"
+            >
+              <span
+                aria-hidden
+                className="mt-[5px] size-1.5 rounded-full bg-muted-foreground/40 shrink-0"
+              />
               {h}
             </li>
           ))}

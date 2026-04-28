@@ -59,8 +59,22 @@ export async function generateMetadata({
       authors: ["Alejandro Gómez"],
       tags: post.tags,
       images: post.coverImageUrl
-        ? [{ url: post.coverImageUrl, width: 1200, height: 630, alt: post.title }]
-        : [{ url: seo.ogImage.url, width: seo.ogImage.width, height: seo.ogImage.height, alt: seo.ogImage.alt }],
+        ? [
+            {
+              url: post.coverImageUrl,
+              width: 1200,
+              height: 630,
+              alt: post.title,
+            },
+          ]
+        : [
+            {
+              url: seo.ogImage.url,
+              width: seo.ogImage.width,
+              height: seo.ogImage.height,
+              alt: seo.ogImage.alt,
+            },
+          ],
     },
     twitter: {
       card: "summary_large_image",
@@ -80,19 +94,28 @@ function ContentRenderer({ blocks }: { blocks: BlogContentBlock[] }) {
         switch (block.type) {
           case "h2":
             return (
-              <h2 key={i} className="text-xl md:text-2xl font-bold tracking-tight text-foreground mt-10 mb-3 first:mt-0">
+              <h2
+                key={i}
+                className="text-xl md:text-2xl font-bold tracking-tight text-foreground mt-10 mb-3 first:mt-0"
+              >
                 {block.text}
               </h2>
             );
           case "h3":
             return (
-              <h3 key={i} className="text-lg md:text-xl font-semibold text-foreground mt-8 mb-2">
+              <h3
+                key={i}
+                className="text-lg md:text-xl font-semibold text-foreground mt-8 mb-2"
+              >
                 {block.text}
               </h3>
             );
           case "p":
             return (
-              <p key={i} className="text-base text-muted-foreground leading-relaxed">
+              <p
+                key={i}
+                className="text-base text-muted-foreground leading-relaxed"
+              >
                 {block.text}
               </p>
             );
@@ -100,8 +123,14 @@ function ContentRenderer({ blocks }: { blocks: BlogContentBlock[] }) {
             return (
               <ul key={i} role="list" className="space-y-2 pl-0">
                 {block.items.map((item, j) => (
-                  <li key={j} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
-                    <span aria-hidden className="mt-[6px] size-1.5 rounded-full bg-muted-foreground/40 shrink-0" />
+                  <li
+                    key={j}
+                    className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-[6px] size-1.5 rounded-full bg-muted-foreground/40 shrink-0"
+                    />
                     {item}
                   </li>
                 ))}
@@ -117,7 +146,10 @@ function ContentRenderer({ blocks }: { blocks: BlogContentBlock[] }) {
             );
           case "blockquote":
             return (
-              <blockquote key={i} className="border-l-2 border-border pl-5 italic text-muted-foreground text-base leading-relaxed">
+              <blockquote
+                key={i}
+                className="border-l-2 border-border pl-5 italic text-muted-foreground text-base leading-relaxed"
+              >
                 {block.text}
               </blockquote>
             );
@@ -173,10 +205,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <div className="container-page section-spacing">
         {/* Breadcrumb nav */}
-        <nav aria-label={locale === "es" ? "Migas de pan" : "Breadcrumb"} className="mb-10">
-          <ol className="flex items-center gap-2 text-sm text-muted-foreground" role="list">
+        <nav
+          aria-label={locale === "es" ? "Migas de pan" : "Breadcrumb"}
+          className="mb-10"
+        >
+          <ol
+            className="flex items-center gap-2 text-sm text-muted-foreground"
+            role="list"
+          >
             <li>
-              <Link href={`/${locale}`} className="hover:text-foreground transition-colors">
+              <Link
+                href={`/${locale}`}
+                className="hover:text-foreground transition-colors"
+              >
                 {locale === "es" ? "Inicio" : "Home"}
               </Link>
             </li>
@@ -184,14 +225,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <span>/</span>
             </li>
             <li>
-              <Link href={`/${locale}/blog`} className="hover:text-foreground transition-colors">
+              <Link
+                href={`/${locale}/blog`}
+                className="hover:text-foreground transition-colors"
+              >
                 Blog
               </Link>
             </li>
             <li aria-hidden>
               <span>/</span>
             </li>
-            <li aria-current="page" className="text-foreground font-medium truncate max-w-[200px]">
+            <li
+              aria-current="page"
+              className="text-foreground font-medium truncate max-w-[200px]"
+            >
               {post.title}
             </li>
           </ol>
@@ -211,7 +258,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
 
           {/* Title */}
-          <h1 id="post-title" className="font-bold tracking-tight mb-4 leading-tight">
+          <h1
+            id="post-title"
+            className="font-bold tracking-tight mb-4 leading-tight"
+          >
             {post.title}
           </h1>
 
@@ -237,7 +287,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <ContentRenderer blocks={post.content} />
           ) : (
             <p className="text-muted-foreground italic">
-              {locale === "es" ? "Contenido próximamente." : "Content coming soon."}
+              {locale === "es"
+                ? "Contenido próximamente."
+                : "Content coming soon."}
             </p>
           )}
 
@@ -247,7 +299,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               href={`/${locale}/blog`}
               className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
                 <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
               {locale === "es" ? "Volver al blog" : "Back to blog"}

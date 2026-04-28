@@ -64,7 +64,10 @@ function PostCard({ post, locale }: { post: BlogPost; locale: Locale }) {
 export function BlogSection({ data, locale }: BlogSectionProps) {
   const published = data
     .filter((p) => p.status === "published")
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    )
     .slice(0, 3);
 
   if (published.length === 0) return null;

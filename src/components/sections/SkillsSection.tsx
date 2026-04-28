@@ -2,7 +2,12 @@
 
 import { motion } from "framer-motion";
 import { fadeUp, stagger, defaultViewport } from "@/lib/motion";
-import type { SkillsData, SkillCategory, Skill, SkillLevel } from "@/types/content";
+import type {
+  SkillsData,
+  SkillCategory,
+  Skill,
+  SkillLevel,
+} from "@/types/content";
 import type { Locale } from "@/config/i18n";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/SectionHeader";

@@ -12,13 +12,34 @@ interface ProjectsSectionProps {
   locale: Locale;
 }
 
-const STATUS_LABELS: Record<ProjectStatus, { en: string; es: string; color: string }> = {
-  completed:   { en: "Completed",   es: "Completado",    color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" },
-  "in-progress": { en: "In Progress", es: "En progreso",  color: "bg-amber-500/15 text-amber-600 dark:text-amber-400" },
-  archived:    { en: "Archived",    es: "Archivado",     color: "bg-muted text-muted-foreground" },
+const STATUS_LABELS: Record<
+  ProjectStatus,
+  { en: string; es: string; color: string }
+> = {
+  completed: {
+    en: "Completed",
+    es: "Completado",
+    color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+  },
+  "in-progress": {
+    en: "In Progress",
+    es: "En progreso",
+    color: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+  },
+  archived: {
+    en: "Archived",
+    es: "Archivado",
+    color: "bg-muted text-muted-foreground",
+  },
 };
 
-function ProjectCard({ project, locale }: { project: Project; locale: Locale }) {
+function ProjectCard({
+  project,
+  locale,
+}: {
+  project: Project;
+  locale: Locale;
+}) {
   const status = STATUS_LABELS[project.status];
 
   return (
@@ -106,8 +127,20 @@ function ProjectCard({ project, locale }: { project: Project; locale: Locale }) 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground hover:opacity-70 transition-opacity"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                <path d="M2 12h20" />
               </svg>
               {locale === "es" ? "Ver demo" : "Live demo"}
             </a>
@@ -119,9 +152,19 @@ function ProjectCard({ project, locale }: { project: Project; locale: Locale }) 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
-                <path d="M9 18c-4.51 2-5-2-7-2"/>
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                <path d="M9 18c-4.51 2-5-2-7-2" />
               </svg>
               {locale === "es" ? "Código" : "Source"}
             </a>
