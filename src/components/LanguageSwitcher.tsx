@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useLocaleTransition } from "@/components/LocaleTransition";
 import { localeLabels, locales, type Locale } from "@/config/i18n";
 import { buildLocalePath, LOCALE_COOKIE } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -27,14 +28,17 @@ export function LanguageSwitcher({
 }: LanguageSwitcherProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { startLocaleTransition } = useLocaleTransition();
 
   function handleChange(locale: Locale) {
     if (locale === currentLocale) return;
 
-    // Persist to cookie so the middleware picks it up on hard navigations.
-    document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
+    const nextPath = buildLocalePath(pathname, locale);
 
-    router.push(buildLocalePath(pathname, locale));
+    startLocaleTransition(() => {
+      document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
+      router.push(nextPath);
+    });
   }
 
   return (

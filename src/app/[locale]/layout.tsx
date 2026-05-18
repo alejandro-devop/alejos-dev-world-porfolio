@@ -6,6 +6,7 @@ import type { Locale } from "@/config/i18n";
 import { siteConfig } from "@/config/site";
 import { getSeo } from "@/lib/content";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { LocaleTransition } from "@/components/LocaleTransition";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
@@ -139,15 +140,17 @@ export default async function LocaleLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          {/* Top padding offsets the fixed navbar */}
-          <Navbar locale={locale} />
-          <main
-            className="flex-1 flex flex-col"
-            style={{ paddingTop: "var(--nav-height)" }}
-          >
-            {children}
-          </main>
-          <Footer locale={locale} />
+          <LocaleTransition>
+            {/* Top padding offsets the fixed navbar */}
+            <Navbar locale={locale} />
+            <main
+              className="flex-1 flex flex-col"
+              style={{ paddingTop: "var(--nav-height)" }}
+            >
+              {children}
+            </main>
+            <Footer locale={locale} />
+          </LocaleTransition>
         </ThemeProvider>
       </body>
     </html>

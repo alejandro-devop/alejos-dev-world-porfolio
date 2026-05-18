@@ -80,6 +80,18 @@ export const scaleIn: Variants = {
 // Page transition
 // ---------------------------------------------------------------------------
 
+/** Fade only — locale / language switches (no vertical shift). */
+export const localeTransition: Variants = {
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
+  },
+  hidden: {
+    opacity: 0,
+    transition: { duration: 0.28, ease: [0.4, 0, 1, 1] },
+  },
+};
+
 /** Wraps entire page content for route-change transitions. */
 export const pageTransition: Variants = {
   hidden: { opacity: 0, y: 12 },
