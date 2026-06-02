@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { LocaleTransition } from "@/components/LocaleTransition";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { BackgroundEffects } from "@/components/BackgroundEffects";
 import { JsonLd } from "@/components/JsonLd";
 import { ThemeInitScript } from "@/components/ThemeInitScript";
 import { ThemeColorMeta } from "@/components/ThemeColorMeta";
@@ -146,17 +147,22 @@ export default async function LocaleLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          <LocaleTransition>
-            {/* Top padding offsets the fixed navbar */}
-            <Navbar locale={locale} />
-            <main
-              className="flex-1 flex flex-col"
-              style={{ paddingTop: "var(--nav-height)" }}
-            >
-              {children}
-            </main>
-            <Footer locale={locale} />
-          </LocaleTransition>
+          {/* Fixed animated background — rendered below all content */}
+          <BackgroundEffects />
+          {/* z-[1] ensures content stacks above the z-0 background */}
+          <div className="relative z-[1] flex flex-col flex-1 min-h-full">
+            <LocaleTransition>
+              {/* Top padding offsets the fixed navbar */}
+              <Navbar locale={locale} />
+              <main
+                className="flex-1 flex flex-col"
+                style={{ paddingTop: "var(--nav-height)" }}
+              >
+                {children}
+              </main>
+              <Footer locale={locale} />
+            </LocaleTransition>
+          </div>
         </ThemeProvider>
       </body>
     </html>

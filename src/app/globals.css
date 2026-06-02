@@ -246,6 +246,20 @@
     -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
 
+  /* Reusable glass card — blurs background effects beneath */
+  .glass-card {
+    /* Tinte azul muy leve para que el blur sea perceptible en light mode */
+    background-color: oklch(0.97 0.018 255 / 32%);
+    backdrop-filter: blur(5px) saturate(130%);
+    -webkit-backdrop-filter: blur(5px) saturate(130%);
+    border: 1px solid oklch(0.55 0.08 255 / 14%);
+    border-radius: var(--radius-2xl);
+  }
+  .dark .glass-card {
+    background-color: oklch(0.10 0.015 255 / 48%);
+    border-color: oklch(0.75 0.12 255 / 14%);
+  }
+
   /* Subtle card border */
   .card-surface {
     background-color: var(--card);
@@ -257,4 +271,154 @@
   .section-spacing {
     padding-block: var(--spacing-section);
   }
+
+  /* ── Background Effects ─────────────────────────────────── */
+
+  /* Wave stroke color — rich blue-indigo, adapts to theme */
+  :root {
+    --wave-stroke: oklch(0.36 0.22 255);
+  }
+  .dark {
+    --wave-stroke: oklch(0.74 0.22 255);
+  }
+
+  /* Orb base */
+  .fx-orb {
+    border-radius: 50%;
+    will-change: transform;
+  }
+
+  /* Blue orb — ring gradient (no center dot), top-left */
+  .fx-orb-blue {
+    width: min(720px, 62vw);
+    height: min(720px, 62vw);
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      oklch(0.58 0.19 250 / 0.22) 28%,
+      oklch(0.58 0.19 250 / 0.10) 55%,
+      transparent 80%
+    );
+    filter: blur(130px);
+    animation: fx-orb-a 60s ease-in-out infinite;
+  }
+
+  /* Violet orb — ring gradient, top-right */
+  .fx-orb-violet {
+    width: min(640px, 54vw);
+    height: min(640px, 54vw);
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      oklch(0.54 0.21 295 / 0.18) 30%,
+      oklch(0.54 0.21 295 / 0.08) 58%,
+      transparent 82%
+    );
+    filter: blur(110px);
+    animation: fx-orb-b 45s ease-in-out infinite;
+  }
+
+  /* Teal orb — ring gradient, bottom-center */
+  .fx-orb-teal {
+    width: min(580px, 50vw);
+    height: min(580px, 50vw);
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      oklch(0.62 0.15 195 / 0.16) 30%,
+      oklch(0.62 0.15 195 / 0.07) 58%,
+      transparent 82%
+    );
+    filter: blur(100px);
+    animation: fx-orb-c 38s ease-in-out infinite;
+  }
+
+  /* Dark mode — much more visible against dark bg */
+  .dark .fx-orb-blue {
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      oklch(0.58 0.19 250 / 0.40) 28%,
+      oklch(0.58 0.19 250 / 0.18) 55%,
+      transparent 80%
+    );
+  }
+  .dark .fx-orb-violet {
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      oklch(0.54 0.21 295 / 0.34) 30%,
+      oklch(0.54 0.21 295 / 0.15) 58%,
+      transparent 82%
+    );
+  }
+  .dark .fx-orb-teal {
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      oklch(0.62 0.15 195 / 0.28) 30%,
+      oklch(0.62 0.15 195 / 0.12) 58%,
+      transparent 82%
+    );
+  }
+
+  /* Wave animation wrappers */
+  .fx-wave-drift {
+    animation: fx-wave-right 28s ease-in-out infinite;
+  }
+  .fx-wave-drift-reverse {
+    animation: fx-wave-left 36s ease-in-out infinite;
+  }
+
+  /* Disable all effects for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .fx-orb,
+    .fx-wave-drift,
+    .fx-wave-drift-reverse {
+      animation: none !important;
+    }
+  }
+}
+
+/* ============================================================
+   Glass card — backdrop-filter fuera de @layer para que PostCSS
+   no elimine la propiedad estándar (sin prefijo webkit).
+   Chrome moderno requiere `backdrop-filter`, no `-webkit-backdrop-filter`.
+   ============================================================ */
+.glass-card {
+  backdrop-filter: blur(5px) saturate(130%);
+}
+
+/* ============================================================
+   Background Effects — @keyframes (must live outside @layer)
+   ============================================================ */
+
+@keyframes fx-orb-a {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  25%       { transform: translate(55px, -40px) scale(1.05); }
+  50%       { transform: translate(20px, 25px) scale(0.97); }
+  75%       { transform: translate(-35px, -15px) scale(1.03); }
+}
+
+@keyframes fx-orb-b {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  30%       { transform: translate(-60px, 48px) scale(0.95); }
+  60%       { transform: translate(38px, -22px) scale(1.04); }
+  80%       { transform: translate(-18px, 32px) scale(0.98); }
+}
+
+@keyframes fx-orb-c {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  35%       { transform: translate(42px, -28px) scale(1.07); }
+  70%       { transform: translate(-28px, 18px) scale(0.96); }
+}
+
+@keyframes fx-wave-right {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(-65px); }
+}
+
+@keyframes fx-wave-left {
+  0%, 100% { transform: translateX(0px); }
+  50%       { transform: translateX(65px); }
 }

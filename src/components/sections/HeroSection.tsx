@@ -33,11 +33,13 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
         }}
       />
 
+      {/* Glass container — div plain para que backdrop-filter no interfiera con Framer Motion */}
+      <div className="glass-card w-full px-8 py-20 sm:px-14 sm:py-28">
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="visible"
-        className="flex flex-col items-center gap-5 max-w-3xl"
+        className="flex flex-col items-center gap-5"
       >
         {/* Availability badge */}
         {data.availableForWork && (
@@ -104,6 +106,7 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
           </a>
         </motion.div>
       </motion.div>
+      </div>
 
       {/* Scroll indicator */}
       <motion.div
