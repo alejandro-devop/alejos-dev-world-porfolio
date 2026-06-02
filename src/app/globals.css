@@ -2,6 +2,10 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Explicitly tell Tailwind v4 where to scan for utility class usage.
+   Without this, auto-detection fails in Vercel's build environment. */
+@source "../";
+
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
