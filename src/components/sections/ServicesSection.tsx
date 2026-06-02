@@ -135,26 +135,30 @@ export function ServicesSection({ data, locale }: ServicesSectionProps) {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="section-spacing container-page"
+      className="section-spacing w-full"
     >
-      <SectionHeader
-        id="services-heading"
-        label={locale === "es" ? "Servicios" : "Services"}
-        heading={locale === "es" ? "¿En qué puedo ayudarte?" : "How I can help"}
-        centered
-      />
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-12 md:py-16">
+          <SectionHeader
+            id="services-heading"
+            label={locale === "es" ? "Servicios" : "Services"}
+            heading={locale === "es" ? "¿En qué puedo ayudarte?" : "How I can help"}
+            centered
+          />
 
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={defaultViewport}
-        className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-5"
-      >
-        {data.map((service) => (
-          <ServiceCard key={service.id} service={service} />
-        ))}
-      </motion.div>
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-5"
+          >
+            {data.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

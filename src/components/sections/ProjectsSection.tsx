@@ -183,9 +183,11 @@ export function ProjectsSection({ data, locale }: ProjectsSectionProps) {
     <section
       id="projects"
       aria-labelledby="projects-heading"
-      className="section-spacing container-page"
+      className="section-spacing w-full"
     >
-      <SectionHeader
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-12 md:py-16">
+          <SectionHeader
         id="projects-heading"
         label={locale === "es" ? "Proyectos" : "Projects"}
         heading={locale === "es" ? "Trabajo seleccionado" : "Selected Work"}
@@ -228,6 +230,8 @@ export function ProjectsSection({ data, locale }: ProjectsSectionProps) {
           </motion.div>
         </>
       )}
+        </div>
+      </div>
     </section>
   );
 }

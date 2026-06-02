@@ -11,16 +11,16 @@ Definida en `src/app/globals.css` dentro de `@layer utilities`.
 ```css
 /* Light mode — tinte azul leve para que el blur sea perceptible */
 .glass-card {
-  background-color: oklch(0.97 0.018 255 / 32%);
-  backdrop-filter: blur(5px) saturate(130%);
-  -webkit-backdrop-filter: blur(5px) saturate(130%);
+  background-color: oklch(0.97 0.018 255 / 37%);
+  backdrop-filter: blur(8px) saturate(170%);
+  -webkit-backdrop-filter: blur(8px) saturate(170%);
   border: 1px solid oklch(0.55 0.08 255 / 14%);
   border-radius: var(--radius-2xl);
 }
 
 /* Dark mode */
 .dark .glass-card {
-  background-color: oklch(0.10 0.015 255 / 48%);
+  background-color: oklch(0.10 0.015 255 / 55%);
   border-color: oklch(0.75 0.12 255 / 14%);
 }
 ```

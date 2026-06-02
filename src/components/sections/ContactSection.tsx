@@ -69,9 +69,11 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="section-spacing container-page"
+      className="section-spacing w-full"
     >
-      <SectionHeader
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-12 md:py-16">
+          <SectionHeader
         id="contact-heading"
         label={t.label}
         heading={t.heading}
@@ -223,6 +225,8 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
           </a>
         </p>
       </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

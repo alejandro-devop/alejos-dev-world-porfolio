@@ -169,30 +169,34 @@ export function ExperienceSection({ data, locale }: ExperienceSectionProps) {
     <section
       id="experience"
       aria-labelledby="experience-heading"
-      className="section-spacing container-page"
+      className="section-spacing w-full"
     >
-      <SectionHeader
-        id="experience-heading"
-        label={locale === "es" ? "Experiencia" : "Experience"}
-        heading={locale === "es" ? "Trayectoria profesional" : "Work History"}
-      />
-
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={defaultViewport}
-        className="mt-12 space-y-6 max-w-3xl"
-      >
-        {data.map((entry, i) => (
-          <ExperienceCard
-            key={entry.id}
-            entry={entry}
-            locale={locale}
-            isLast={i === data.length - 1}
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-12 md:py-16">
+          <SectionHeader
+            id="experience-heading"
+            label={locale === "es" ? "Experiencia" : "Experience"}
+            heading={locale === "es" ? "Trayectoria profesional" : "Work History"}
           />
-        ))}
-      </motion.div>
+
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            className="mt-12 space-y-6 max-w-3xl"
+          >
+            {data.map((entry, i) => (
+              <ExperienceCard
+                key={entry.id}
+                entry={entry}
+                locale={locale}
+                isLast={i === data.length - 1}
+              />
+            ))}
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

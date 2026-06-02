@@ -19,83 +19,85 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
       className={cn(
         "relative flex flex-col items-center justify-center text-center",
         "min-h-[calc(100svh-var(--nav-height))]",
-        "section-spacing container-page",
+        "section-spacing w-full",
         "overflow-hidden",
       )}
     >
-      {/* Glass container — div plain para que backdrop-filter no interfiera con Framer Motion */}
-      <div className="glass-card w-full px-8 py-20 sm:px-14 sm:py-28">
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        animate="visible"
-        className="flex flex-col items-center gap-5"
-      >
-        {/* Availability badge */}
-        {data.availableForWork && (
-          <motion.div variants={fadeUp}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-muted-foreground">
-              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              {data.availableForWorkLabel}
-            </span>
+      {/* Glass full-bleed; contenido limitado en .container-page */}
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-20 sm:py-28">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col items-center gap-5"
+          >
+            {/* Availability badge */}
+            {data.availableForWork && (
+              <motion.div variants={fadeUp}>
+                <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-muted-foreground">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  {data.availableForWorkLabel}
+                </span>
+              </motion.div>
+            )}
+
+            {/* Greeting + name */}
+            <motion.div variants={fadeUp} className="space-y-1">
+              <p className="text-base text-muted-foreground font-medium">
+                {data.greeting}
+              </p>
+              <h1 className="font-bold tracking-tight">{data.name}</h1>
+            </motion.div>
+
+            {/* Tagline */}
+            <motion.p
+              variants={fadeUp}
+              className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-2xl"
+            >
+              {data.tagline}
+            </motion.p>
+
+            {/* Sub-tagline */}
+            <motion.p
+              variants={fadeUp}
+              className="text-sm sm:text-base text-muted-foreground max-w-xl"
+            >
+              {data.subtagline}
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-2"
+            >
+              <a
+                href={data.cta.primary.url}
+                className={cn(
+                  "inline-flex items-center justify-center",
+                  "rounded-full px-7 py-3 text-sm font-semibold",
+                  "bg-primary text-primary-foreground",
+                  "hover:opacity-85 active:scale-95 transition-all duration-150",
+                  "w-full sm:w-auto",
+                )}
+              >
+                {data.cta.primary.label}
+              </a>
+              <a
+                href={data.cta.secondary.url}
+                className={cn(
+                  "inline-flex items-center justify-center",
+                  "rounded-full px-7 py-3 text-sm font-semibold",
+                  "border border-border bg-transparent",
+                  "hover:bg-accent active:scale-95 transition-all duration-150",
+                  "w-full sm:w-auto",
+                )}
+              >
+                {data.cta.secondary.label}
+              </a>
+            </motion.div>
           </motion.div>
-        )}
-
-        {/* Greeting + name */}
-        <motion.div variants={fadeUp} className="space-y-1">
-          <p className="text-base text-muted-foreground font-medium">
-            {data.greeting}
-          </p>
-          <h1 className="font-bold tracking-tight">{data.name}</h1>
-        </motion.div>
-
-        {/* Tagline */}
-        <motion.p
-          variants={fadeUp}
-          className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-2xl"
-        >
-          {data.tagline}
-        </motion.p>
-
-        {/* Sub-tagline */}
-        <motion.p
-          variants={fadeUp}
-          className="text-sm sm:text-base text-muted-foreground max-w-xl"
-        >
-          {data.subtagline}
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          variants={fadeUp}
-          className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-2"
-        >
-          <a
-            href={data.cta.primary.url}
-            className={cn(
-              "inline-flex items-center justify-center",
-              "rounded-full px-7 py-3 text-sm font-semibold",
-              "bg-primary text-primary-foreground",
-              "hover:opacity-85 active:scale-95 transition-all duration-150",
-              "w-full sm:w-auto",
-            )}
-          >
-            {data.cta.primary.label}
-          </a>
-          <a
-            href={data.cta.secondary.url}
-            className={cn(
-              "inline-flex items-center justify-center",
-              "rounded-full px-7 py-3 text-sm font-semibold",
-              "border border-border bg-transparent",
-              "hover:bg-accent active:scale-95 transition-all duration-150",
-              "w-full sm:w-auto",
-            )}
-          >
-            {data.cta.secondary.label}
-          </a>
-        </motion.div>
-      </motion.div>
+        </div>
       </div>
 
       {/* Scroll indicator */}

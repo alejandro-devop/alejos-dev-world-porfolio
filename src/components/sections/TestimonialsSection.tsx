@@ -84,26 +84,30 @@ export function TestimonialsSection({
     <section
       id="testimonials"
       aria-labelledby="testimonials-heading"
-      className="section-spacing container-page"
+      className="section-spacing w-full"
     >
-      <SectionHeader
-        id="testimonials-heading"
-        label={locale === "es" ? "Testimonios" : "Testimonials"}
-        heading={locale === "es" ? "Lo que dicen de mí" : "What people say"}
-        centered
-      />
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-12 md:py-16">
+          <SectionHeader
+            id="testimonials-heading"
+            label={locale === "es" ? "Testimonios" : "Testimonials"}
+            heading={locale === "es" ? "Lo que dicen de mí" : "What people say"}
+            centered
+          />
 
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={defaultViewport}
-        className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-      >
-        {shown.map((t) => (
-          <TestimonialCard key={t.id} t={t} />
-        ))}
-      </motion.div>
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          >
+            {shown.map((t) => (
+              <TestimonialCard key={t.id} t={t} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

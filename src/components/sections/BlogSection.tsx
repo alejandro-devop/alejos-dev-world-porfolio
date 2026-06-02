@@ -76,9 +76,11 @@ export function BlogSection({ data, locale }: BlogSectionProps) {
     <section
       id="blog"
       aria-labelledby="blog-heading"
-      className="section-spacing container-page"
+      className="section-spacing w-full"
     >
-      <SectionHeader
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-12 md:py-16">
+          <SectionHeader
         id="blog-heading"
         label={locale === "es" ? "Escritura" : "Writing"}
         heading={locale === "es" ? "Últimos artículos" : "Latest posts"}
@@ -124,6 +126,8 @@ export function BlogSection({ data, locale }: BlogSectionProps) {
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </Link>
+      </div>
+        </div>
       </div>
     </section>
   );

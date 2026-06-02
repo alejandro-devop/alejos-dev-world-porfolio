@@ -9,7 +9,7 @@ import {
 import { defaultLocale } from "@/config/i18n";
 
 /**
- * Locale middleware — runs on the Edge runtime.
+ * Locale proxy — runs on the Edge runtime.
  *
  * Detection priority (highest → lowest):
  *  1. Locale already present in the URL  → pass through, refresh cookie.
@@ -20,7 +20,7 @@ import { defaultLocale } from "@/config/i18n";
  * The resolved locale is always written back into the NEXT_LOCALE cookie so
  * subsequent visits skip header-sniffing entirely.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const localeInPath = getLocaleFromPathname(pathname);

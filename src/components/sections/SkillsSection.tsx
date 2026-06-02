@@ -71,30 +71,34 @@ export function SkillsSection({ data, locale }: SkillsSectionProps) {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="section-spacing container-page"
+      className="section-spacing w-full"
     >
-      <SectionHeader
-        id="skills-heading"
-        label={locale === "es" ? "Habilidades" : "Skills"}
-        heading={locale === "es" ? "Stack tecnológico" : "Tech Stack"}
-        description={
-          locale === "es"
-            ? "Herramientas y tecnologías que uso en producción."
-            : "Tools and technologies I use in production."
-        }
-      />
+      <div className="glass-card glass-card-bleed w-full">
+        <div className="container-page py-12 md:py-16">
+          <SectionHeader
+            id="skills-heading"
+            label={locale === "es" ? "Habilidades" : "Skills"}
+            heading={locale === "es" ? "Stack tecnológico" : "Tech Stack"}
+            description={
+              locale === "es"
+                ? "Herramientas y tecnologías que uso en producción."
+                : "Tools and technologies I use in production."
+            }
+          />
 
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={defaultViewport}
-        className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12"
-      >
-        {data.map((cat) => (
-          <CategoryBlock key={cat.category} cat={cat} />
-        ))}
-      </motion.div>
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12"
+          >
+            {data.map((cat) => (
+              <CategoryBlock key={cat.category} cat={cat} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }
