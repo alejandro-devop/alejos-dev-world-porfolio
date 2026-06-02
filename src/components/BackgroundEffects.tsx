@@ -1,6 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
+
+const MOBILE_MQ = "(max-width: 767px)";
+// Stretch paths horizontally inside the viewBox — same SVG footprint, fewer peaks visible.
+const MOBILE_WAVE_SCALE_X = 1.75;
+const MOBILE_STROKE_SCALE = 1.15;
+const MOBILE_WAVE_TRANSFORM = `translate(720 60) scale(${MOBILE_WAVE_SCALE_X} 1) translate(-720 -60)`;
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const update = () => setMatches(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [query]);
+
+  return matches;
+}
 
 // Each wave group morphs between two organic shapes.
 // Paths share the same command structure (M + 4×C) so morphing is smooth.
@@ -82,6 +103,7 @@ const DRIFT_CLASSES = ["fx-wave-drift", "fx-wave-drift-reverse", "fx-wave-drift"
 const MORPH_DURATIONS = [11, 8, 13, 9] as const;
 
 export function BackgroundEffects() {
+  const isMobile = useMediaQuery(MOBILE_MQ);
   const { scrollY } = useScroll();
 
   const orbAY = useTransform(scrollY, (v) => v * -0.08);
@@ -136,36 +158,47 @@ export function BackgroundEffects() {
                   color: "var(--wave-stroke)",
                 }}
               >
-                {/* Main trace — morphs shape + pulses opacity independently */}
-                <motion.path
-                  d={wave.main[0]}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={wave.sw}
-                  animate={{
-                    d: [wave.main[0], wave.main[1], wave.main[0]],
-                    strokeOpacity: [wave.so[0], wave.so[1], wave.so[0]],
-                  }}
-                  transition={{
-                    d: { duration: dur, ease: "easeInOut", repeat: Infinity },
-                    strokeOpacity: { duration: wave.opacDur, ease: "easeInOut", repeat: Infinity },
-                  }}
-                />
-                {/* Secondary trace — out-of-phase on both shape and opacity */}
-                <motion.path
-                  d={wave.sec[0]}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={wave.sw * 0.48}
-                  animate={{
-                    d: [wave.sec[0], wave.sec[1], wave.sec[0]],
-                    strokeOpacity: [wave.so[0] * 0.42, wave.so[1] * 0.42, wave.so[0] * 0.42],
-                  }}
-                  transition={{
-                    d: { duration: dur, ease: "easeInOut", repeat: Infinity, delay: dur * 0.4 },
-                    strokeOpacity: { duration: wave.opacDur * 1.3, ease: "easeInOut", repeat: Infinity, delay: wave.opacDur * 0.55 },
-                  }}
-                />
+                <g transform={isMobile ? MOBILE_WAVE_TRANSFORM : undefined}>
+                  {/* Main trace — morphs shape + pulses opacity independently */}
+                  <motion.path
+                    d={wave.main[0]}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={isMobile ? wave.sw * MOBILE_STROKE_SCALE : wave.sw}
+                    vectorEffect={isMobile ? "non-scaling-stroke" : undefined}
+                    animate={{
+                      d: [wave.main[0], wave.main[1], wave.main[0]],
+                      strokeOpacity: [wave.so[0], wave.so[1], wave.so[0]],
+                    }}
+                    transition={{
+                      d: { duration: dur, ease: "easeInOut", repeat: Infinity },
+                      strokeOpacity: { duration: wave.opacDur, ease: "easeInOut", repeat: Infinity },
+                    }}
+                  />
+                  {/* Secondary trace — out-of-phase on both shape and opacity */}
+                  <motion.path
+                    d={wave.sec[0]}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={
+                      isMobile ? wave.sw * 0.48 * MOBILE_STROKE_SCALE : wave.sw * 0.48
+                    }
+                    vectorEffect={isMobile ? "non-scaling-stroke" : undefined}
+                    animate={{
+                      d: [wave.sec[0], wave.sec[1], wave.sec[0]],
+                      strokeOpacity: [wave.so[0] * 0.42, wave.so[1] * 0.42, wave.so[0] * 0.42],
+                    }}
+                    transition={{
+                      d: { duration: dur, ease: "easeInOut", repeat: Infinity, delay: dur * 0.4 },
+                      strokeOpacity: {
+                        duration: wave.opacDur * 1.3,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        delay: wave.opacDur * 0.55,
+                      },
+                    }}
+                  />
+                </g>
               </svg>
             </div>
           </motion.div>
