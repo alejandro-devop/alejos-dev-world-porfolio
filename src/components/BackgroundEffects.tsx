@@ -5,9 +5,14 @@ import { useScroll, useTransform, motion } from "framer-motion";
 // Each wave group morphs between two organic shapes.
 // Paths share the same command structure (M + 4×C) so morphing is smooth.
 // Amplitudes, peak positions, and baselines are deliberately non-uniform.
+//
+// Per-wave knobs:
+//   pos — vertical position of the group on the page (% from top)
+//   sw  — stroke width (grosor) of the main trace; secondary uses sw × 0.48
 const WAVES = [
   {
     // group 1 — top area, tilted slightly left-down
+    pos: "5%",
     rotate: -1.2,
     main: [
       "M0,65 C80,28 190,95 320,48 C430,12 530,88 670,44 C790,14 900,82 1020,52 C1140,24 1300,78 1440,58",
@@ -20,10 +25,11 @@ const WAVES = [
     sw: 2.2,
     // opacity [min, max] — simulates waves at different distances
     so: [0.22, 0.72] as [number, number],
-    opacDur: 7,
+    opacDur: 4,
   },
   {
     // group 2 — upper-mid, tilted slightly right-down
+    pos: "50%",
     rotate: 1.0,
     main: [
       "M0,58 C140,98 270,18 410,64 C520,98 660,18 780,56 C920,96 1060,16 1190,62 C1310,98 1400,42 1440,60",
@@ -35,10 +41,11 @@ const WAVES = [
     ] as [string, string],
     sw: 2.0,
     so: [0.14, 0.62] as [number, number],
-    opacDur: 5,
+    opacDur: 3,
   },
   {
     // group 3 — lower-mid, flat tilt
+    pos: "95%",
     rotate: -0.7,
     main: [
       "M0,62 C70,22 160,88 310,42 C450,8 550,82 680,50 C810,22 930,90 1060,55 C1190,24 1330,82 1440,60",
@@ -50,10 +57,11 @@ const WAVES = [
     ] as [string, string],
     sw: 2.0,
     so: [0.28, 0.70] as [number, number],
-    opacDur: 9,
+    opacDur: 5,
   },
   {
     // group 4 — bottom area, tilted right-down
+    pos: "140%",
     rotate: 1.4,
     main: [
       "M0,60 C120,96 250,18 400,62 C510,94 650,20 770,54 C900,92 1040,18 1180,60 C1300,94 1390,44 1440,60",
@@ -65,14 +73,13 @@ const WAVES = [
     ] as [string, string],
     sw: 2.2,
     so: [0.18, 0.68] as [number, number],
-    opacDur: 6,
+    opacDur: 3.5,
   },
 ] as const;
 
-const POSITIONS = ["12%", "34%", "57%", "78%"] as const;
 const DRIFT_CLASSES = ["fx-wave-drift", "fx-wave-drift-reverse", "fx-wave-drift", "fx-wave-drift-reverse"] as const;
 // Morph durations varied per group so they never sync up
-const MORPH_DURATIONS = [20, 16, 22, 18] as const;
+const MORPH_DURATIONS = [11, 8, 13, 9] as const;
 
 export function BackgroundEffects() {
   const { scrollY } = useScroll();
@@ -116,7 +123,7 @@ export function BackgroundEffects() {
           <motion.div
             key={i}
             className="absolute w-full"
-            style={{ top: POSITIONS[i], y: waveY[i], rotate: wave.rotate }}
+            style={{ top: wave.pos, y: waveY[i], rotate: wave.rotate }}
           >
             <div className={DRIFT_CLASSES[i]}>
               <svg
@@ -125,7 +132,7 @@ export function BackgroundEffects() {
                 style={{
                   width: "130%",
                   marginLeft: "-15%",
-                  height: "120px",
+                  height: "180px",
                   color: "var(--wave-stroke)",
                 }}
               >

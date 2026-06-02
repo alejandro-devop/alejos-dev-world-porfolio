@@ -23,16 +23,6 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
         "overflow-hidden",
       )}
     >
-      {/* Subtle radial glow — decorative */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 50% at 50% 0%, oklch(0.85 0 0 / 20%), transparent)",
-        }}
-      />
-
       {/* Glass container — div plain para que backdrop-filter no interfiera con Framer Motion */}
       <div className="glass-card w-full px-8 py-20 sm:px-14 sm:py-28">
       <motion.div
