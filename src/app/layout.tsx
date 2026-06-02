@@ -3,7 +3,8 @@
  *
  * The `<html lang>` attribute, fonts, and per-page metadata are all
  * applied in `app/[locale]/layout.tsx` where the locale is known.
- * This file only wraps the document shell so Next.js is satisfied.
+ * ThemeInitScript lives in the locale layout's <head> as a native <script>
+ * to avoid React 19 ordering warnings with sync scripts in Fragment roots.
  */
 import "./globals.css";
 
@@ -12,5 +13,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return <>{children}</>;
 }

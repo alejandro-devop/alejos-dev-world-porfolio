@@ -78,7 +78,7 @@ export function LocaleTransition({ children }: LocaleTransitionProps) {
         animate={phase}
         variants={localeTransition}
         onAnimationComplete={handleAnimationComplete}
-        className="flex flex-1 flex-col"
+        className="flex flex-1 flex-col bg-background"
         style={{ pointerEvents: phase === "hidden" ? "none" : undefined }}
       >
         {children}

@@ -10,6 +10,8 @@ import { LocaleTransition } from "@/components/LocaleTransition";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { ThemeInitScript } from "@/components/ThemeInitScript";
+import { ThemeColorMeta } from "@/components/ThemeColorMeta";
 import type { LocaleLayoutProps } from "@/types";
 import "../globals.css";
 
@@ -126,14 +128,18 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-background text-foreground`}
       suppressHydrationWarning
     >
       <head>
+        {/* Theme init must be in <head> as a native <script> so React 19 knows
+            its position in the document and avoids the sync-script ordering warning. */}
+        <ThemeInitScript />
+        <ThemeColorMeta />
         <JsonLd data={personSchema} />
         <JsonLd data={websiteSchema} />
       </head>
-      <body className="min-h-full bg-background text-foreground flex flex-col">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

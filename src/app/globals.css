@@ -64,6 +64,7 @@
    Light mode
    ============================================================ */
 :root {
+  color-scheme: light;
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.1 0 0);
 
@@ -106,6 +107,7 @@
    Dark mode
    ============================================================ */
 .dark {
+  color-scheme: dark;
   --background: oklch(0.09 0 0);
   --foreground: oklch(0.97 0 0);
 
@@ -163,10 +165,13 @@
     scroll-behavior: smooth;
     /* Reserve scrollbar gutter to prevent layout shift */
     scrollbar-gutter: stable;
+    /* Paint canvas before / without body — prevents white flash in dark mode */
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply min-h-full bg-background text-foreground font-sans;
     line-height: 1.6;
   }
 

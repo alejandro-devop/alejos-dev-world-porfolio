@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -33,6 +34,13 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Turbopack: pin the project root so CSS @import resolution starts from here,
+  // not from a parent directory detected via lock-file walk (needed when opening
+  // the workspace from the platform root in VS Code).
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
+
   // Compress responses via gzip/brotli.
   compress: true,
 
