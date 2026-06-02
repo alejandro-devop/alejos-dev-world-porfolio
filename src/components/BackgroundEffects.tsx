@@ -127,7 +127,6 @@ export function BackgroundEffects() {
           >
             <div className={DRIFT_CLASSES[i]}>
               <svg
-                className="fx-wave-glow"
                 viewBox="0 0 1440 120"
                 preserveAspectRatio="none"
                 style={{
