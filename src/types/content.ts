@@ -42,8 +42,8 @@ export interface HeroData {
     primary: Link;
     secondary: Link;
   };
-  availableForWork: boolean;
-  availableForWorkLabel: string;
+  availableForWork?: boolean;
+  availableForWorkLabel?: string;
 }
 
 // ---------------------------------------------------------------------------

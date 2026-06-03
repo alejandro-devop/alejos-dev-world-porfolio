@@ -33,7 +33,7 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
             className="flex flex-col items-center gap-5"
           >
             {/* Availability badge */}
-            {data.availableForWork && (
+            {data.availableForWork && data.availableForWorkLabel && (
               <motion.div variants={fadeUp}>
                 <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-muted-foreground">
                   <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
