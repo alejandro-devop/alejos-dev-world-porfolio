@@ -131,6 +131,13 @@ function isApiContentUsable<K extends ContentKey>(
     const about = value as AboutData;
     return Boolean(about.headline && about.paragraphs?.length > 0);
   }
+  if (key === "skills") {
+    const skills = value as SkillsData;
+    return (
+      Array.isArray(skills) &&
+      skills.some((cat) => cat.category && cat.skills?.length > 0)
+    );
+  }
   return true;
 }
 

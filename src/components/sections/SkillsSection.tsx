@@ -67,6 +67,12 @@ function CategoryBlock({ cat }: { cat: SkillCategory }) {
 }
 
 export function SkillsSection({ data, locale }: SkillsSectionProps) {
+  const categories = data.filter((cat) => cat.skills.length > 0);
+
+  if (categories.length === 0) {
+    return null;
+  }
+
   return (
     <section
       id="skills"
@@ -93,7 +99,7 @@ export function SkillsSection({ data, locale }: SkillsSectionProps) {
             viewport={defaultViewport}
             className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12"
           >
-            {data.map((cat) => (
+            {categories.map((cat) => (
               <CategoryBlock key={cat.category} cat={cat} />
             ))}
           </motion.div>
