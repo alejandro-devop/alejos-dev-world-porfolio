@@ -17,10 +17,16 @@ function trimTrailingSlash(url: string): string {
 }
 
 /**
- * Normalizes BACKEND_URL from env (Vercel/users often omit https:// or add /api).
+ * Normalizes BACKEND_URL from env (Vercel/users often omit https://, add /api, or typo rlhttps).
  */
 export function normalizeBackendUrl(raw: string): string {
   let url = raw.trim().replace(/^['"]|['"]$/g, "");
+
+  // Common paste/keyboard typos (e.g. "rlhttps://" → double scheme → host "rlhttps")
+  url = url.replace(/^rl+(?=https?:\/\/)/i, "");
+  url = url.replace(/^rlhttps:\/\//i, "https://");
+  url = url.replace(/^rlhttp:\/\//i, "http://");
+
   url = trimTrailingSlash(url);
 
   if (url.endsWith("/api")) {
@@ -28,19 +34,38 @@ export function normalizeBackendUrl(raw: string): string {
     url = trimTrailingSlash(url);
   }
 
-  if (!/^https?:\/\//i.test(url)) {
+  const hasHttpScheme = /^https:\/\//i.test(url) || /^http:\/\//i.test(url);
+  if (!hasHttpScheme) {
     url = `https://${url}`;
   }
 
   try {
     const parsed = new URL(url);
-    if (!parsed.hostname) {
+    const { hostname, protocol } = parsed;
+
+    if (!hostname) {
       throw new Error("missing hostname");
     }
+
+    if (protocol !== "http:" && protocol !== "https:") {
+      throw new Error(`unsupported protocol ${protocol}`);
+    }
+
+    if (
+      hostname !== "localhost" &&
+      !hostname.includes(".") &&
+      !hostname.includes(":")
+    ) {
+      throw new Error(
+        `suspicious hostname "${hostname}" (check BACKEND_URL for typos like rlhttps)`,
+      );
+    }
+
     return trimTrailingSlash(parsed.origin);
-  } catch {
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
     throw new Error(
-      `[backend] Invalid BACKEND_URL "${raw}". Use e.g. https://alejos-admin-api-wqpmywszuq-uc.a.run.app (no /api suffix).`,
+      `[backend] Invalid BACKEND_URL "${raw}" (${detail}). Expected: https://alejos-admin-api-wqpmywszuq-uc.a.run.app`,
     );
   }
 }

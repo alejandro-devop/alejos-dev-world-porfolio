@@ -147,14 +147,10 @@ async function loadContent<K extends ContentKey>(
         );
       }
     } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.warn(
-          `[content] API fetch failed for "${key}" (${locale}) — using static JSON.`,
-          error,
-        );
-      } else {
-        throw error;
-      }
+      console.warn(
+        `[content] API fetch failed for "${key}" (${locale}) — using static JSON.`,
+        error,
+      );
     }
   }
   return loadJsonContent(locale, key);
