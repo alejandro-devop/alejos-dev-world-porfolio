@@ -21,9 +21,65 @@ export type BackendConfig = {
   url: string;
   /** X-API-Key header — required for GET /api/:locale/content */
   apiKey?: string;
-  /** ISR revalidate interval in seconds (Next.js fetch cache) */
-  revalidateSeconds: number;
+  /**
+   * ISR revalidate interval in seconds.
+   * `false` = always fetch fresh (`cache: 'no-store'`).
+   */
+  revalidateSeconds: number | false;
 };
+
+/** Cache tags for on-demand revalidation (see POST /api/revalidate). */
+export function getContentCacheTags(
+  locale: string,
+  sections: readonly ContentKey[],
+): string[] {
+  return [
+    "portfolio-content",
+    `portfolio-content-${locale}`,
+    ...sections.map((section) => `portfolio-content-${locale}-${section}`),
+  ];
+}
+
+/**
+ * Resolve fetch cache behaviour:
+ * - BACKEND_REVALIDATE_SECONDS=0 → no cache
+ * - BACKEND_REVALIDATE_SECONDS=N → ISR every N seconds
+ * - unset in development → no cache (instant admin → site feedback)
+ * - unset in production → 60s ISR
+ */
+function resolveRevalidateSeconds(): number | false {
+  const raw = process.env.BACKEND_REVALIDATE_SECONDS?.trim();
+
+  if (raw === "0") return false;
+
+  if (raw) {
+    const parsed = Number.parseInt(raw, 10);
+    if (Number.isFinite(parsed) && parsed > 0) return parsed;
+  }
+
+  if (process.env.NODE_ENV === "development") return false;
+
+  return 60;
+}
+
+/** Fetch options for content loaders — server-only. */
+export function getContentFetchInit(
+  locale: string,
+  sections: readonly ContentKey[],
+): Pick<RequestInit, "cache" | "next"> {
+  const revalidateSeconds = resolveRevalidateSeconds();
+
+  if (revalidateSeconds === false) {
+    return { cache: "no-store" };
+  }
+
+  return {
+    next: {
+      revalidate: revalidateSeconds,
+      tags: getContentCacheTags(locale, sections),
+    },
+  };
+}
 
 export function isBackendEnabled(): boolean {
   return Boolean(process.env.BACKEND_URL?.trim());
@@ -53,16 +109,12 @@ export function getBackendConfig(): BackendConfig {
     );
   }
 
-  const revalidateRaw = process.env.BACKEND_REVALIDATE_SECONDS ?? "60";
-  const revalidateSeconds = Number.parseInt(revalidateRaw, 10);
+  const revalidateSeconds = resolveRevalidateSeconds();
 
   return {
     url: trimTrailingSlash(url),
     apiKey: process.env.BACKEND_API_KEY?.trim(),
-    revalidateSeconds:
-      Number.isFinite(revalidateSeconds) && revalidateSeconds > 0
-        ? revalidateSeconds
-        : 60,
+    revalidateSeconds,
   };
 }
 

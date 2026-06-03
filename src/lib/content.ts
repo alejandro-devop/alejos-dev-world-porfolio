@@ -17,6 +17,7 @@
 import {
   getBackendBulkContentUrl,
   getBackendConfig,
+  getContentFetchInit,
   isSectionBackendEnabled,
 } from "@/config/backend";
 import type {
@@ -42,7 +43,7 @@ async function fetchBulkSections<K extends ContentKey>(
   locale: Locale,
   sections: readonly K[],
 ): Promise<Pick<ContentMap, K>> {
-  const { apiKey, revalidateSeconds } = getBackendConfig();
+  const { apiKey } = getBackendConfig();
   const headers: Record<string, string> = { Accept: "application/json" };
 
   if (apiKey) {
@@ -51,7 +52,7 @@ async function fetchBulkSections<K extends ContentKey>(
 
   const res = await fetch(getBackendBulkContentUrl(locale, [...sections]), {
     headers,
-    next: { revalidate: revalidateSeconds },
+    ...getContentFetchInit(locale, sections),
   });
 
   if (!res.ok) {
