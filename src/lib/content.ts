@@ -4,17 +4,21 @@
  * Typed data loaders for every content section.
  *
  * Design principles:
- *  - Server-only (Node.js `import()` — no client bundle bloat).
- *  - Each loader is a simple async function → easy to swap for a CMS fetch.
+ *  - Server-only (Node.js `import()` or `fetch()` — no client bundle bloat).
+ *  - Each loader is a simple async function with a stable signature.
  *  - All return types come from `@/types/content`, never from `any`.
- *  - Errors surface loudly in development; you'll know immediately if a JSON
- *    file is missing or malformed.
+ *  - Errors surface loudly in development.
  *
- * CMS migration path:
- *  Replace the body of any `get*` function with a `fetch()` call to your
- *  CMS API. The signature, return type, and call sites stay identical.
+ * Data source:
+ *  - BACKEND_URL set → fetch from admin API (see src/config/backend.ts).
+ *  - BACKEND_URL unset → static JSON under src/data/{locale}/.
  */
 
+import {
+  getBackendConfig,
+  getBackendSectionUrl,
+  isBackendEnabled,
+} from "@/config/backend";
 import type {
   AboutData,
   BlogData,
@@ -34,12 +38,50 @@ import type { Locale } from "@/config/i18n";
 // Generic loader — the implementation detail
 // ---------------------------------------------------------------------------
 
+async function fetchSection<K extends ContentKey>(
+  locale: Locale,
+  key: K,
+): Promise<ContentMap[K]> {
+  const { apiKey, revalidateSeconds } = getBackendConfig();
+  const headers: Record<string, string> = { Accept: "application/json" };
+
+  if (apiKey) {
+    headers["X-API-Key"] = apiKey;
+  }
+
+  const res = await fetch(getBackendSectionUrl(locale, key), {
+    headers,
+    next: { revalidate: revalidateSeconds },
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `[content] Failed to fetch "${key}" for locale "${locale}" (${res.status}).`,
+    );
+  }
+
+  const json = (await res.json()) as {
+    status?: boolean;
+    data?: ContentMap[K];
+    errors?: string[];
+  };
+
+  if (!json.status || json.data === undefined) {
+    const detail = json.errors?.join(", ") ?? "Unknown API error";
+    throw new Error(
+      `[content] API error for "${key}" (${locale}): ${detail}`,
+    );
+  }
+
+  return json.data;
+}
+
 /**
  * Dynamically import a JSON data file by locale and content key.
  * Next.js statically analyses `import()` expressions, so the path must be
  * a string literal template — not a fully dynamic variable.
  */
-async function loadContent<K extends ContentKey>(
+async function loadJsonContent<K extends ContentKey>(
   locale: Locale,
   key: K,
 ): Promise<ContentMap[K]> {
@@ -53,6 +95,16 @@ async function loadContent<K extends ContentKey>(
         `Make sure src/data/${locale}/${key}.json exists and is valid JSON.`,
     );
   }
+}
+
+async function loadContent<K extends ContentKey>(
+  locale: Locale,
+  key: K,
+): Promise<ContentMap[K]> {
+  if (isBackendEnabled()) {
+    return fetchSection(locale, key);
+  }
+  return loadJsonContent(locale, key);
 }
 
 // ---------------------------------------------------------------------------
