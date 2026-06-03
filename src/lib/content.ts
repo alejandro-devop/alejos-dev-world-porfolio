@@ -138,6 +138,9 @@ function isApiContentUsable<K extends ContentKey>(
       skills.some((cat) => cat.category && cat.skills?.length > 0)
     );
   }
+  if (key === "experience") {
+    return Array.isArray(value);
+  }
   return true;
 }
 

@@ -165,6 +165,11 @@ function ExperienceCard({
 }
 
 export function ExperienceSection({ data, locale }: ExperienceSectionProps) {
+  const entries = data.filter(
+    (entry) => entry.id && entry.role?.trim() && entry.company?.trim(),
+  );
+  const isEmpty = entries.length === 0;
+
   return (
     <section
       id="experience"
@@ -186,14 +191,25 @@ export function ExperienceSection({ data, locale }: ExperienceSectionProps) {
             viewport={defaultViewport}
             className="mt-12 space-y-6 max-w-3xl"
           >
-            {data.map((entry, i) => (
-              <ExperienceCard
-                key={entry.id}
-                entry={entry}
-                locale={locale}
-                isLast={i === data.length - 1}
-              />
-            ))}
+            {isEmpty ? (
+              <motion.p
+                variants={fadeUp}
+                className="text-base text-muted-foreground leading-relaxed"
+              >
+                {locale === "es"
+                  ? "Aún no hay trayectoria profesional registrada."
+                  : "No work history has been added yet."}
+              </motion.p>
+            ) : (
+              entries.map((entry, i) => (
+                <ExperienceCard
+                  key={entry.id}
+                  entry={entry}
+                  locale={locale}
+                  isLast={i === entries.length - 1}
+                />
+              ))
+            )}
           </motion.div>
         </div>
       </div>
