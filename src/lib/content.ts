@@ -9,15 +9,15 @@
  *  - All return types come from `@/types/content`, never from `any`.
  *  - Errors surface loudly in development.
  *
- * Data source:
- *  - BACKEND_URL set → fetch from admin API (see src/config/backend.ts).
- *  - BACKEND_URL unset → static JSON under src/data/{locale}/.
+ * Data source (phased rollout):
+ *  - BACKEND_URL + section in BACKEND_SECTIONS → bulk fetch from admin API.
+ *  - Otherwise → static JSON under src/data/{locale}/.
  */
 
 import {
+  getBackendBulkContentUrl,
   getBackendConfig,
-  getBackendSectionUrl,
-  isBackendEnabled,
+  isSectionBackendEnabled,
 } from "@/config/backend";
 import type {
   AboutData,
@@ -38,10 +38,10 @@ import type { Locale } from "@/config/i18n";
 // Generic loader — the implementation detail
 // ---------------------------------------------------------------------------
 
-async function fetchSection<K extends ContentKey>(
+async function fetchBulkSections<K extends ContentKey>(
   locale: Locale,
-  key: K,
-): Promise<ContentMap[K]> {
+  sections: readonly K[],
+): Promise<Pick<ContentMap, K>> {
   const { apiKey, revalidateSeconds } = getBackendConfig();
   const headers: Record<string, string> = { Accept: "application/json" };
 
@@ -49,31 +49,43 @@ async function fetchSection<K extends ContentKey>(
     headers["X-API-Key"] = apiKey;
   }
 
-  const res = await fetch(getBackendSectionUrl(locale, key), {
+  const res = await fetch(getBackendBulkContentUrl(locale, [...sections]), {
     headers,
     next: { revalidate: revalidateSeconds },
   });
 
   if (!res.ok) {
     throw new Error(
-      `[content] Failed to fetch "${key}" for locale "${locale}" (${res.status}).`,
+      `[content] Failed to fetch sections [${sections.join(", ")}] for locale "${locale}" (${res.status}).`,
     );
   }
 
   const json = (await res.json()) as {
     status?: boolean;
-    data?: ContentMap[K];
+    data?: Partial<ContentMap>;
     errors?: string[];
   };
 
   if (!json.status || json.data === undefined) {
     const detail = json.errors?.join(", ") ?? "Unknown API error";
     throw new Error(
-      `[content] API error for "${key}" (${locale}): ${detail}`,
+      `[content] API error for sections [${sections.join(", ")}] (${locale}): ${detail}`,
     );
   }
 
-  return json.data;
+  const result = {} as Pick<ContentMap, K>;
+
+  for (const section of sections) {
+    const value = json.data[section];
+    if (value === undefined) {
+      throw new Error(
+        `[content] API response missing section "${section}" for locale "${locale}".`,
+      );
+    }
+    result[section] = value as ContentMap[K];
+  }
+
+  return result;
 }
 
 /**
@@ -101,8 +113,9 @@ async function loadContent<K extends ContentKey>(
   locale: Locale,
   key: K,
 ): Promise<ContentMap[K]> {
-  if (isBackendEnabled()) {
-    return fetchSection(locale, key);
+  if (isSectionBackendEnabled(key)) {
+    const bulk = await fetchBulkSections(locale, [key]);
+    return bulk[key];
   }
   return loadJsonContent(locale, key);
 }
