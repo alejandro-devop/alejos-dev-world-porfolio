@@ -127,6 +127,10 @@ function isApiContentUsable<K extends ContentKey>(
     const hero = value as HeroData;
     return Boolean(hero.cta?.primary?.label && hero.name);
   }
+  if (key === "about") {
+    const about = value as AboutData;
+    return Boolean(about.headline && about.paragraphs?.length > 0);
+  }
   return true;
 }
 
