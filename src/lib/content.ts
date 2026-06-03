@@ -110,13 +110,52 @@ async function loadJsonContent<K extends ContentKey>(
   }
 }
 
+/** True when API payload is present enough to render (empty {} → use static JSON). */
+function isApiContentUsable<K extends ContentKey>(
+  key: K,
+  value: ContentMap[K] | undefined,
+): value is ContentMap[K] {
+  if (value === undefined) return false;
+  if (
+    typeof value === "object" &&
+    value !== null &&
+    Object.keys(value).length === 0
+  ) {
+    return false;
+  }
+  if (key === "hero") {
+    const hero = value as HeroData;
+    return Boolean(hero.cta?.primary?.label && hero.name);
+  }
+  return true;
+}
+
 async function loadContent<K extends ContentKey>(
   locale: Locale,
   key: K,
 ): Promise<ContentMap[K]> {
   if (isSectionBackendEnabled(key)) {
-    const bulk = await fetchBulkSections(locale, [key]);
-    return bulk[key];
+    try {
+      const bulk = await fetchBulkSections(locale, [key]);
+      const fromApi = bulk[key];
+      if (isApiContentUsable(key, fromApi)) {
+        return fromApi;
+      }
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          `[content] API "${key}" for "${locale}" is empty or incomplete — using static JSON.`,
+        );
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          `[content] API fetch failed for "${key}" (${locale}) — using static JSON.`,
+          error,
+        );
+      } else {
+        throw error;
+      }
+    }
   }
   return loadJsonContent(locale, key);
 }

@@ -16,6 +16,35 @@ function trimTrailingSlash(url: string): string {
   return url.replace(/\/+$/, "");
 }
 
+/**
+ * Normalizes BACKEND_URL from env (Vercel/users often omit https:// or add /api).
+ */
+export function normalizeBackendUrl(raw: string): string {
+  let url = raw.trim().replace(/^['"]|['"]$/g, "");
+  url = trimTrailingSlash(url);
+
+  if (url.endsWith("/api")) {
+    url = url.slice(0, -4);
+    url = trimTrailingSlash(url);
+  }
+
+  if (!/^https?:\/\//i.test(url)) {
+    url = `https://${url}`;
+  }
+
+  try {
+    const parsed = new URL(url);
+    if (!parsed.hostname) {
+      throw new Error("missing hostname");
+    }
+    return trimTrailingSlash(parsed.origin);
+  } catch {
+    throw new Error(
+      `[backend] Invalid BACKEND_URL "${raw}". Use e.g. https://alejos-admin-api-wqpmywszuq-uc.a.run.app (no /api suffix).`,
+    );
+  }
+}
+
 export type BackendConfig = {
   /** Base URL without trailing slash, e.g. http://localhost:8080 */
   url: string;
@@ -82,7 +111,14 @@ export function getContentFetchInit(
 }
 
 export function isBackendEnabled(): boolean {
-  return Boolean(process.env.BACKEND_URL?.trim());
+  const raw = process.env.BACKEND_URL?.trim();
+  if (!raw) return false;
+  try {
+    normalizeBackendUrl(raw);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /** Sections that load from the admin API when BACKEND_URL is set. */
@@ -112,7 +148,7 @@ export function getBackendConfig(): BackendConfig {
   const revalidateSeconds = resolveRevalidateSeconds();
 
   return {
-    url: trimTrailingSlash(url),
+    url: normalizeBackendUrl(url),
     apiKey: process.env.BACKEND_API_KEY?.trim(),
     revalidateSeconds,
   };
