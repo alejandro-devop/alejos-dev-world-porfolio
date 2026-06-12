@@ -106,8 +106,8 @@
   --nav-bg: oklch(0.97 0.018 255 / 28%);
   --nav-overlay-bg: oklch(0.97 0.018 255 / 42%);
 
-  /* Section glass cards — 20% more transparent than previous 37% fill */
-  --glass-section-bg: oklch(0.97 0.018 255 / 30%);
+  /* Section glass cards — light mode fill */
+  --glass-section-bg: oklch(0.97 0.018 255 / 64%);
   --glass-section-muted: oklch(0.36 0 0);
 
   /* Shared 2px band edges (nav + section glass) */
