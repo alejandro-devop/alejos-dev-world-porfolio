@@ -18,6 +18,7 @@ const NAV_LINKS: FooterLink[] = [
 
 interface FooterProps {
   locale: Locale;
+  location?: string;
   socialLinks?: ContentLink[];
 }
 
@@ -25,12 +26,18 @@ function hasText(value: string | undefined): boolean {
   return Boolean(value?.trim());
 }
 
-export function Footer({ locale, socialLinks = [] }: FooterProps) {
+export function Footer({ locale, location, socialLinks = [] }: FooterProps) {
   const label = (link: FooterLink) =>
     locale === "es" ? link.labelEs : link.labelEn;
 
   const social = socialLinks.filter((link) => hasText(link.url));
   const year = new Date().getFullYear();
+  const role =
+    locale === "es" ? "Desarrollador full-stack" : "Full-stack developer";
+  const trimmedLocation = location?.trim();
+  const tagline = trimmedLocation
+    ? `${role}. ${trimmedLocation}.`
+    : `${role}.`;
 
   return (
     <footer className="border-t border-border mt-auto">
@@ -50,9 +57,7 @@ export function Footer({ locale, socialLinks = [] }: FooterProps) {
               <SiteWordmark />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-[22ch]">
-              {locale === "es"
-                ? "Desarrollador full-stack. Buenos Aires, Argentina."
-                : "Full-stack developer. Buenos Aires, Argentina."}
+              {tagline}
             </p>
           </div>
 

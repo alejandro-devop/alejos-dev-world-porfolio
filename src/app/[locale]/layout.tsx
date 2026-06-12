@@ -166,7 +166,11 @@ export default async function LocaleLayout({
               >
                 {children}
               </main>
-              <Footer locale={locale} socialLinks={about.socialLinks} />
+              <Footer
+                locale={locale}
+                location={about.location}
+                socialLinks={about.socialLinks}
+              />
             </LocaleTransition>
           </div>
         </ThemeProvider>
