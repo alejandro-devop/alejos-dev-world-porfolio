@@ -33,6 +33,19 @@ const STATUS_LABELS: Record<
   },
 };
 
+function hasText(value: string | undefined): boolean {
+  return Boolean(value?.trim());
+}
+
+function isValidProject(project: Project): boolean {
+  return (
+    hasText(project.id) &&
+    hasText(project.title) &&
+    hasText(project.description) &&
+    hasText(project.longDescription)
+  );
+}
+
 function ProjectCard({
   project,
   locale,
@@ -40,7 +53,7 @@ function ProjectCard({
   project: Project;
   locale: Locale;
 }) {
-  const status = STATUS_LABELS[project.status];
+  const status = STATUS_LABELS[project.status ?? "in-progress"];
 
   return (
     <motion.article
@@ -51,10 +64,10 @@ function ProjectCard({
       )}
     >
       {/* Image placeholder / decorative header */}
-      {project.imageUrl ? (
+      {hasText(project.imageUrl) ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={project.imageUrl}
+          src={project.imageUrl!.trim()}
           alt={project.title}
           className="w-full h-44 object-cover rounded-lg bg-muted"
         />
@@ -106,23 +119,25 @@ function ProjectCard({
       </div>
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-1.5">
-        {project.tags.map((tag) => (
-          <span
-            key={tag}
-            className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground font-medium"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      {project.tags?.some(hasText) && (
+        <div className="flex flex-wrap gap-1.5">
+          {project.tags.filter(hasText).map((tag) => (
+            <span
+              key={tag}
+              className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground font-medium"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Links */}
-      {(project.liveUrl || project.repoUrl) && (
+      {(hasText(project.liveUrl) || hasText(project.repoUrl)) && (
         <div className="flex gap-3 pt-1">
-          {project.liveUrl && (
+          {hasText(project.liveUrl) && (
             <a
-              href={project.liveUrl}
+              href={project.liveUrl!.trim()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground hover:opacity-70 transition-opacity"
@@ -145,9 +160,9 @@ function ProjectCard({
               {locale === "es" ? "Ver demo" : "Live demo"}
             </a>
           )}
-          {project.repoUrl && (
+          {hasText(project.repoUrl) && (
             <a
-              href={project.repoUrl}
+              href={project.repoUrl!.trim()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
@@ -176,8 +191,10 @@ function ProjectCard({
 }
 
 export function ProjectsSection({ data, locale }: ProjectsSectionProps) {
-  const featured = data.filter((p) => p.featured);
-  const rest = data.filter((p) => !p.featured);
+  const projects = data.filter(isValidProject);
+  const featured = projects.filter((p) => p.featured);
+  const rest = projects.filter((p) => !p.featured);
+  const isEmpty = projects.length === 0;
 
   return (
     <section
@@ -198,36 +215,77 @@ export function ProjectsSection({ data, locale }: ProjectsSectionProps) {
         }
       />
 
-      {/* Featured grid */}
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={defaultViewport}
-        className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-      >
-        {featured.map((project) => (
-          <ProjectCard key={project.id} project={project} locale={locale} />
-        ))}
-      </motion.div>
-
-      {/* Other projects */}
-      {rest.length > 0 && (
+      {isEmpty ? (
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          className="mt-12 text-base text-muted-foreground leading-relaxed"
+        >
+          {locale === "es"
+            ? "Aún no hay proyectos registrados."
+            : "No projects have been added yet."}
+        </motion.p>
+      ) : (
         <>
-          <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            {locale === "es" ? "Otros proyectos" : "Other projects"}
-          </p>
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={defaultViewport}
-            className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4"
-          >
-            {rest.map((project) => (
-              <ProjectCard key={project.id} project={project} locale={locale} />
+          {featured.length > 0 && (
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={defaultViewport}
+              className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+            >
+              {featured.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  locale={locale}
+                />
+              ))}
+            </motion.div>
+          )}
+
+          {rest.length > 0 &&
+            (featured.length > 0 ? (
+              <>
+                <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {locale === "es" ? "Otros proyectos" : "Other projects"}
+                </p>
+                <motion.div
+                  variants={stagger}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={defaultViewport}
+                  className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4"
+                >
+                  {rest.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      locale={locale}
+                    />
+                  ))}
+                </motion.div>
+              </>
+            ) : (
+              <motion.div
+                variants={stagger}
+                initial="hidden"
+                whileInView="visible"
+                viewport={defaultViewport}
+                className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+              >
+                {rest.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    locale={locale}
+                  />
+                ))}
+              </motion.div>
             ))}
-          </motion.div>
         </>
       )}
         </div>

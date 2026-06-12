@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { locales, defaultLocale } from "@/config/i18n";
 import type { Locale } from "@/config/i18n";
 import { siteConfig } from "@/config/site";
-import { getSeo } from "@/lib/content";
+import { getAbout, getSeo } from "@/lib/content";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LocaleTransition } from "@/components/LocaleTransition";
 import { Navbar } from "@/components/Navbar";
@@ -103,6 +103,10 @@ export default async function LocaleLayout({
   // Narrow the string to a known Locale; unknown values trigger 404.
   if (!(locales as readonly string[]).includes(rawLocale)) notFound();
   const locale = rawLocale as (typeof locales)[number];
+  const about = await getAbout(locale);
+  const sameAs = about.socialLinks
+    .map((link) => link.url.trim())
+    .filter(Boolean);
 
   // JSON-LD: Person + WebSite structured data for the portfolio.
   const personSchema = {
@@ -112,11 +116,7 @@ export default async function LocaleLayout({
     url: siteConfig.url,
     jobTitle:
       locale === "es" ? "Desarrollador Full-Stack" : "Full-Stack Developer",
-    sameAs: [
-      "https://github.com/alejogdev",
-      "https://linkedin.com/in/alejogdev",
-      "https://twitter.com/alejogdev",
-    ],
+    ...(sameAs.length > 0 ? { sameAs } : {}),
   };
 
   const websiteSchema = {
@@ -160,7 +160,7 @@ export default async function LocaleLayout({
               >
                 {children}
               </main>
-              <Footer locale={locale} />
+              <Footer locale={locale} socialLinks={about.socialLinks} />
             </LocaleTransition>
           </div>
         </ThemeProvider>

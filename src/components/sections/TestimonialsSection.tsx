@@ -4,15 +4,33 @@ import { motion } from "framer-motion";
 import { fadeUp, stagger, defaultViewport } from "@/lib/motion";
 import type { TestimonialsData, Testimonial } from "@/types/content";
 import type { Locale } from "@/config/i18n";
-import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
+function hasText(value: string | undefined): boolean {
+  return Boolean(value?.trim());
+}
+
+function isValidTestimonial(testimonial: Testimonial): boolean {
+  return (
+    hasText(testimonial.id) &&
+    hasText(testimonial.authorName) &&
+    hasText(testimonial.quote)
+  );
+}
+
+function formatAuthorMeta(testimonial: Testimonial): string | null {
+  const parts = [testimonial.authorRole, testimonial.authorCompany].filter(
+    hasText,
+  );
+  return parts.length > 0 ? parts.join(" · ") : null;
+}
+
 function Avatar({ name, src }: { name: string; src?: string }) {
-  if (src) {
+  if (hasText(src)) {
     // eslint-disable-next-line @next/next/no-img-element
     return (
       <img
-        src={src}
+        src={src!.trim()}
         alt={name}
         className="size-10 rounded-full object-cover bg-muted"
       />
@@ -32,6 +50,8 @@ function Avatar({ name, src }: { name: string; src?: string }) {
 }
 
 function TestimonialCard({ t }: { t: Testimonial }) {
+  const authorMeta = formatAuthorMeta(t);
+
   return (
     <motion.article
       variants={fadeUp}
@@ -54,14 +74,17 @@ function TestimonialCard({ t }: { t: Testimonial }) {
       </blockquote>
 
       <footer className="flex items-center gap-3">
-        <Avatar name={t.authorName} src={t.authorAvatarUrl} />
+        <Avatar
+          name={t.authorName}
+          src={hasText(t.authorAvatarUrl) ? t.authorAvatarUrl : undefined}
+        />
         <div>
           <p className="text-sm font-semibold text-foreground leading-tight">
             {t.authorName}
           </p>
-          <p className="text-xs text-muted-foreground">
-            {t.authorRole} · {t.authorCompany}
-          </p>
+          {authorMeta && (
+            <p className="text-xs text-muted-foreground">{authorMeta}</p>
+          )}
         </div>
       </footer>
     </motion.article>
@@ -77,8 +100,14 @@ export function TestimonialsSection({
   data,
   locale,
 }: TestimonialsSectionProps) {
-  const featured = data.filter((t) => t.featured);
-  const shown = featured.length > 0 ? featured : data;
+  const testimonials = data.filter(isValidTestimonial);
+
+  if (testimonials.length === 0) {
+    return null;
+  }
+
+  const featured = testimonials.filter((t) => t.featured);
+  const shown = featured.length > 0 ? featured : testimonials;
 
   return (
     <section

@@ -380,11 +380,43 @@
     animation: fx-wave-left 20s ease-in-out infinite;
   }
 
+  /* Hero name — typewriter cursor + glow wave */
+  .hero-name-cursor {
+    display: inline-block;
+    width: 0.11em;
+    height: 0.78em;
+    margin-left: 0.07em;
+    vertical-align: -0.06em;
+    background-color: oklch(0.52 0.14 255);
+    animation: hero-name-cursor-blink 1.06s step-end infinite;
+  }
+
+  .hero-name-glow {
+    color: oklch(0.45 0.16 255);
+    text-shadow:
+      0 0 8px oklch(0.58 0.2 255 / 75%),
+      0 0 18px oklch(0.55 0.17 255 / 50%),
+      0 0 32px oklch(0.5 0.14 255 / 30%);
+  }
+
+  .dark .hero-name-cursor {
+    background-color: oklch(0.72 0.14 255);
+  }
+
+  .dark .hero-name-glow {
+    color: oklch(0.96 0.04 255);
+    text-shadow:
+      0 0 10px oklch(0.78 0.16 255 / 85%),
+      0 0 22px oklch(0.7 0.14 255 / 55%),
+      0 0 40px oklch(0.62 0.12 255 / 35%);
+  }
+
   /* Disable all effects for users who prefer reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .fx-orb,
     .fx-wave-drift,
-    .fx-wave-drift-reverse {
+    .fx-wave-drift-reverse,
+    .hero-name-cursor {
       animation: none !important;
     }
   }
@@ -431,4 +463,15 @@
 @keyframes fx-wave-left {
   0%, 100% { transform: translateX(0px); }
   50%       { transform: translateX(65px); }
+}
+
+@keyframes hero-name-cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }

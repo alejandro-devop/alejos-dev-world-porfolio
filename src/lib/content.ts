@@ -119,6 +119,7 @@ function isApiContentUsable<K extends ContentKey>(
   if (
     typeof value === "object" &&
     value !== null &&
+    !Array.isArray(value) &&
     Object.keys(value).length === 0
   ) {
     return false;
@@ -139,6 +140,15 @@ function isApiContentUsable<K extends ContentKey>(
     );
   }
   if (key === "experience") {
+    return Array.isArray(value);
+  }
+  if (key === "projects") {
+    return Array.isArray(value);
+  }
+  if (key === "services") {
+    return Array.isArray(value);
+  }
+  if (key === "testimonials") {
     return Array.isArray(value);
   }
   return true;

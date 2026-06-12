@@ -5,7 +5,7 @@
  * API instead of static JSON under `src/data/`.
  *
  * Phased rollout: only sections listed in BACKEND_SECTIONS use the API.
- * Default when unset: `hero`, `about`, `skills`, `experience`.
+ * Default when unset: `hero`, `about`, `skills`, `experience`, `projects`, `services`, `testimonials`.
  */
 
 import type { ContentKey } from "@/types/content";
@@ -15,6 +15,9 @@ const DEFAULT_BACKEND_SECTIONS: ContentKey[] = [
   "about",
   "skills",
   "experience",
+  "projects",
+  "services",
+  "testimonials",
 ];
 
 function trimTrailingSlash(url: string): string {

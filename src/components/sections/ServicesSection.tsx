@@ -1,10 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { stagger, scaleIn, defaultViewport } from "@/lib/motion";
+import { fadeUp, stagger, scaleIn, defaultViewport } from "@/lib/motion";
 import type { ServicesData, Service } from "@/types/content";
 import type { Locale } from "@/config/i18n";
-import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 // Inline SVG map — avoids an icon library dependency.
@@ -76,8 +75,22 @@ const ICONS: Record<string, React.ReactNode> = {
   ),
 };
 
+function hasText(value: string | undefined): boolean {
+  return Boolean(value?.trim());
+}
+
+function isValidService(service: Service): boolean {
+  return (
+    hasText(service.id) &&
+    hasText(service.title) &&
+    hasText(service.description)
+  );
+}
+
 function ServiceCard({ service }: { service: Service }) {
-  const icon = ICONS[service.icon] ?? ICONS.code;
+  const iconKey = hasText(service.icon) ? service.icon.trim() : "code";
+  const icon = ICONS[iconKey] ?? ICONS.code;
+  const highlights = service.highlights?.filter(hasText) ?? [];
 
   return (
     <motion.article
@@ -97,30 +110,32 @@ function ServiceCard({ service }: { service: Service }) {
         </p>
       </div>
 
-      <ul className="space-y-2" role="list">
-        {service.highlights.map((h) => (
-          <li
-            key={h}
-            className="flex items-start gap-2.5 text-sm text-muted-foreground"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="mt-[2px] text-foreground/50 shrink-0"
-              aria-hidden
+      {highlights.length > 0 && (
+        <ul className="space-y-2" role="list">
+          {highlights.map((h) => (
+            <li
+              key={h}
+              className="flex items-start gap-2.5 text-sm text-muted-foreground"
             >
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            {h}
-          </li>
-        ))}
-      </ul>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mt-[2px] text-foreground/50 shrink-0"
+                aria-hidden
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              {h}
+            </li>
+          ))}
+        </ul>
+      )}
     </motion.article>
   );
 }
@@ -131,6 +146,9 @@ interface ServicesSectionProps {
 }
 
 export function ServicesSection({ data, locale }: ServicesSectionProps) {
+  const services = data.filter(isValidService);
+  const isEmpty = services.length === 0;
+
   return (
     <section
       id="services"
@@ -146,17 +164,31 @@ export function ServicesSection({ data, locale }: ServicesSectionProps) {
             centered
           />
 
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={defaultViewport}
-            className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-5"
-          >
-            {data.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
-          </motion.div>
+          {isEmpty ? (
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={defaultViewport}
+              className="mt-12 text-base text-muted-foreground leading-relaxed text-center"
+            >
+              {locale === "es"
+                ? "Aún no hay servicios registrados."
+                : "No services have been added yet."}
+            </motion.p>
+          ) : (
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={defaultViewport}
+              className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-5"
+            >
+              {services.map((service) => (
+                <ServiceCard key={service.id} service={service} />
+              ))}
+            </motion.div>
+          )}
         </div>
       </div>
     </section>

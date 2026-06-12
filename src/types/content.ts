@@ -108,14 +108,14 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  longDescription?: string;
-  tags: string[];
-  status: ProjectStatus;
-  featured: boolean;
+  longDescription: string;
+  tags?: string[];
+  status?: ProjectStatus;
+  featured?: boolean;
   imageUrl?: string;
   liveUrl?: string;
   repoUrl?: string;
-  startDate: string;
+  startDate?: string;
   endDate?: string;
 }
 
@@ -147,7 +147,7 @@ export interface Testimonial {
   authorCompany: string;
   authorAvatarUrl?: string;
   quote: string;
-  date: string; // ISO 8601
+  date?: string; // ISO 8601 YYYY-MM-DD
   featured: boolean;
 }
 

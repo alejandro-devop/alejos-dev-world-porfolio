@@ -10,7 +10,6 @@ import {
   getProjects,
   getServices,
   getTestimonials,
-  getBlog,
 } from "@/data";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
@@ -19,7 +18,6 @@ import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
-import { BlogSection } from "@/components/sections/BlogSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 
 export default async function HomePage({ params }: PageProps) {
@@ -35,7 +33,6 @@ export default async function HomePage({ params }: PageProps) {
     projects,
     services,
     testimonials,
-    blog,
   ] = await Promise.all([
     getHero(locale),
     getAbout(locale),
@@ -44,7 +41,6 @@ export default async function HomePage({ params }: PageProps) {
     getProjects(locale),
     getServices(locale),
     getTestimonials(locale),
-    getBlog(locale),
   ]);
 
   return (
@@ -56,7 +52,6 @@ export default async function HomePage({ params }: PageProps) {
       <ProjectsSection data={projects} locale={locale} />
       <ServicesSection data={services} locale={locale} />
       <TestimonialsSection data={testimonials} locale={locale} />
-      <BlogSection data={blog} locale={locale} />
       <ContactSection locale={locale} email={about.email} />
     </>
   );
