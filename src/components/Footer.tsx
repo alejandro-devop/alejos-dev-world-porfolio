@@ -18,6 +18,7 @@ const NAV_LINKS: FooterLink[] = [
 
 interface FooterProps {
   locale: Locale;
+  name?: string;
   location?: string;
   socialLinks?: ContentLink[];
 }
@@ -26,7 +27,12 @@ function hasText(value: string | undefined): boolean {
   return Boolean(value?.trim());
 }
 
-export function Footer({ locale, location, socialLinks = [] }: FooterProps) {
+export function Footer({
+  locale,
+  name,
+  location,
+  socialLinks = [],
+}: FooterProps) {
   const label = (link: FooterLink) =>
     locale === "es" ? link.labelEs : link.labelEn;
 
@@ -35,9 +41,11 @@ export function Footer({ locale, location, socialLinks = [] }: FooterProps) {
   const role =
     locale === "es" ? "Desarrollador full-stack" : "Full-stack developer";
   const trimmedLocation = location?.trim();
+  const trimmedName = name?.trim();
   const tagline = trimmedLocation
     ? `${role}. ${trimmedLocation}.`
     : `${role}.`;
+  const copyrightHolder = trimmedName ?? "Alejo";
 
   return (
     <footer className="border-t border-border mt-auto">
@@ -126,7 +134,7 @@ export function Footer({ locale, location, socialLinks = [] }: FooterProps) {
           )}
         >
           <p className="text-xs text-muted-foreground">
-            © {year} Alejandro Gómez.{" "}
+            © {year} {copyrightHolder}.{" "}
             {locale === "es"
               ? "Todos los derechos reservados."
               : "All rights reserved."}

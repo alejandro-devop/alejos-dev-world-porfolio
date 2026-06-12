@@ -4,8 +4,9 @@
  * Set BACKEND_URL in `.env.local` to fetch selected sections from the admin
  * API instead of static JSON under `src/data/`.
  *
- * Phased rollout: only sections listed in BACKEND_SECTIONS use the API.
+ * Only sections listed in BACKEND_SECTIONS are fetched from the API (others stay on JSON).
  * Default when unset: `hero`, `about`, `skills`, `experience`, `projects`, `services`, `testimonials`.
+ * `seo` and `blog` remain JSON until added to BACKEND_SECTIONS.
  */
 
 import type { ContentKey } from "@/types/content";

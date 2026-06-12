@@ -95,8 +95,8 @@ export function Navbar({ locale }: NavbarProps) {
                   href={link.href}
                   className={cn(
                     "px-3 py-1.5 rounded-full text-sm font-medium",
-                    "text-muted-foreground hover:text-foreground",
-                    "hover:bg-accent transition-colors duration-150",
+                    "text-foreground/90 hover:text-foreground",
+                    "hover:bg-foreground/8 transition-colors duration-150",
                   )}
                 >
                   {label(link)}
@@ -107,15 +107,18 @@ export function Navbar({ locale }: NavbarProps) {
 
           {/* Right controls */}
           <div className="flex items-center gap-1">
-            <LanguageSwitcher currentLocale={locale} />
-            <ThemeToggle />
+            <LanguageSwitcher
+              currentLocale={locale}
+              className="[&_button:not([aria-current])]:text-foreground/85 [&_button:not([aria-current])]:hover:text-foreground [&_button:not([aria-current])]:hover:bg-foreground/8"
+            />
+            <ThemeToggle className="text-foreground hover:text-foreground hover:bg-foreground/8" />
 
             {/* Hamburger — mobile only */}
             <button
               type="button"
               className={cn(
                 "md:hidden size-9 rounded-full flex items-center justify-center",
-                "text-muted-foreground hover:text-foreground hover:bg-accent",
+                "text-foreground hover:text-foreground hover:bg-foreground/8",
                 "transition-colors duration-150",
               )}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -187,7 +190,7 @@ export function Navbar({ locale }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 md:hidden bg-background/95 backdrop-blur-xl"
+            className="fixed inset-0 z-40 md:hidden nav-glass-panel"
             style={{ paddingTop: "var(--nav-height)" }}
           >
             <motion.ul

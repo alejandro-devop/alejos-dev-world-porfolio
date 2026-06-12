@@ -1,7 +1,8 @@
 /**
- * Data barrel — re-exports typed loaders and types for convenience.
+ * Data barrel — re-exports typed loaders from `@/lib/content`.
  *
- * Usage in a Server Component:
+ * Content comes from the admin API when BACKEND_URL is set; JSON under
+ * `src/data/{locale}/` is the fallback.
  *
  *   import { getHero, getProjects } from "@/data";
  *   const hero = await getHero(locale);

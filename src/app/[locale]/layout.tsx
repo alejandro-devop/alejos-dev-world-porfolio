@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { locales, defaultLocale } from "@/config/i18n";
 import type { Locale } from "@/config/i18n";
 import { siteConfig } from "@/config/site";
-import { getAbout, getSeo } from "@/lib/content";
+import { getAbout, getHero, getSeo } from "@/lib/content";
+import { resolvePersonOgAlt, resolvePersonTitle } from "@/lib/seo";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LocaleTransition } from "@/components/LocaleTransition";
 import { Navbar } from "@/components/Navbar";
@@ -45,7 +46,10 @@ export async function generateMetadata({
     ? (rawLocale as Locale)
     : defaultLocale;
 
-  const seo = await getSeo(locale);
+  const [seo, hero] = await Promise.all([getSeo(locale), getHero(locale)]);
+  const personName = hero.name.trim();
+  const pageTitle = resolvePersonTitle(seo.title, personName);
+  const ogImageAlt = resolvePersonOgAlt(seo.ogImage.alt, personName);
   const canonicalUrl = `${siteConfig.url}/${locale}`;
 
   // Build alternate language map for hreflang.
@@ -58,8 +62,8 @@ export async function generateMetadata({
 
   return {
     title: {
-      default: seo.title,
-      template: `%s | ${seo.title}`,
+      default: pageTitle,
+      template: `%s | ${personName}`,
     },
     description: seo.description,
     keywords: seo.keywords,
@@ -72,7 +76,7 @@ export async function generateMetadata({
       type: "website",
       url: canonicalUrl,
       siteName: siteConfig.name,
-      title: seo.title,
+      title: pageTitle,
       description: seo.description,
       locale: locale === "es" ? "es_AR" : "en_US",
       alternateLocale: locale === "en" ? ["es_AR"] : ["en_US"],
@@ -81,13 +85,13 @@ export async function generateMetadata({
           url: seo.ogImage.url,
           width: seo.ogImage.width,
           height: seo.ogImage.height,
-          alt: seo.ogImage.alt,
+          alt: ogImageAlt,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: seo.title,
+      title: pageTitle,
       description: seo.description,
       creator: seo.twitterHandle,
       images: [seo.ogImage.url],
@@ -109,7 +113,11 @@ export default async function LocaleLayout({
   // Narrow the string to a known Locale; unknown values trigger 404.
   if (!(locales as readonly string[]).includes(rawLocale)) notFound();
   const locale = rawLocale as (typeof locales)[number];
-  const about = await getAbout(locale);
+  const [about, hero] = await Promise.all([
+    getAbout(locale),
+    getHero(locale),
+  ]);
+  const personName = hero.name.trim();
   const sameAs = about.socialLinks
     .map((link) => link.url.trim())
     .filter(Boolean);
@@ -118,7 +126,7 @@ export default async function LocaleLayout({
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Alejandro Gómez",
+    name: personName || "Alejo",
     url: siteConfig.url,
     jobTitle:
       locale === "es" ? "Desarrollador Full-Stack" : "Full-Stack Developer",
@@ -168,6 +176,7 @@ export default async function LocaleLayout({
               </main>
               <Footer
                 locale={locale}
+                name={personName}
                 location={about.location}
                 socialLinks={about.socialLinks}
               />

@@ -9,9 +9,9 @@
  *  - All return types come from `@/types/content`, never from `any`.
  *  - Errors surface loudly in development.
  *
- * Data source (phased rollout):
- *  - BACKEND_URL + section in BACKEND_SECTIONS → bulk fetch from admin API.
- *  - Otherwise → static JSON under src/data/{locale}/.
+ * Data source:
+ *  - Production / normal dev: BACKEND_URL + section in BACKEND_SECTIONS → bulk fetch from admin API.
+ *  - Fallback (API error, empty payload, or no BACKEND_URL) → static JSON under src/data/{locale}/.
  */
 
 import {

@@ -102,9 +102,15 @@
   --surface: oklch(0.97 0 0);
   --surface-raised: oklch(1 0 0);
 
-  /* Glassmorphism nav */
-  --nav-bg: oklch(0.99 0 0 / 80%);
-  --nav-border: oklch(0.88 0 0 / 60%);
+  /* Glassmorphism nav — low opacity so backdrop blur reads through */
+  --nav-bg: oklch(0.97 0.018 255 / 28%);
+  --nav-overlay-bg: oklch(0.97 0.018 255 / 42%);
+  --nav-border: oklch(0.55 0.08 255 / 18%);
+
+  /* Section glass cards — 20% more transparent than previous 37% fill */
+  --glass-section-bg: oklch(0.97 0.018 255 / 30%);
+  --glass-section-border: oklch(0.55 0.08 255 / 18%);
+  --glass-section-muted: oklch(0.36 0 0);
 
   --radius: 0.75rem;
 }
@@ -146,8 +152,14 @@
   --surface-raised: oklch(0.17 0 0);
 
   /* Glassmorphism nav */
-  --nav-bg: oklch(0.09 0 0 / 75%);
-  --nav-border: oklch(1 0 0 / 8%);
+  --nav-bg: oklch(0.10 0.015 255 / 38%);
+  --nav-overlay-bg: oklch(0.10 0.015 255 / 52%);
+  --nav-border: oklch(0.75 0.12 255 / 16%);
+
+  /* Section glass cards — 20% more transparent than previous 55% fill */
+  --glass-section-bg: oklch(0.10 0.015 255 / 44%);
+  --glass-section-border: oklch(0.75 0.12 255 / 18%);
+  --glass-section-muted: oklch(0.80 0 0);
 
   --radius: 0.75rem;
 }
@@ -244,26 +256,24 @@
     }
   }
 
-  /* Navbar glass surface */
+  /* Navbar glass surface — backdrop-filter defined outside @layer (see below) */
   .nav-glass {
     background-color: var(--nav-bg);
     border-bottom: 1px solid var(--nav-border);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
 
-  /* Reusable glass card — blurs background effects beneath */
-  .glass-card {
-    /* Tinte azul muy leve para que el blur sea perceptible en light mode */
-    background-color: oklch(0.97 0.018 255 / 37%);
-    backdrop-filter: blur(8px) saturate(170%);
-    -webkit-backdrop-filter: blur(8px) saturate(170%);
-    border: 1px solid oklch(0.55 0.08 255 / 14%);
-    border-radius: var(--radius-2xl);
+  /* Full-screen mobile nav — slightly denser glass, no edge border */
+  .nav-glass-panel {
+    background-color: var(--nav-overlay-bg);
   }
-  .dark .glass-card {
-    background-color: oklch(0.10 0.015 255 / 55%);
-    border-color: oklch(0.75 0.12 255 / 14%);
+
+  /* Reusable glass card — backdrop-filter defined outside @layer (see below) */
+  .glass-card {
+    background-color: var(--glass-section-bg);
+    border: 1px solid var(--glass-section-border);
+    border-radius: var(--radius-2xl);
+    /* Stronger body/meta contrast on translucent glass */
+    --muted-foreground: var(--glass-section-muted);
   }
 
   /* Full-bleed glass — edge-to-edge band; pair with .container-page inside */
@@ -476,12 +486,20 @@
 }
 
 /* ============================================================
-   Glass card — backdrop-filter fuera de @layer para que PostCSS
+   Glass surfaces — backdrop-filter fuera de @layer para que PostCSS
    no elimine la propiedad estándar (sin prefijo webkit).
    Chrome moderno requiere `backdrop-filter`, no `-webkit-backdrop-filter`.
    ============================================================ */
 .glass-card {
   backdrop-filter: blur(8px) saturate(170%);
+}
+
+.nav-glass {
+  backdrop-filter: blur(16px) saturate(170%);
+}
+
+.nav-glass-panel {
+  backdrop-filter: blur(20px) saturate(170%);
 }
 
 /* ============================================================
