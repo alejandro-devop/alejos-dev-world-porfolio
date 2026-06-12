@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import { defaultViewport } from "@/lib/motion";
 
 const TYPING_INTERVAL_MS = 78;
-const TYPING_DELAY_AFTER_AVATAR_MS = 3_000;
 const GLOW_INTERVAL_MS = 90;
+const GLOW_FIRST_DELAY_MS = 3_000;
 const GLOW_CYCLE_MS = 10_000;
 
 interface AnimatedHeroNameProps {
@@ -52,7 +52,7 @@ function AnimatedHeroNameInner({ name, canStart }: AnimatedHeroNameProps) {
 
     let typingTimer: number | undefined;
 
-    const delayTimer = window.setTimeout(() => {
+    const startTimer = window.setTimeout(() => {
       const { visibleCount: current, typingComplete } = progressRef.current;
 
       if (typingComplete || current >= chars.length) {
@@ -84,10 +84,10 @@ function AnimatedHeroNameInner({ name, canStart }: AnimatedHeroNameProps) {
           setIsTypingComplete(true);
         }
       }, TYPING_INTERVAL_MS);
-    }, TYPING_DELAY_AFTER_AVATAR_MS);
+    }, 0);
 
     return () => {
-      window.clearTimeout(delayTimer);
+      window.clearTimeout(startTimer);
       if (typingTimer) window.clearInterval(typingTimer);
     };
   }, [isInView, canStart, chars.length]);
@@ -97,6 +97,7 @@ function AnimatedHeroNameInner({ name, canStart }: AnimatedHeroNameProps) {
 
     let charTimer: number | undefined;
     let resetTimer: number | undefined;
+    let cycleTimer: number | undefined;
 
     const runGlowWave = () => {
       if (charTimer) window.clearInterval(charTimer);
@@ -117,11 +118,14 @@ function AnimatedHeroNameInner({ name, canStart }: AnimatedHeroNameProps) {
       }, GLOW_INTERVAL_MS);
     };
 
-    runGlowWave();
-    const cycleTimer = window.setInterval(runGlowWave, GLOW_CYCLE_MS);
+    const firstGlowTimer = window.setTimeout(() => {
+      runGlowWave();
+      cycleTimer = window.setInterval(runGlowWave, GLOW_CYCLE_MS);
+    }, GLOW_FIRST_DELAY_MS);
 
     return () => {
-      window.clearInterval(cycleTimer);
+      window.clearTimeout(firstGlowTimer);
+      if (cycleTimer) window.clearInterval(cycleTimer);
       if (charTimer) window.clearInterval(charTimer);
       if (resetTimer) window.clearTimeout(resetTimer);
     };
