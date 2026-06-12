@@ -14,10 +14,13 @@
  *  - Fallback (API error, empty payload, or no BACKEND_URL) → static JSON under src/data/{locale}/.
  */
 
+import { cache } from "react";
 import {
   getBackendBulkContentUrl,
   getBackendConfig,
+  getBackendSections,
   getContentFetchInit,
+  isBackendEnabled,
   isSectionBackendEnabled,
 } from "@/config/backend";
 import type {
@@ -90,6 +93,28 @@ async function fetchBulkSections<K extends ContentKey>(
 }
 
 /**
+ * One bulk API round-trip per locale per request.
+ * Dedupes layout, page, and generateMetadata calling getHero/getAbout/… separately.
+ */
+const loadBackendBulk = cache(
+  async (locale: Locale): Promise<Partial<ContentMap> | null> => {
+    if (!isBackendEnabled()) return null;
+
+    const sections = getBackendSections();
+
+    try {
+      return await fetchBulkSections(locale, sections);
+    } catch (error) {
+      console.warn(
+        `[content] Bulk API fetch failed (${locale}) — sections will fall back to static JSON.`,
+        error,
+      );
+      return null;
+    }
+  },
+);
+
+/**
  * Dynamically import a JSON data file by locale and content key.
  * Next.js statically analyses `import()` expressions, so the path must be
  * a string literal template — not a fully dynamic variable.
@@ -159,21 +184,14 @@ async function loadContent<K extends ContentKey>(
   key: K,
 ): Promise<ContentMap[K]> {
   if (isSectionBackendEnabled(key)) {
-    try {
-      const bulk = await fetchBulkSections(locale, [key]);
-      const fromApi = bulk[key];
-      if (isApiContentUsable(key, fromApi)) {
-        return fromApi;
-      }
-      if (process.env.NODE_ENV === "development") {
-        console.warn(
-          `[content] API "${key}" for "${locale}" is empty or incomplete — using static JSON.`,
-        );
-      }
-    } catch (error) {
+    const bulk = await loadBackendBulk(locale);
+    const fromApi = bulk?.[key];
+    if (isApiContentUsable(key, fromApi)) {
+      return fromApi;
+    }
+    if (process.env.NODE_ENV === "development" && bulk !== null) {
       console.warn(
-        `[content] API fetch failed for "${key}" (${locale}) — using static JSON.`,
-        error,
+        `[content] API "${key}" for "${locale}" is empty or incomplete — using static JSON.`,
       );
     }
   }

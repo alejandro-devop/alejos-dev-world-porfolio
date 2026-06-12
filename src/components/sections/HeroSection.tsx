@@ -45,13 +45,10 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
 
             <HeroIntro greeting={data.greeting} name={data.name} />
 
-            {/* Tagline */}
-            <motion.p
-              variants={fadeUp}
-              className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-2xl"
-            >
+            {/* Tagline — plain <p> so LCP paints on SSR (motion fade hides opacity:0) */}
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-2xl">
               {data.tagline}
-            </motion.p>
+            </p>
 
             {/* Sub-tagline */}
             <motion.p
