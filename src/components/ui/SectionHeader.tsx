@@ -44,7 +44,12 @@ export function SectionHeader({
         {heading}
       </h2>
       {description && (
-        <p className="mt-4 text-base text-muted-foreground max-w-2xl">
+        <p
+          className={cn(
+            "mt-4 text-base text-muted-foreground max-w-2xl",
+            centered && "mx-auto",
+          )}
+        >
           {description}
         </p>
       )}
