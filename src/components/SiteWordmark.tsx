@@ -8,11 +8,13 @@ export function SiteWordmark({ className }: SiteWordmarkProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-baseline gap-0.5 text-[22px] tracking-tight",
+        "inline-flex items-center gap-0.5 overflow-visible text-[22px] leading-none tracking-tight",
         className,
       )}
     >
-      <span className="font-semibold text-foreground">Alejo</span>
+      <span className="inline-block font-semibold leading-none text-foreground">
+        Alejo
+      </span>
       <span className="brand-wordmark-dev">Dev</span>
     </span>
   );

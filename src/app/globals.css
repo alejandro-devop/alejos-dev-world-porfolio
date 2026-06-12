@@ -428,11 +428,15 @@
 
   /* Site wordmark — Alejo + Dev gradient */
   .brand-wordmark-dev {
+    display: inline-block;
     font-family: var(--font-wordmark-display);
     font-weight: 800;
     font-size: 1.12em;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.035em;
     line-height: 1;
+    overflow: visible;
+    /* Outfit 800 + background-clip:text: the "v" ink overflows the content box */
+    padding-inline-end: 10px;
     background-image: linear-gradient(
       112deg,
       oklch(0.38 0.26 262) 0%,
