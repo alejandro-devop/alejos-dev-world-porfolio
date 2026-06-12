@@ -3,8 +3,12 @@
   "configurations": [
     {
       "name": "alejos-dev-world",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "PATH=/Users/jako/.nvm/versions/node/v22.14.0/bin:/usr/local/bin:/usr/bin:/bin",
+        "pnpm",
+        "dev"
+      ],
       "port": 3000
     }
   ]

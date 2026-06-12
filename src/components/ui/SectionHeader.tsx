@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
   id?: string;
-  label: string;
+  /** Eyebrow label above the heading; omit when it would repeat the heading. */
+  label?: string;
   heading: string;
   description?: string;
   className?: string;
@@ -34,9 +35,11 @@ export function SectionHeader({
       viewport={defaultViewport}
       className={cn(centered ? "text-center" : "", className)}
     >
-      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-        {label}
-      </p>
+      {label && (
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
+          {label}
+        </p>
+      )}
       <h2 id={id} className="font-bold text-foreground">
         {heading}
       </h2>

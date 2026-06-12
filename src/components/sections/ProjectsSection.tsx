@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, stagger, scaleIn, defaultViewport } from "@/lib/motion";
+import { fadeUp, scaleIn, defaultViewport } from "@/lib/motion";
 import type { ProjectsData, Project, ProjectStatus } from "@/types/content";
 import type { Locale } from "@/config/i18n";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Carousel } from "@/components/ui/Carousel";
 
 interface ProjectsSectionProps {
   data: ProjectsData;
@@ -192,8 +193,11 @@ function ProjectCard({
 
 export function ProjectsSection({ data, locale }: ProjectsSectionProps) {
   const projects = data.filter(isValidProject);
-  const featured = projects.filter((p) => p.featured);
-  const rest = projects.filter((p) => !p.featured);
+  // Featured projects lead the carousel.
+  const ordered = [
+    ...projects.filter((p) => p.featured),
+    ...projects.filter((p) => !p.featured),
+  ];
   const isEmpty = projects.length === 0;
 
   return (
@@ -228,65 +232,15 @@ export function ProjectsSection({ data, locale }: ProjectsSectionProps) {
             : "No projects have been added yet."}
         </motion.p>
       ) : (
-        <>
-          {featured.length > 0 && (
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-            >
-              {featured.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  locale={locale}
-                />
-              ))}
-            </motion.div>
-          )}
-
-          {rest.length > 0 &&
-            (featured.length > 0 ? (
-              <>
-                <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                  {locale === "es" ? "Otros proyectos" : "Other projects"}
-                </p>
-                <motion.div
-                  variants={stagger}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={defaultViewport}
-                  className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4"
-                >
-                  {rest.map((project) => (
-                    <ProjectCard
-                      key={project.id}
-                      project={project}
-                      locale={locale}
-                    />
-                  ))}
-                </motion.div>
-              </>
-            ) : (
-              <motion.div
-                variants={stagger}
-                initial="hidden"
-                whileInView="visible"
-                viewport={defaultViewport}
-                className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-              >
-                {rest.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    locale={locale}
-                  />
-                ))}
-              </motion.div>
-            ))}
-        </>
+        <Carousel
+          locale={locale}
+          className="mt-12"
+          itemClassName="w-[85%] sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-2.5rem)/3)]"
+        >
+          {ordered.map((project) => (
+            <ProjectCard key={project.id} project={project} locale={locale} />
+          ))}
+        </Carousel>
       )}
         </div>
       </div>

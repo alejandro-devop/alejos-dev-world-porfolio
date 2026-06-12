@@ -305,6 +305,14 @@
     padding-block: var(--spacing-section);
   }
 
+  /* Hide scrollbar but keep scrollability (horizontal carousels) */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* ── Background Effects ─────────────────────────────────── */
 
   /* Wave stroke color — rich blue-indigo, adapts to theme */

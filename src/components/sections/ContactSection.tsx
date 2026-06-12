@@ -35,18 +35,18 @@ const COPY = {
     label: "Contacto",
     heading: "Trabajemos juntos",
     description:
-      "¿Tenés un proyecto en mente o simplemente querés saludar? Enviame un mensaje.",
+      "¿Tienes un proyecto en mente o simplemente quieres saludar? Envíame un mensaje.",
     nameLabel: "Nombre",
     namePlaceholder: "Tu nombre",
-    emailLabel: "Email",
-    emailPlaceholder: "tu@email.com",
+    emailLabel: "Correo electrónico",
+    emailPlaceholder: "tu@correo.com",
     messageLabel: "Mensaje",
-    messagePlaceholder: "Contame sobre tu proyecto…",
+    messagePlaceholder: "Cuéntame sobre tu proyecto…",
     submit: "Enviar mensaje",
     sending: "Enviando…",
     successHeading: "¡Mensaje enviado!",
     successBody: "Gracias por escribirme. Te responderé en 24–48 horas.",
-    orEmail: "O escribime directo",
+    orEmail: "O escríbeme directamente",
   },
 } as const;
 

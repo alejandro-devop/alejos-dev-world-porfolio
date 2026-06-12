@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, stagger, scaleIn, defaultViewport } from "@/lib/motion";
+import { fadeUp, scaleIn, defaultViewport } from "@/lib/motion";
 import type { ServicesData, Service } from "@/types/content";
 import type { Locale } from "@/config/i18n";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Carousel } from "@/components/ui/Carousel";
 
 // Inline SVG map — avoids an icon library dependency.
 const ICONS: Record<string, React.ReactNode> = {
@@ -177,17 +178,15 @@ export function ServicesSection({ data, locale }: ServicesSectionProps) {
                 : "No services have been added yet."}
             </motion.p>
           ) : (
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-5"
+            <Carousel
+              locale={locale}
+              className="mt-12"
+              itemClassName="w-[85%] sm:w-[calc((100%-1.25rem)/2)]"
             >
               {services.map((service) => (
                 <ServiceCard key={service.id} service={service} />
               ))}
-            </motion.div>
+            </Carousel>
           )}
         </div>
       </div>

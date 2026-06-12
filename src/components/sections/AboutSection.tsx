@@ -31,11 +31,7 @@ export function AboutSection({ data, locale }: AboutSectionProps) {
     >
       <div className="glass-card glass-card-bleed w-full">
         <div className="container-page py-12 md:py-16">
-          <SectionHeader
-            id="about-heading"
-            label={locale === "es" ? "Sobre mí" : "About"}
-            heading={data.headline}
-          />
+          <SectionHeader id="about-heading" heading={data.headline} />
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-16 items-start">
             {/* Paragraphs */}

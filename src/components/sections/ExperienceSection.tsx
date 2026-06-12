@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, fadeIn, stagger, defaultViewport } from "@/lib/motion";
 import type { ExperienceData, ExperienceEntry } from "@/types/content";
@@ -35,6 +36,7 @@ function ExperienceCard({
 }) {
   const startLabel = formatDate(entry.startDate, locale);
   const endLabel = formatDate(entry.endDate, locale);
+  const [showTech, setShowTech] = useState(false);
 
   return (
     <motion.div variants={fadeUp} className="relative pl-8 md:pl-10">
@@ -148,17 +150,45 @@ function ExperienceCard({
           ))}
         </ul>
 
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-1.5 pt-1">
-          {entry.technologies.map((tech) => (
-            <span
-              key={tech}
-              className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground font-medium"
+        {/* Tech tags (collapsed behind a count badge) */}
+        {entry.technologies.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            <button
+              type="button"
+              onClick={() => setShowTech((v) => !v)}
+              aria-expanded={showTech}
+              className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground font-medium inline-flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer"
             >
-              {tech}
-            </span>
-          ))}
-        </div>
+              {entry.technologies.length} skills
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+                className={cn(
+                  "transition-transform",
+                  showTech && "rotate-180",
+                )}
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            {showTech &&
+              entry.technologies.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground font-medium"
+                >
+                  {tech}
+                </span>
+              ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );
