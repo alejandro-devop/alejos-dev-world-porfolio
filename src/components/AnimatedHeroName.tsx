@@ -5,16 +5,17 @@ import { useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { defaultViewport } from "@/lib/motion";
 
-const TYPING_INTERVAL_MS = 42;
+const TYPING_INTERVAL_MS = 78;
+const TYPING_DELAY_AFTER_AVATAR_MS = 3_000;
 const GLOW_INTERVAL_MS = 90;
-const GLOW_FIRST_DELAY_MS = 3_000;
 const GLOW_CYCLE_MS = 10_000;
 
 interface AnimatedHeroNameProps {
   name: string;
+  canStart?: boolean;
 }
 
-export function AnimatedHeroName({ name }: AnimatedHeroNameProps) {
+export function AnimatedHeroName({ name, canStart = true }: AnimatedHeroNameProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
@@ -25,10 +26,12 @@ export function AnimatedHeroName({ name }: AnimatedHeroNameProps) {
     );
   }
 
-  return <AnimatedHeroNameInner name={name} />;
+  return (
+    <AnimatedHeroNameInner name={name} canStart={canStart} />
+  );
 }
 
-function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
+function AnimatedHeroNameInner({ name, canStart }: AnimatedHeroNameProps) {
   const ref = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(ref, defaultViewport);
   const progressRef = useRef({ visibleCount: 0, typingComplete: false });
@@ -45,11 +48,11 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
   }, [visibleCount, isTypingComplete]);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || !canStart) return;
 
     let typingTimer: number | undefined;
 
-    const startTimer = window.setTimeout(() => {
+    const delayTimer = window.setTimeout(() => {
       const { visibleCount: current, typingComplete } = progressRef.current;
 
       if (typingComplete || current >= chars.length) {
@@ -81,20 +84,19 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
           setIsTypingComplete(true);
         }
       }, TYPING_INTERVAL_MS);
-    }, 0);
+    }, TYPING_DELAY_AFTER_AVATAR_MS);
 
     return () => {
-      window.clearTimeout(startTimer);
+      window.clearTimeout(delayTimer);
       if (typingTimer) window.clearInterval(typingTimer);
     };
-  }, [isInView, chars.length]);
+  }, [isInView, canStart, chars.length]);
 
   useEffect(() => {
     if (!isInView || !isTypingComplete) return;
 
     let charTimer: number | undefined;
     let resetTimer: number | undefined;
-    let cycleTimer: number | undefined;
 
     const runGlowWave = () => {
       if (charTimer) window.clearInterval(charTimer);
@@ -115,14 +117,11 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
       }, GLOW_INTERVAL_MS);
     };
 
-    const firstGlowTimer = window.setTimeout(() => {
-      runGlowWave();
-      cycleTimer = window.setInterval(runGlowWave, GLOW_CYCLE_MS);
-    }, GLOW_FIRST_DELAY_MS);
+    runGlowWave();
+    const cycleTimer = window.setInterval(runGlowWave, GLOW_CYCLE_MS);
 
     return () => {
-      window.clearTimeout(firstGlowTimer);
-      if (cycleTimer) window.clearInterval(cycleTimer);
+      window.clearInterval(cycleTimer);
       if (charTimer) window.clearInterval(charTimer);
       if (resetTimer) window.clearTimeout(resetTimer);
     };
@@ -131,10 +130,11 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
   return (
     <h1 ref={ref} className="font-bold tracking-tight" aria-label={name}>
       <span aria-hidden>
-        {chars.slice(0, visibleCount).map((char, index) => (
+        {chars.map((char, index) => (
           <span
             key={`${index}-${char}`}
             className={cn(
+              index >= visibleCount && "invisible",
               "inline transition-[color,text-shadow] duration-100",
               isInView && glowIndex === index && "hero-name-glow",
             )}

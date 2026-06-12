@@ -76,6 +76,16 @@ export const scaleIn: Variants = {
   },
 };
 
+/** Grow from center — avatars, badges, emphasis reveals. */
+export const growIn: Variants = {
+  hidden: { opacity: 0, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.55, ease: [0.34, 1.56, 0.64, 1] },
+  },
+};
+
 // ---------------------------------------------------------------------------
 // Page transition
 // ---------------------------------------------------------------------------

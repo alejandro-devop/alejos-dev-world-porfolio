@@ -5,7 +5,7 @@ import { fadeUp, stagger } from "@/lib/motion";
 import type { HeroData } from "@/types/content";
 import type { Locale } from "@/config/i18n";
 import { cn } from "@/lib/utils";
-import { AnimatedHeroName } from "@/components/AnimatedHeroName";
+import { HeroIntro } from "@/components/HeroIntro";
 
 interface HeroSectionProps {
   data: HeroData;
@@ -43,16 +43,7 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
               </motion.div>
             )}
 
-            {/* Greeting + name */}
-            <div className="space-y-1">
-              <motion.p
-                variants={fadeUp}
-                className="text-base text-muted-foreground font-medium"
-              >
-                {data.greeting}
-              </motion.p>
-              <AnimatedHeroName key={data.name} name={data.name} />
-            </div>
+            <HeroIntro greeting={data.greeting} name={data.name} />
 
             {/* Tagline */}
             <motion.p

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, defaultLocale } from "@/config/i18n";
 import type { Locale } from "@/config/i18n";
@@ -24,6 +24,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const outfitDisplay = Outfit({
+  variable: "--font-outfit-display",
+  subsets: ["latin"],
+  weight: ["800"],
 });
 
 export async function generateStaticParams() {
@@ -129,7 +135,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-background text-foreground`}
+      className={`${geistSans.variable} ${geistMono.variable} ${outfitDisplay.variable} h-full antialiased bg-background text-foreground`}
       suppressHydrationWarning
     >
       <head>

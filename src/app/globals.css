@@ -39,6 +39,8 @@
   /* Typography */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-wordmark-display: var(--font-outfit-display), var(--font-geist-sans),
+    ui-sans-serif, system-ui, sans-serif;
 
   /* Radius scale */
   --radius-xs: 4px;
@@ -380,25 +382,50 @@
     animation: fx-wave-left 20s ease-in-out infinite;
   }
 
+  /* Hero avatar — blue ring aligned with background effects */
+  .hero-avatar {
+    border: 3px solid oklch(0.52 0.16 255 / 70%);
+    box-shadow:
+      0 0 0 1px oklch(0.55 0.08 255 / 12%),
+      0 8px 24px oklch(0.4 0.12 255 / 18%);
+  }
+
+  .dark .hero-avatar {
+    border-color: oklch(0.72 0.16 255 / 75%);
+    box-shadow:
+      0 0 0 1px oklch(0.75 0.12 255 / 15%),
+      0 8px 28px oklch(0.3 0.1 255 / 35%);
+  }
+
   /* Site wordmark — Alejo + Dev gradient */
   .brand-wordmark-dev {
+    font-family: var(--font-wordmark-display);
+    font-weight: 800;
+    font-size: 1.12em;
+    letter-spacing: -0.045em;
+    line-height: 1;
     background-image: linear-gradient(
-      118deg,
-      oklch(0.5 0.21 250) 0%,
-      oklch(0.52 0.2 255) 48%,
-      oklch(0.56 0.16 195) 100%
+      112deg,
+      oklch(0.38 0.26 262) 0%,
+      oklch(0.46 0.24 255) 38%,
+      oklch(0.5 0.22 235) 68%,
+      oklch(0.54 0.2 198) 100%
     );
+    background-size: 140% 100%;
+    background-position: 0% 50%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
   .dark .brand-wordmark-dev {
     background-image: linear-gradient(
-      118deg,
-      oklch(0.7 0.18 250) 0%,
-      oklch(0.74 0.22 255) 50%,
-      oklch(0.68 0.14 195) 100%
+      112deg,
+      oklch(0.72 0.2 255) 0%,
+      oklch(0.8 0.22 250) 42%,
+      oklch(0.76 0.18 220) 72%,
+      oklch(0.7 0.16 195) 100%
     );
   }
 
