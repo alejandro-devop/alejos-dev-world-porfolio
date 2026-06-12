@@ -380,6 +380,28 @@
     animation: fx-wave-left 20s ease-in-out infinite;
   }
 
+  /* Site wordmark — Alejo + Dev gradient */
+  .brand-wordmark-dev {
+    background-image: linear-gradient(
+      118deg,
+      oklch(0.5 0.21 250) 0%,
+      oklch(0.52 0.2 255) 48%,
+      oklch(0.56 0.16 195) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .dark .brand-wordmark-dev {
+    background-image: linear-gradient(
+      118deg,
+      oklch(0.7 0.18 250) 0%,
+      oklch(0.74 0.22 255) 50%,
+      oklch(0.68 0.14 195) 100%
+    );
+  }
+
   /* Hero name — typewriter cursor + glow wave */
   .hero-name-cursor {
     display: inline-block;
@@ -389,6 +411,10 @@
     vertical-align: -0.06em;
     background-color: oklch(0.52 0.14 255);
     animation: hero-name-cursor-blink 1.06s step-end infinite;
+  }
+
+  .hero-name-cursor--paused {
+    animation-play-state: paused;
   }
 
   .hero-name-glow {

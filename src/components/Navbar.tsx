@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
+import { SiteWordmark } from "@/components/SiteWordmark";
 import { slideInLeft, stagger } from "@/lib/motion";
 import type { Locale } from "@/config/i18n";
 
@@ -80,10 +81,10 @@ export function Navbar({ locale }: NavbarProps) {
           {/* Logo / wordmark */}
           <Link
             href={`/${locale}`}
-            className="text-[15px] font-semibold tracking-tight hover:opacity-70 transition-opacity"
+            className="hover:opacity-80 transition-opacity"
             aria-label="Go to homepage"
           >
-            alejo<span className="text-muted-foreground">.</span>dev
+            <SiteWordmark />
           </Link>
 
           {/* Desktop links */}

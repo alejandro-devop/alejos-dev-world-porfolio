@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { defaultViewport } from "@/lib/motion";
 
 const TYPING_INTERVAL_MS = 42;
 const GLOW_INTERVAL_MS = 90;
@@ -29,7 +30,8 @@ export function AnimatedHeroName({ name }: AnimatedHeroNameProps) {
 
 function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
   const ref = useRef<HTMLHeadingElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px 0px" });
+  const isInView = useInView(ref, defaultViewport);
+  const progressRef = useRef({ visibleCount: 0, typingComplete: false });
 
   const chars = Array.from(name);
   const [visibleCount, setVisibleCount] = useState(0);
@@ -38,22 +40,44 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
   const [glowIndex, setGlowIndex] = useState(-1);
 
   useEffect(() => {
+    progressRef.current.visibleCount = visibleCount;
+    progressRef.current.typingComplete = isTypingComplete;
+  }, [visibleCount, isTypingComplete]);
+
+  useEffect(() => {
     if (!isInView) return;
 
-    let typingTimer: ReturnType<typeof setInterval> | undefined;
+    let typingTimer: number | undefined;
 
     const startTimer = window.setTimeout(() => {
-      setShowCursor(true);
-      setVisibleCount(1);
+      const { visibleCount: current, typingComplete } = progressRef.current;
 
-      let index = 1;
+      if (typingComplete || current >= chars.length) {
+        if (!typingComplete) {
+          setShowCursor(true);
+          setVisibleCount(chars.length);
+          setIsTypingComplete(true);
+        }
+        return;
+      }
+
+      setShowCursor(true);
+
+      if (current === 0) {
+        setVisibleCount(1);
+        progressRef.current.visibleCount = 1;
+      }
+
+      let index = Math.max(progressRef.current.visibleCount, 1);
+
       typingTimer = window.setInterval(() => {
         index += 1;
+        progressRef.current.visibleCount = index;
         setVisibleCount(index);
 
         if (index >= chars.length) {
           if (typingTimer) window.clearInterval(typingTimer);
-          typingTimer = undefined;
+          progressRef.current.typingComplete = true;
           setIsTypingComplete(true);
         }
       }, TYPING_INTERVAL_MS);
@@ -66,11 +90,11 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
   }, [isInView, chars.length]);
 
   useEffect(() => {
-    if (!isTypingComplete) return;
+    if (!isInView || !isTypingComplete) return;
 
-    let charTimer: ReturnType<typeof setInterval> | undefined;
-    let resetTimer: ReturnType<typeof setTimeout> | undefined;
-    let cycleTimer: ReturnType<typeof setInterval> | undefined;
+    let charTimer: number | undefined;
+    let resetTimer: number | undefined;
+    let cycleTimer: number | undefined;
 
     const runGlowWave = () => {
       if (charTimer) window.clearInterval(charTimer);
@@ -82,7 +106,7 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
       charTimer = window.setInterval(() => {
         index += 1;
         if (index >= chars.length) {
-          window.clearInterval(charTimer);
+          if (charTimer) window.clearInterval(charTimer);
           charTimer = undefined;
           resetTimer = window.setTimeout(() => setGlowIndex(-1), GLOW_INTERVAL_MS);
         } else {
@@ -102,7 +126,7 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
       if (charTimer) window.clearInterval(charTimer);
       if (resetTimer) window.clearTimeout(resetTimer);
     };
-  }, [isTypingComplete, chars.length]);
+  }, [isInView, isTypingComplete, chars.length]);
 
   return (
     <h1 ref={ref} className="font-bold tracking-tight" aria-label={name}>
@@ -112,13 +136,18 @@ function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
             key={`${index}-${char}`}
             className={cn(
               "inline transition-[color,text-shadow] duration-100",
-              glowIndex === index && "hero-name-glow",
+              isInView && glowIndex === index && "hero-name-glow",
             )}
           >
             {char === " " ? "\u00a0" : char}
           </span>
         ))}
-        {showCursor && <span className="hero-name-cursor" aria-hidden />}
+        {showCursor && (
+          <span
+            className={cn("hero-name-cursor", !isInView && "hero-name-cursor--paused")}
+            aria-hidden
+          />
+        )}
       </span>
     </h1>
   );

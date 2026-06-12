@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { SiteWordmark } from "@/components/SiteWordmark";
 import type { Locale } from "@/config/i18n";
 import type { Link as ContentLink } from "@/types/content";
 
@@ -44,9 +45,9 @@ export function Footer({ locale, socialLinks = [] }: FooterProps) {
           <div className="space-y-3">
             <Link
               href={`/${locale}`}
-              className="text-[15px] font-semibold tracking-tight hover:opacity-70 transition-opacity"
+              className="hover:opacity-80 transition-opacity"
             >
-              alejo<span className="text-muted-foreground">.</span>dev
+              <SiteWordmark />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-[22ch]">
               {locale === "es"
