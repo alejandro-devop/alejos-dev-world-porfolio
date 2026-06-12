@@ -259,21 +259,19 @@
     }
   }
 
+  /* Shared 2px band edges + soft shadow (nav bar + section glass) */
+  .nav-glass,
+  .glass-card.glass-card-bleed {
+    border-top: 2px solid var(--glass-edge);
+    border-bottom: 2px solid var(--glass-edge);
+    box-shadow:
+      0 10px 28px -16px var(--glass-edge-shadow),
+      0 -10px 28px -16px var(--glass-edge-shadow);
+  }
+
   /* Navbar glass — backdrop-filter defined outside @layer (see below) */
   .nav-glass {
     background-color: var(--nav-bg);
-    border-bottom: 2px solid var(--glass-edge);
-    box-shadow: 0 10px 28px -16px var(--glass-edge-shadow);
-  }
-
-  /* Desktop: top edge too when nav sits below hero or when sticky */
-  @media (min-width: 768px) {
-    .nav-glass {
-      border-top: 2px solid var(--glass-edge);
-      box-shadow:
-        0 10px 28px -16px var(--glass-edge-shadow),
-        0 -10px 28px -16px var(--glass-edge-shadow);
-    }
   }
 
   /* Full-screen mobile nav — slightly denser glass, no edge border */
@@ -293,14 +291,6 @@
   .glass-card-bleed {
     border-radius: 0;
     border-inline: none;
-  }
-
-  .glass-card.glass-card-bleed {
-    border-top: 2px solid var(--glass-edge);
-    border-bottom: 2px solid var(--glass-edge);
-    box-shadow:
-      0 10px 28px -16px var(--glass-edge-shadow),
-      0 -10px 28px -16px var(--glass-edge-shadow);
   }
 
   /* Subtle card border */

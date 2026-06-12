@@ -77,20 +77,85 @@ export function Navbar({
         style={{ height: "var(--nav-height)" }}
       >
         <nav
-          className="container-page h-full flex items-center justify-between"
+          className="container-page h-full flex items-center gap-2"
           aria-label="Main navigation"
         >
+          {/* Hamburger — mobile only */}
+          <button
+            type="button"
+            className={cn(
+              "md:hidden size-9 shrink-0 rounded-full flex items-center justify-center",
+              "text-foreground hover:text-foreground hover:bg-foreground/8",
+              "transition-colors duration-150",
+            )}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span className="sr-only">{menuOpen ? "Close" : "Menu"}</span>
+            {/* Animated bars */}
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+              <motion.line
+                x1="2"
+                y1="5"
+                x2="16"
+                y2="5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                animate={
+                  menuOpen
+                    ? { y1: 9, y2: 9, rotate: 45 }
+                    : { y1: 5, y2: 5, rotate: 0 }
+                }
+                style={{ originX: "9px", originY: "9px" }}
+                transition={{ duration: 0.2 }}
+              />
+              <motion.line
+                x1="2"
+                y1="9"
+                x2="16"
+                y2="9"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                animate={{ opacity: menuOpen ? 0 : 1 }}
+                transition={{ duration: 0.15 }}
+              />
+              <motion.line
+                x1="2"
+                y1="13"
+                x2="16"
+                y2="13"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                animate={
+                  menuOpen
+                    ? { y1: 9, y2: 9, rotate: -45 }
+                    : { y1: 13, y2: 13, rotate: 0 }
+                }
+                style={{ originX: "9px", originY: "9px" }}
+                transition={{ duration: 0.2 }}
+              />
+            </svg>
+          </button>
+
           {/* Logo / wordmark */}
           <Link
             href={`/${locale}`}
-            className="hover:opacity-80 transition-opacity"
+            className="hover:opacity-80 transition-opacity shrink-0"
             aria-label="Go to homepage"
           >
             <SiteWordmark />
           </Link>
 
           {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-1" role="list">
+          <ul
+            className="hidden md:flex flex-1 items-center justify-center gap-1"
+            role="list"
+          >
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <a
@@ -107,75 +172,13 @@ export function Navbar({
             ))}
           </ul>
 
-          {/* Right controls */}
-          <div className="flex items-center gap-1">
+          {/* Right controls — theme, then language */}
+          <div className="flex items-center gap-1 ml-auto">
+            <ThemeToggle />
             <LanguageSwitcher
               currentLocale={locale}
               className="[&_button:not([aria-current])]:text-foreground/85 [&_button:not([aria-current])]:hover:text-foreground [&_button:not([aria-current])]:hover:bg-foreground/8"
             />
-            <ThemeToggle className="text-foreground hover:text-foreground hover:bg-foreground/8" />
-
-            {/* Hamburger — mobile only */}
-            <button
-              type="button"
-              className={cn(
-                "md:hidden size-9 rounded-full flex items-center justify-center",
-                "text-foreground hover:text-foreground hover:bg-foreground/8",
-                "transition-colors duration-150",
-              )}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              onClick={() => setMenuOpen((o) => !o)}
-            >
-              <span className="sr-only">{menuOpen ? "Close" : "Menu"}</span>
-              {/* Animated bars */}
-              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-                <motion.line
-                  x1="2"
-                  y1="5"
-                  x2="16"
-                  y2="5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  animate={
-                    menuOpen
-                      ? { y1: 9, y2: 9, rotate: 45 }
-                      : { y1: 5, y2: 5, rotate: 0 }
-                  }
-                  style={{ originX: "9px", originY: "9px" }}
-                  transition={{ duration: 0.2 }}
-                />
-                <motion.line
-                  x1="2"
-                  y1="9"
-                  x2="16"
-                  y2="9"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  animate={{ opacity: menuOpen ? 0 : 1 }}
-                  transition={{ duration: 0.15 }}
-                />
-                <motion.line
-                  x1="2"
-                  y1="13"
-                  x2="16"
-                  y2="13"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  animate={
-                    menuOpen
-                      ? { y1: 9, y2: 9, rotate: -45 }
-                      : { y1: 13, y2: 13, rotate: 0 }
-                  }
-                  style={{ originX: "9px", originY: "9px" }}
-                  transition={{ duration: 0.2 }}
-                />
-              </svg>
-            </button>
           </div>
         </nav>
       </header>
