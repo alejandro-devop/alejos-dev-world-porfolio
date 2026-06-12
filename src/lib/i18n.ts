@@ -83,6 +83,11 @@ export function buildLocalePath(pathname: string, locale: Locale): string {
   return `/${locale}${clean === "/" ? "" : clean}`;
 }
 
+/** True when pathname is the locale homepage (e.g. `/en` or `/es/`). */
+export function isHomePath(pathname: string): boolean {
+  return stripLocalePrefix(pathname) === "/";
+}
+
 // ---------------------------------------------------------------------------
 // Validation
 // ---------------------------------------------------------------------------

@@ -31,24 +31,25 @@ const NAV_LINKS: NavLink[] = [
 // ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
+type NavbarPosition = "fixed" | "sticky";
+
 interface NavbarProps {
   locale: Locale;
+  /** `fixed` — layout top bar; `sticky` — homepage desktop bar below hero */
+  position?: NavbarPosition;
+  className?: string;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
-export function Navbar({ locale }: NavbarProps) {
+export function Navbar({
+  locale,
+  position = "fixed",
+  className,
+}: NavbarProps) {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // Shadow the nav on scroll
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
 
   // Close mobile menu on route change
   useEffect(() => setMenuOpen(false), [pathname]);
@@ -68,9 +69,10 @@ export function Navbar({ locale }: NavbarProps) {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 nav-glass",
-          "transition-shadow duration-300",
-          scrolled && "shadow-sm",
+          "inset-x-0 top-0 z-50 nav-glass",
+          position === "fixed" && "fixed",
+          position === "sticky" && "sticky",
+          className,
         )}
         style={{ height: "var(--nav-height)" }}
       >

@@ -19,7 +19,7 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
       aria-label="Hero"
       className={cn(
         "relative flex flex-col items-center justify-center text-center",
-        "min-h-[calc(100svh-var(--nav-height))]",
+        "min-h-[calc(100svh-var(--nav-height))] md:min-h-svh",
         "section-spacing w-full",
         "overflow-hidden",
       )}

@@ -19,6 +19,7 @@ import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { Navbar } from "@/components/Navbar";
 
 export default async function HomePage({ params }: PageProps) {
   const { locale: rawLocale } = await params;
@@ -46,6 +47,11 @@ export default async function HomePage({ params }: PageProps) {
   return (
     <>
       <HeroSection data={hero} locale={locale} />
+      <Navbar
+        locale={locale}
+        position="sticky"
+        className="hidden md:block"
+      />
       <AboutSection data={about} locale={locale} />
       <SkillsSection data={skills} locale={locale} />
       <ExperienceSection data={experience} locale={locale} />
