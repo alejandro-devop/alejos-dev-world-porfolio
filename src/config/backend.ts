@@ -74,7 +74,7 @@ export function normalizeBackendUrl(raw: string): string {
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);
     throw new Error(
-      `[backend] Invalid BACKEND_URL "${raw}" (${detail}). Expected: https://alejos-admin-api-wqpmywszuq-uc.a.run.app`,
+      `[backend] Invalid BACKEND_URL "${raw}" (${detail}). Check the BACKEND_URL value in your .env.local file.`,
     );
   }
 }
