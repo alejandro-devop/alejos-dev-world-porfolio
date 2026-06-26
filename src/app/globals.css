@@ -241,6 +241,11 @@
    Utility classes
    ============================================================ */
 @layer utilities {
+  /* Offset fixed navbar — avoid pt-[var(--nav-height)] (Turbopack/Tailwind HMR corruption) */
+  .pt-nav {
+    padding-top: var(--nav-height);
+  }
+
   /* Max-width container with responsive padding */
   .container-page {
     width: 100%;

@@ -1,0 +1,689 @@
+{
+  "nodes": [
+    {
+      "id": "alejos-dev-world",
+      "label": "alejos-dev-world Portfolio",
+      "type": "component",
+      "source_file": "AGENTS.md",
+      "source_location": "line 7",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "framework": "Next.js App Router",
+        "bilingual": true,
+        "locales": [
+          "en",
+          "es"
+        ]
+      }
+    },
+    {
+      "id": "nextjs-app-router",
+      "label": "Next.js App Router",
+      "type": "technology",
+      "source_file": "AGENTS.md",
+      "source_location": "line 9",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "admin-api",
+      "label": "Admin API",
+      "type": "component",
+      "source_file": "AGENTS.md",
+      "source_location": "line 13",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "repo": "alejos-dev-world-admin"
+      }
+    },
+    {
+      "id": "content-loaders",
+      "label": "Content Loaders",
+      "type": "module",
+      "source_file": "AGENTS.md",
+      "source_location": "line 17",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "functions": [
+          "getHero",
+          "getAbout"
+        ],
+        "file": "src/lib/content.ts"
+      }
+    },
+    {
+      "id": "content-ts",
+      "label": "src/lib/content.ts",
+      "type": "file",
+      "source_file": "AGENTS.md",
+      "source_location": "line 17",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "data-index-ts",
+      "label": "src/data/index.ts",
+      "type": "file",
+      "source_file": "AGENTS.md",
+      "source_location": "line 17",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "backend-config-ts",
+      "label": "src/config/backend.ts",
+      "type": "file",
+      "source_file": "AGENTS.md",
+      "source_location": "line 18",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "types-content-ts",
+      "label": "src/types/content.ts",
+      "type": "file",
+      "source_file": "AGENTS.md",
+      "source_location": "line 19",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "env-local",
+      "label": ".env.local",
+      "type": "file",
+      "source_file": "AGENTS.md",
+      "source_location": "line 20",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "revalidate-route",
+      "label": "Revalidate Route",
+      "type": "module",
+      "source_file": "AGENTS.md",
+      "source_location": "line 21",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "endpoint": "POST /api/revalidate",
+        "file": "src/app/api/revalidate/route.ts"
+      }
+    },
+    {
+      "id": "backend-url-env",
+      "label": "BACKEND_URL Env Var",
+      "type": "concept",
+      "source_file": "AGENTS.md",
+      "source_location": "line 25",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "backend-sections-env",
+      "label": "BACKEND_SECTIONS Env Var",
+      "type": "concept",
+      "source_file": "AGENTS.md",
+      "source_location": "line 25",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "default_sections": [
+          "hero",
+          "about",
+          "skills",
+          "experience",
+          "projects",
+          "services",
+          "testimonials"
+        ]
+      }
+    },
+    {
+      "id": "fallback-json",
+      "label": "Fallback JSON Files",
+      "type": "concept",
+      "source_file": "AGENTS.md",
+      "source_location": "line 26",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "path": "src/data/{locale}/{section}.json",
+        "note": "testimonials has no fallback"
+      }
+    },
+    {
+      "id": "isr-cache",
+      "label": "ISR Cache Strategy",
+      "type": "concept",
+      "source_file": "AGENTS.md",
+      "source_location": "line 35",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "prod_revalidate": "60s",
+        "cache_tags": "portfolio-content-{locale}-{section}"
+      }
+    },
+    {
+      "id": "home-page",
+      "label": "Home Page",
+      "type": "component",
+      "source_file": "AGENTS.md",
+      "source_location": "line 40",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "file": "src/app/[locale]/page.tsx",
+        "sections": [
+          "Hero",
+          "About",
+          "Skills",
+          "Experience",
+          "Projects",
+          "Services",
+          "Testimonials",
+          "Contact"
+        ]
+      }
+    },
+    {
+      "id": "blog-section",
+      "label": "Blog Section",
+      "type": "component",
+      "source_file": "AGENTS.md",
+      "source_location": "line 41",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "path": "src/app/[locale]/blog/",
+        "status": "hidden in nav/home"
+      }
+    },
+    {
+      "id": "i18n-config",
+      "label": "i18n Config",
+      "type": "module",
+      "source_file": "AGENTS.md",
+      "source_location": "line 43",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "file": "src/config/i18n.ts",
+        "locales": [
+          "en",
+          "es"
+        ]
+      }
+    },
+    {
+      "id": "pnpm",
+      "label": "pnpm Package Manager",
+      "type": "tool",
+      "source_file": "AGENTS.md",
+      "source_location": "line 50",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "design-md",
+      "label": "DESIGN.md",
+      "type": "file",
+      "source_file": "AGENTS.md",
+      "source_location": "line 58",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "backend-rollout-mdc",
+      "label": "Backend Rollout MDC",
+      "type": "file",
+      "source_file": "AGENTS.md",
+      "source_location": "line 62",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "path": ".cursor/rules/portfolio-backend-rollout.mdc",
+        "next_section": "seo"
+      }
+    },
+    {
+      "id": "glass-card-class",
+      "label": ".glass-card CSS Class",
+      "type": "concept",
+      "source_file": "DESIGN.md",
+      "source_location": "line 7",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "requires": "backdrop-filter",
+        "defined_in": "src/app/globals.css"
+      }
+    },
+    {
+      "id": "globals-css",
+      "label": "src/app/globals.css",
+      "type": "file",
+      "source_file": "DESIGN.md",
+      "source_location": "line 9",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "backdrop-filter",
+      "label": "backdrop-filter CSS",
+      "type": "concept",
+      "source_file": "DESIGN.md",
+      "source_location": "line 6",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "tailwind_note": "Tailwind 4 compiles to -webkit-backdrop-filter only"
+      }
+    },
+    {
+      "id": "background-effects-component",
+      "label": "BackgroundEffects Component",
+      "type": "component",
+      "source_file": "DESIGN.md",
+      "source_location": "line 68",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "file": "src/components/BackgroundEffects.tsx",
+        "z_index": 0,
+        "position": "fixed"
+      }
+    },
+    {
+      "id": "orbs-layer",
+      "label": "Orbs Background Layer",
+      "type": "concept",
+      "source_file": "DESIGN.md",
+      "source_location": "line 73",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "type": "radial gradients",
+        "animation": "CSS float animation"
+      }
+    },
+    {
+      "id": "waves-layer",
+      "label": "Waves Background Layer",
+      "type": "concept",
+      "source_file": "DESIGN.md",
+      "source_location": "line 74",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "type": "SVG paths",
+        "groups": 4,
+        "distribution": [
+          "12%",
+          "34%",
+          "57%",
+          "78%"
+        ]
+      }
+    },
+    {
+      "id": "framer-motion",
+      "label": "Framer Motion",
+      "type": "technology",
+      "source_file": "DESIGN.md",
+      "source_location": "line 76",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "usage": [
+          "shape morphing",
+          "opacity animation",
+          "parallax scroll"
+        ]
+      }
+    },
+    {
+      "id": "oklch-color-tokens",
+      "label": "OKLCH Color Tokens",
+      "type": "concept",
+      "source_file": "DESIGN.md",
+      "source_location": "line 84",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "orb_blue": "oklch(0.58 0.19 250)",
+        "orb_violet": "oklch(0.54 0.21 295)",
+        "orb_teal": "oklch(0.62 0.15 195)"
+      }
+    },
+    {
+      "id": "tailwind-css",
+      "label": "Tailwind CSS",
+      "type": "technology",
+      "source_file": "DESIGN.md",
+      "source_location": "line 28",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "version": "4"
+      }
+    },
+    {
+      "id": "hero-section",
+      "label": "HeroSection Component",
+      "type": "component",
+      "source_file": "DESIGN.md",
+      "source_location": "line 37",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "vercel-platform",
+      "label": "Vercel Deployment Platform",
+      "type": "tool",
+      "source_file": "README.md",
+      "source_location": "line 26",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "geist-font",
+      "label": "Geist Font",
+      "type": "concept",
+      "source_file": "README.md",
+      "source_location": "line 16",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "source": "next/font"
+      }
+    },
+    {
+      "id": "cv-pdf-en",
+      "label": "CV PDF English",
+      "type": "file",
+      "source_file": "public/cv/README.md",
+      "source_location": "line 3",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "filename": "alejandro-gomez-cv-en.pdf",
+        "path": "public/cv/"
+      }
+    },
+    {
+      "id": "cv-pdf-es",
+      "label": "CV PDF Spanish",
+      "type": "file",
+      "source_file": "public/cv/README.md",
+      "source_location": "line 4",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "filename": "alejandro-gomez-cv-es.pdf",
+        "path": "public/cv/"
+      }
+    },
+    {
+      "id": "about-section-resume-url",
+      "label": "About resumeUrl Field",
+      "type": "concept",
+      "source_file": "public/cv/README.md",
+      "source_location": "line 7",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "nextjs-logo",
+      "label": "Next.js Logo SVG",
+      "type": "file",
+      "source_file": "public/next.svg",
+      "source_location": "line 1",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "vercel-logo",
+      "label": "Vercel Logo SVG",
+      "type": "file",
+      "source_file": "public/vercel.svg",
+      "source_location": "line 1",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "file-icon-svg",
+      "label": "File Icon SVG",
+      "type": "file",
+      "source_file": "public/file.svg",
+      "source_location": "line 1",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "globe-icon-svg",
+      "label": "Globe Icon SVG",
+      "type": "file",
+      "source_file": "public/globe.svg",
+      "source_location": "line 1",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "window-icon-svg",
+      "label": "Window Icon SVG",
+      "type": "file",
+      "source_file": "public/window.svg",
+      "source_location": "line 1",
+      "confidence": "EXTRACTED",
+      "properties": {}
+    },
+    {
+      "id": "mi-avatar-png",
+      "label": "Avatar Image",
+      "type": "file",
+      "source_file": "public/mi-avatar.png",
+      "source_location": "line 1",
+      "confidence": "EXTRACTED",
+      "properties": {
+        "filename": "mi-avatar.png"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "alejos-dev-world",
+      "target": "nextjs-app-router",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "admin-api",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "content-loaders",
+      "target": "content-ts",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "content-ts",
+      "target": "data-index-ts",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "content-loaders",
+      "target": "admin-api",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "content-loaders",
+      "target": "fallback-json",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "content-loaders",
+      "target": "backend-url-env",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "content-loaders",
+      "target": "backend-sections-env",
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "backend-config-ts",
+      "target": "backend-url-env",
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "backend-config-ts",
+      "target": "backend-sections-env",
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "content-ts",
+      "target": "types-content-ts",
+      "relation": "imports",
+      "confidence": "INFERRED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "isr-cache",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "revalidate-route",
+      "target": "isr-cache",
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "home-page",
+      "target": "hero-section",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "i18n-config",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "pnpm",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "design-md",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "glass-card-class",
+      "target": "globals-css",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "glass-card-class",
+      "target": "backdrop-filter",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "glass-card-class",
+      "target": "background-effects-component",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "background-effects-component",
+      "target": "orbs-layer",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "background-effects-component",
+      "target": "waves-layer",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "background-effects-component",
+      "target": "framer-motion",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "background-effects-component",
+      "target": "oklch-color-tokens",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "hero-section",
+      "target": "glass-card-class",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "tailwind-css",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "DESIGN.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "vercel-platform",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "alejos-dev-world",
+      "target": "geist-font",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "about-section-resume-url",
+      "target": "cv-pdf-en",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "public/cv/README.md"
+    },
+    {
+      "source": "about-section-resume-url",
+      "target": "cv-pdf-es",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "public/cv/README.md"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -1,0 +1,1 @@
+{"nodes": [{"id": "mi-avatar-png", "label": "Avatar Image", "type": "file", "source_file": "public/mi-avatar.png", "source_location": "line 1", "confidence": "EXTRACTED", "properties": {"filename": "mi-avatar.png"}}], "edges": [], "hyperedges": []}

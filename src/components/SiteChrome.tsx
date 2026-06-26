@@ -29,8 +29,8 @@ export function SiteChrome({ locale, children }: SiteChromeProps) {
         className={cn(
           "flex-1 flex flex-col",
           isHome
-            ? "pt-[var(--nav-height)] md:pt-0"
-            : "pt-[var(--nav-height)]",
+            ? "pt-nav md:pt-0"
+            : "pt-nav",
         )}
       >
         {children}

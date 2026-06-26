@@ -1,0 +1,1 @@
+{"nodes": [{"id": "nextjs-logo", "label": "Next.js Logo SVG", "type": "file", "source_file": "public/next.svg", "source_location": "line 1", "confidence": "EXTRACTED", "properties": {}}], "edges": [], "hyperedges": []}
