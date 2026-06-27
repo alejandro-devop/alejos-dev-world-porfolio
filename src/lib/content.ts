@@ -30,6 +30,7 @@ import type {
   ContentMap,
   ExperienceData,
   HeroData,
+  Project,
   ProjectsData,
   SeoData,
   ServicesData,
@@ -220,6 +221,34 @@ export async function getExperience(locale: Locale): Promise<ExperienceData> {
 
 export async function getProjects(locale: Locale): Promise<ProjectsData> {
   return loadContent(locale, "projects");
+}
+
+export async function getProject(
+  locale: Locale,
+  id: string,
+): Promise<Project | null> {
+  // Try the single-item API endpoint first (includes images array)
+  if (isSectionBackendEnabled("projects")) {
+    try {
+      const { url, apiKey } = getBackendConfig();
+      const headers: Record<string, string> = { Accept: "application/json" };
+      if (apiKey) headers["X-API-Key"] = apiKey;
+      const res = await fetch(
+        `${url}/api/${locale}/projects/${encodeURIComponent(id)}`,
+        { headers, ...getContentFetchInit(locale, ["projects"]) },
+      );
+      if (res.ok) {
+        const json = await res.json();
+        return (json?.data as Project) ?? null;
+      }
+      if (res.status === 404) return null;
+    } catch {
+      // fall through to bulk
+    }
+  }
+  // Fallback: find within the already-loaded bulk list
+  const projects = await getProjects(locale);
+  return projects.find((p) => p.id === id) ?? null;
 }
 
 export async function getServices(locale: Locale): Promise<ServicesData> {

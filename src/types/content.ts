@@ -104,6 +104,14 @@ export type ExperienceData = ExperienceEntry[];
 
 export type ProjectStatus = "completed" | "in-progress" | "archived";
 
+export interface ProjectImage {
+  id: string;
+  projectId: string;
+  locale: string;
+  url: string;
+  position: number;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -113,6 +121,7 @@ export interface Project {
   status?: ProjectStatus;
   featured?: boolean;
   imageUrl?: string;
+  images?: ProjectImage[];
   liveUrl?: string;
   repoUrl?: string;
   startDate?: string;
