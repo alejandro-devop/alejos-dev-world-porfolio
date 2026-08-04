@@ -7,7 +7,7 @@
 export const siteConfig = {
   name: "Alejo's Dev World",
   description: "Bilingual full-stack developer portfolio",
-  url: "https://alejos-dev-world.vercel.app",
+  url: "https://me.alejosworld.com",
   /** Used for og:image and Twitter card. */
   ogImage: "/og.png",
 } as const;
