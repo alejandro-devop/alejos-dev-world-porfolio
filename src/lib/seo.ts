@@ -20,5 +20,5 @@ export function resolvePersonOgAlt(ogAlt: string, personName: string): string {
   const match = ogAlt.match(/^[^—\-]+([—\-].+)$/u);
   if (!match) return ogAlt;
 
-  return `${name}${match[1]}`;
+  return `${name} ${match[1]}`;
 }

@@ -78,8 +78,8 @@ export async function generateMetadata({
       siteName: siteConfig.name,
       title: pageTitle,
       description: seo.description,
-      locale: locale === "es" ? "es_AR" : "en_US",
-      alternateLocale: locale === "en" ? ["es_AR"] : ["en_US"],
+      locale: locale === "es" ? "es_CO" : "en_US",
+      alternateLocale: locale === "en" ? ["es_CO"] : ["en_US"],
       images: [
         {
           url: seo.ogImage.url,
@@ -93,7 +93,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: pageTitle,
       description: seo.description,
-      creator: seo.twitterHandle,
+      creator: seo.twitterHandle || undefined,
       images: [seo.ogImage.url],
     },
     robots: {
