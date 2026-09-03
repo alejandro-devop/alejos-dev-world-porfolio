@@ -29,6 +29,9 @@ const COPY = {
     successHeading: "Message sent!",
     successBody:
       "Thanks for reaching out. I'll get back to you within 24–48 hours.",
+    errorInvalid: "Please fill in all fields with a valid email.",
+    errorBody:
+      "The message couldn't be sent. Please try again, or use the email below.",
     orEmail: "Or email me directly",
   },
   es: {
@@ -46,6 +49,9 @@ const COPY = {
     sending: "Enviando…",
     successHeading: "¡Mensaje enviado!",
     successBody: "Gracias por escribirme. Te responderé en 24–48 horas.",
+    errorInvalid: "Completa todos los campos con un correo válido.",
+    errorBody:
+      "No se pudo enviar el mensaje. Inténtalo de nuevo o usa el correo de abajo.",
     orEmail: "O escríbeme directamente",
   },
 } as const;
@@ -54,15 +60,43 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
   const t = COPY[locale];
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      message: String(data.get("message") ?? "").trim(),
+      company: String(data.get("company") ?? "").trim(),
+    };
+
+    if (
+      !payload.name ||
+      !payload.message ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)
+    ) {
+      setError(t.errorInvalid);
+      return;
+    }
+
+    setError(null);
     setLoading(true);
-    // UI-only: simulate a short delay then show success state.
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`contact_failed_${res.status}`);
       setSent(true);
-    }, 800);
+    } catch {
+      setError(t.errorBody);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -194,6 +228,30 @@ export function ContactSection({ locale, email }: ContactSectionProps) {
                   )}
                 />
               </motion.div>
+
+              {/* Honeypot — hidden from real users, bots fill it in */}
+              <div
+                aria-hidden="true"
+                className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+              >
+                <label htmlFor="contact-company">Company</label>
+                <input
+                  id="contact-company"
+                  name="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
+              {error && (
+                <p
+                  role="alert"
+                  className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-500 dark:text-red-400"
+                >
+                  {error}
+                </p>
+              )}
 
               {/* Submit */}
               <motion.div variants={fadeUp}>
