@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 
 const MOBILE_MQ = "(max-width: 767px)";
+const REDUCED_MOTION_MQ = "(prefers-reduced-motion: reduce)";
 // Stretch paths horizontally inside the viewBox — same SVG footprint, fewer peaks visible.
 const MOBILE_WAVE_SCALE_X = 1.75;
 const MOBILE_STROKE_SCALE = 1.15;
 const MOBILE_WAVE_TRANSFORM = `translate(720 60) scale(${MOBILE_WAVE_SCALE_X} 1) translate(-720 -60)`;
+
+// ease-in-out, matching the previous Framer Motion easing.
+const EASE_SPLINE = "0.42 0 0.58 1";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -102,8 +106,74 @@ const DRIFT_CLASSES = ["fx-wave-drift", "fx-wave-drift-reverse", "fx-wave-drift"
 // Morph durations varied per group so they never sync up
 const MORPH_DURATIONS = [11, 8, 13, 9] as const;
 
+interface WaveTraceProps {
+  shapes: readonly [string, string];
+  strokeWidth: number;
+  opacityRange: readonly [number, number];
+  morphDur: number;
+  opacDur: number;
+  /** Negative offset (s) so the trace starts mid-cycle — used by secondary traces. */
+  beginOffset?: number;
+  animate: boolean;
+  nonScalingStroke: boolean;
+}
+
+/**
+ * Single wave trace. Morph + opacity pulse run as SMIL animations: the browser
+ * interpolates natively, off the JS main thread — unlike the previous
+ * Framer Motion version, which recomputed every path on every frame in JS and
+ * starved hydration/timers on slower machines.
+ */
+function WaveTrace({
+  shapes,
+  strokeWidth,
+  opacityRange,
+  morphDur,
+  opacDur,
+  beginOffset = 0,
+  animate,
+  nonScalingStroke,
+}: WaveTraceProps) {
+  return (
+    <path
+      d={shapes[0]}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeOpacity={opacityRange[0]}
+      vectorEffect={nonScalingStroke ? "non-scaling-stroke" : undefined}
+    >
+      {animate && (
+        <>
+          <animate
+            attributeName="d"
+            values={`${shapes[0]};${shapes[1]};${shapes[0]}`}
+            dur={`${morphDur}s`}
+            begin={`${beginOffset}s`}
+            repeatCount="indefinite"
+            calcMode="spline"
+            keyTimes="0;0.5;1"
+            keySplines={`${EASE_SPLINE};${EASE_SPLINE}`}
+          />
+          <animate
+            attributeName="stroke-opacity"
+            values={`${opacityRange[0]};${opacityRange[1]};${opacityRange[0]}`}
+            dur={`${opacDur}s`}
+            begin={`${beginOffset}s`}
+            repeatCount="indefinite"
+            calcMode="spline"
+            keyTimes="0;0.5;1"
+            keySplines={`${EASE_SPLINE};${EASE_SPLINE}`}
+          />
+        </>
+      )}
+    </path>
+  );
+}
+
 export function BackgroundEffects() {
   const isMobile = useMediaQuery(MOBILE_MQ);
+  const prefersReducedMotion = useMediaQuery(REDUCED_MOTION_MQ);
   const { scrollY } = useScroll();
 
   const orbAY = useTransform(scrollY, (v) => v * -0.08);
@@ -160,43 +230,27 @@ export function BackgroundEffects() {
               >
                 <g transform={isMobile ? MOBILE_WAVE_TRANSFORM : undefined}>
                   {/* Main trace — morphs shape + pulses opacity independently */}
-                  <motion.path
-                    d={wave.main[0]}
-                    fill="none"
-                    stroke="currentColor"
+                  <WaveTrace
+                    shapes={wave.main}
                     strokeWidth={isMobile ? wave.sw * MOBILE_STROKE_SCALE : wave.sw}
-                    vectorEffect={isMobile ? "non-scaling-stroke" : undefined}
-                    animate={{
-                      d: [wave.main[0], wave.main[1], wave.main[0]],
-                      strokeOpacity: [wave.so[0], wave.so[1], wave.so[0]],
-                    }}
-                    transition={{
-                      d: { duration: dur, ease: "easeInOut", repeat: Infinity },
-                      strokeOpacity: { duration: wave.opacDur, ease: "easeInOut", repeat: Infinity },
-                    }}
+                    opacityRange={wave.so}
+                    morphDur={dur}
+                    opacDur={wave.opacDur}
+                    animate={!prefersReducedMotion}
+                    nonScalingStroke={isMobile}
                   />
                   {/* Secondary trace — out-of-phase on both shape and opacity */}
-                  <motion.path
-                    d={wave.sec[0]}
-                    fill="none"
-                    stroke="currentColor"
+                  <WaveTrace
+                    shapes={wave.sec}
                     strokeWidth={
                       isMobile ? wave.sw * 0.48 * MOBILE_STROKE_SCALE : wave.sw * 0.48
                     }
-                    vectorEffect={isMobile ? "non-scaling-stroke" : undefined}
-                    animate={{
-                      d: [wave.sec[0], wave.sec[1], wave.sec[0]],
-                      strokeOpacity: [wave.so[0] * 0.42, wave.so[1] * 0.42, wave.so[0] * 0.42],
-                    }}
-                    transition={{
-                      d: { duration: dur, ease: "easeInOut", repeat: Infinity, delay: dur * 0.4 },
-                      strokeOpacity: {
-                        duration: wave.opacDur * 1.3,
-                        ease: "easeInOut",
-                        repeat: Infinity,
-                        delay: wave.opacDur * 0.55,
-                      },
-                    }}
+                    opacityRange={[wave.so[0] * 0.42, wave.so[1] * 0.42]}
+                    morphDur={dur}
+                    opacDur={wave.opacDur * 1.3}
+                    beginOffset={-dur * 0.4}
+                    animate={!prefersReducedMotion}
+                    nonScalingStroke={isMobile}
                   />
                 </g>
               </svg>

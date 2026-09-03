@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp } from "@/lib/motion";
 import { HeroAvatar } from "@/components/HeroAvatar";
@@ -13,7 +12,6 @@ interface HeroIntroProps {
 
 export function HeroIntro({ greeting, name }: HeroIntroProps) {
   const prefersReducedMotion = useReducedMotion();
-  const [avatarDone, setAvatarDone] = useState(false);
 
   if (prefersReducedMotion) {
     return (
@@ -27,6 +25,8 @@ export function HeroIntro({ greeting, name }: HeroIntroProps) {
     );
   }
 
+  // Avatar and name animate in parallel: the name no longer waits for the
+  // avatar's grow animation, so a busy main thread can't hold the H1 hostage.
   return (
     <div className="flex flex-col items-center gap-4">
       <motion.p
@@ -35,8 +35,8 @@ export function HeroIntro({ greeting, name }: HeroIntroProps) {
       >
         {greeting}
       </motion.p>
-      <HeroAvatar alt={name} onGrowComplete={() => setAvatarDone(true)} />
-      <AnimatedHeroName key={name} name={name} canStart={avatarDone} />
+      <HeroAvatar alt={name} />
+      <AnimatedHeroName key={name} name={name} />
     </div>
   );
 }

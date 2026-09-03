@@ -6,16 +6,17 @@ import { cn } from "@/lib/utils";
 import { defaultViewport } from "@/lib/motion";
 
 const TYPING_INTERVAL_MS = 78;
+// Small beat after hydration so the retype reads as intentional, not a glitch.
+const TYPING_START_DELAY_MS = 350;
 const GLOW_INTERVAL_MS = 90;
 const GLOW_FIRST_DELAY_MS = 3_000;
 const GLOW_CYCLE_MS = 10_000;
 
 interface AnimatedHeroNameProps {
   name: string;
-  canStart?: boolean;
 }
 
-export function AnimatedHeroName({ name, canStart = true }: AnimatedHeroNameProps) {
+export function AnimatedHeroName({ name }: AnimatedHeroNameProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
@@ -26,71 +27,50 @@ export function AnimatedHeroName({ name, canStart = true }: AnimatedHeroNameProp
     );
   }
 
-  return (
-    <AnimatedHeroNameInner name={name} canStart={canStart} />
-  );
+  return <AnimatedHeroNameInner name={name} />;
 }
 
-function AnimatedHeroNameInner({ name, canStart }: AnimatedHeroNameProps) {
+function AnimatedHeroNameInner({ name }: AnimatedHeroNameProps) {
   const ref = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(ref, defaultViewport);
-  const progressRef = useRef({ visibleCount: 0, typingComplete: false });
+  const startedRef = useRef(false);
 
   const chars = Array.from(name);
-  const [visibleCount, setVisibleCount] = useState(0);
+  // The full name is visible from SSR (it's the page's H1 — it must never
+  // depend on JS). The typewriter only kicks in after hydration, as an
+  // enhancement layered on top.
+  const [visibleCount, setVisibleCount] = useState(chars.length);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [showCursor, setShowCursor] = useState(false);
   const [glowIndex, setGlowIndex] = useState(-1);
 
   useEffect(() => {
-    progressRef.current.visibleCount = visibleCount;
-    progressRef.current.typingComplete = isTypingComplete;
-  }, [visibleCount, isTypingComplete]);
-
-  useEffect(() => {
-    if (!isInView || !canStart) return;
+    if (!isInView || startedRef.current) return;
+    startedRef.current = true;
 
     let typingTimer: number | undefined;
 
     const startTimer = window.setTimeout(() => {
-      const { visibleCount: current, typingComplete } = progressRef.current;
-
-      if (typingComplete || current >= chars.length) {
-        if (!typingComplete) {
-          setShowCursor(true);
-          setVisibleCount(chars.length);
-          setIsTypingComplete(true);
-        }
-        return;
-      }
-
       setShowCursor(true);
+      setVisibleCount(1);
 
-      if (current === 0) {
-        setVisibleCount(1);
-        progressRef.current.visibleCount = 1;
-      }
-
-      let index = Math.max(progressRef.current.visibleCount, 1);
-
+      let index = 1;
       typingTimer = window.setInterval(() => {
         index += 1;
-        progressRef.current.visibleCount = index;
         setVisibleCount(index);
 
         if (index >= chars.length) {
           if (typingTimer) window.clearInterval(typingTimer);
-          progressRef.current.typingComplete = true;
           setIsTypingComplete(true);
         }
       }, TYPING_INTERVAL_MS);
-    }, 0);
+    }, TYPING_START_DELAY_MS);
 
     return () => {
       window.clearTimeout(startTimer);
       if (typingTimer) window.clearInterval(typingTimer);
     };
-  }, [isInView, canStart, chars.length]);
+  }, [isInView, chars.length]);
 
   useEffect(() => {
     if (!isInView || !isTypingComplete) return;
